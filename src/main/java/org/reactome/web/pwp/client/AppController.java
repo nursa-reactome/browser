@@ -16,6 +16,9 @@ import org.reactome.web.pwp.client.details.tabs.DetailsTab;
 import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTab;
 import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTabDisplay;
 import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTabPresenter;
+import org.reactome.web.pwp.client.details.tabs.dataset.DatasetTab;
+import org.reactome.web.pwp.client.details.tabs.dataset.DatasetTabDisplay;
+import org.reactome.web.pwp.client.details.tabs.dataset.DatasetTabPresenter;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTab;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTabDisplay;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTabPresenter;
@@ -182,17 +185,9 @@ public class AppController implements BrowserReadyHandler {
         new MoleculesTabPresenter(this.eventBus, molecules);
         DETAILS_TABS.add(molecules);
 
-        StructuresTab.Display structures = new StructuresTabDisplay();
-        new StructuresTabPresenter(this.eventBus, structures);
-        DETAILS_TABS.add(structures);
-
-        ExpressionTab.Display expression = new ExpressionTabDisplay();
-        new ExpressionTabPresenter(this.eventBus, expression);
-        DETAILS_TABS.add(expression);
-
-        AnalysisTab.Display analysis = new AnalysisTabDisplay();
-        new AnalysisTabPresenter(this.eventBus, analysis);
-        DETAILS_TABS.add(analysis);
+        DatasetTab.Display dataset = new DatasetTabDisplay();
+        new DatasetTabPresenter(this.eventBus, dataset);
+        DETAILS_TABS.add(dataset);
 
         DownloadsTab.Display downloads = new DownloadsTabDisplay();
         new DownloadsTabPresenter(this.eventBus, downloads);

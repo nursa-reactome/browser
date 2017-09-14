@@ -151,7 +151,8 @@ public class AppController implements BrowserReadyHandler {
         topPanel.add(species);
         topPanel.add(layoutSelector);
         topPanel.add(tour);
-        topPanel.add(toolLauncher);
+        // Nursa - hide the analysis tool launcher. 
+        //topPanel.add(toolLauncher);
 
         return topPanel;
     }

@@ -49,6 +49,7 @@
         <reactome.web.diagram>3.4.1</reactome.web.diagram>
         <reactome.web.fireworks>1.4.1</reactome.web.fireworks>
         <reactome.web.model>2.0.0</reactome.web.model>
+        <reactome.web.nursa-model>1.0.0-SNAPSHOT</reactome.web.nursa-model>
         <reactome.web.pdb>2.3.0</reactome.web.pdb>
         <reactome.web.chebi>1.0.1</reactome.web.chebi>
         <reactome.web.rhea>1.3.1</reactome.web.rhea>
@@ -92,6 +93,12 @@
             <groupId>org.reactome.web.pwp</groupId>
             <artifactId>model</artifactId>
             <version>${reactome.web.model}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reactome.web.pwp</groupId>
+            <artifactId>nursa-model</artifactId>
+            <version>${reactome.web.nursa-model}</version>
         </dependency>
 
         <dependency>
@@ -262,5 +269,5 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-    </repositories>
+       </repositories>
 </project>

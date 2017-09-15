@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Fred Loney <loneyf@ohsu.edu>
  */
 public class DatasetTabPresenter extends AbstractPresenter implements DatasetTab.Presenter {
 

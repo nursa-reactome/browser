@@ -4,7 +4,7 @@ import org.reactome.web.pwp.client.details.tabs.DetailsTab;
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 
 /**
- * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Fred Loney <loneyf@ohsu.edu>
  */
 public interface DatasetTab {
 

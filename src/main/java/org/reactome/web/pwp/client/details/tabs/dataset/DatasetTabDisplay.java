@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Fred Loney <loneyf@ohsu.edu>
  */
 public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Display, DatasetLoadedHandler {
 
@@ -120,14 +120,6 @@ public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Dis
     }
 
     private void setTitle(DatasetPanel panel){
-        int loadedDataset = panel.getNumberOfLoadedDataset();
-        int proteinAccessions = panel.getNumberOfRequiredDataset();
-        String counter;
-        if(loadedDataset==0 && proteinAccessions==0){
-            counter = "0";
-        }else{
-            counter = loadedDataset + "/" + proteinAccessions;
-        }
-        this.title.setCounter(counter);
+        // TODO - implement
     }
 }

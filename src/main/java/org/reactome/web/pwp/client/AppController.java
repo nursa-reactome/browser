@@ -16,6 +16,9 @@ import org.reactome.web.pwp.client.details.tabs.DetailsTab;
 import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTab;
 import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTabDisplay;
 import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTabPresenter;
+import org.reactome.web.pwp.client.details.tabs.dataset.DatasetTab;
+import org.reactome.web.pwp.client.details.tabs.dataset.DatasetTabDisplay;
+import org.reactome.web.pwp.client.details.tabs.dataset.DatasetTabPresenter;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTab;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTabDisplay;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTabPresenter;
@@ -49,6 +52,9 @@ import org.reactome.web.pwp.client.tools.analysis.AnalysisLauncherPresenter;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncher;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncherDisplay;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncherPresenter;
+import org.reactome.web.pwp.client.toppanel.dataset.DatasetSelector;
+import org.reactome.web.pwp.client.toppanel.dataset.DatasetSelectorDisplay;
+import org.reactome.web.pwp.client.toppanel.dataset.DatasetSelectorPresenter;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelector;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelectorDisplay;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelectorPresenter;
@@ -142,13 +148,18 @@ public class AppController implements BrowserReadyHandler {
         TourSelector.Display tour = new TourSelectorDisplay();
         new TourSelectorPresenter(this.eventBus, tour);
 
+        DatasetSelector.Display dataset = new DatasetSelectorDisplay();
+        new DatasetSelectorPresenter(this.eventBus, dataset);
+
         FlowPanel topPanel = new FlowPanel();
         topPanel.setStyleName("elv-Top-Panel");
         topPanel.add(new LogoPanel());
         topPanel.add(species);
         topPanel.add(layoutSelector);
         topPanel.add(tour);
-        topPanel.add(toolLauncher);
+        topPanel.add(dataset);
+        // Nursa - hide the analysis tool launcher. 
+        //topPanel.add(toolLauncher);
 
         return topPanel;
     }
@@ -182,17 +193,9 @@ public class AppController implements BrowserReadyHandler {
         new MoleculesTabPresenter(this.eventBus, molecules);
         DETAILS_TABS.add(molecules);
 
-        StructuresTab.Display structures = new StructuresTabDisplay();
-        new StructuresTabPresenter(this.eventBus, structures);
-        DETAILS_TABS.add(structures);
-
-        ExpressionTab.Display expression = new ExpressionTabDisplay();
-        new ExpressionTabPresenter(this.eventBus, expression);
-        DETAILS_TABS.add(expression);
-
-        AnalysisTab.Display analysis = new AnalysisTabDisplay();
-        new AnalysisTabPresenter(this.eventBus, analysis);
-        DETAILS_TABS.add(analysis);
+        DatasetTab.Display dataset = new DatasetTabDisplay();
+        new DatasetTabPresenter(this.eventBus, dataset);
+        DETAILS_TABS.add(dataset);
 
         DownloadsTab.Display downloads = new DownloadsTabDisplay();
         new DownloadsTabPresenter(this.eventBus, downloads);

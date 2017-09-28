@@ -17,6 +17,7 @@ public enum DetailsTabType {
     /* NOTE: If a new tab is added, make sure GAModule correspondence method is updated */
     DESCRIPTION("DD", "Description"),
     PARTICIPATING_MOLECULES("MT", "Molecules"),
+    DATASET("DS", "Dataset"),
     STRUCTURES("ST", "Structures"),
     EXPRESSION("EX", "Expression"),
     ANALYSIS("AN", "Analysis"),
@@ -82,6 +83,7 @@ public enum DetailsTabType {
         switch (this){
             case DESCRIPTION: return DetailsTabResources.INSTANCE.descriptionIcon();
             case PARTICIPATING_MOLECULES: return DetailsTabResources.INSTANCE.moleculesIcon();
+            case DATASET: return DetailsTabResources.INSTANCE.datasetIcon();
             case STRUCTURES: return DetailsTabResources.INSTANCE.structuresIcon();
             case EXPRESSION: return DetailsTabResources.INSTANCE.expressionIcon();
             case ANALYSIS: return DetailsTabResources.INSTANCE.analysisIcon();
@@ -94,7 +96,8 @@ public enum DetailsTabType {
         switch (this){
             case DESCRIPTION: return DetailsTabResources.INSTANCE.description();
             case PARTICIPATING_MOLECULES: return DetailsTabResources.INSTANCE.molecules();
-            case STRUCTURES: return DetailsTabResources.INSTANCE.structures();
+            case DATASET: return DetailsTabResources.INSTANCE.dataset();
+            	case STRUCTURES: return DetailsTabResources.INSTANCE.structures();
             case EXPRESSION: return DetailsTabResources.INSTANCE.expression();
             case ANALYSIS: return DetailsTabResources.INSTANCE.analysis();
             case DOWNLOADS: return DetailsTabResources.INSTANCE.downloads();
@@ -106,6 +109,7 @@ public enum DetailsTabType {
         switch (this){
             case DESCRIPTION: return DetailsTabResources.INSTANCE.descriptionTxt();
             case PARTICIPATING_MOLECULES: return DetailsTabResources.INSTANCE.moleculesTxt();
+            case DATASET: return DetailsTabResources.INSTANCE.datasetTxt();
             case STRUCTURES: return DetailsTabResources.INSTANCE.structuresTxt();
             case EXPRESSION: return DetailsTabResources.INSTANCE.expressionTxt();
             case ANALYSIS: return DetailsTabResources.INSTANCE.analysisTxt();
@@ -144,7 +148,16 @@ public enum DetailsTabType {
 
         @Source("text/downloads.txt")
         TextResource downloadsTxt();
-
+        
+        @Source("images/dataset.png")
+        ImageResource dataset();
+        
+        @Source("images/dataset_icon.png")
+        ImageResource datasetIcon();
+        
+        @Source("text/dataset.txt")
+        TextResource datasetTxt();
+        
         @Source("images/expression.png")
         ImageResource expression();
 

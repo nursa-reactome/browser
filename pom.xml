@@ -206,11 +206,11 @@
                     </compilerArgs>
                     <devmodeArgs>
                         <arg>-bindAddress</arg>
-                        <arg>0.0.0.0</arg>
+                        <arg>localhost</arg>
                     </devmodeArgs>
                     <codeserverArgs>
                         <arg>-bindAddress</arg>
-                        <arg>0.0.0.0</arg>
+                        <arg>localhost</arg>
                         <arg>-gen</arg>
                         <arg>${project.build.directory}/.generated</arg>
                     </codeserverArgs>

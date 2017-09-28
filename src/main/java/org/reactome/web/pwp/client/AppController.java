@@ -52,6 +52,9 @@ import org.reactome.web.pwp.client.tools.analysis.AnalysisLauncherPresenter;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncher;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncherDisplay;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncherPresenter;
+import org.reactome.web.pwp.client.toppanel.dataset.DatasetSelector;
+import org.reactome.web.pwp.client.toppanel.dataset.DatasetSelectorDisplay;
+import org.reactome.web.pwp.client.toppanel.dataset.DatasetSelectorPresenter;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelector;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelectorDisplay;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelectorPresenter;
@@ -145,12 +148,16 @@ public class AppController implements BrowserReadyHandler {
         TourSelector.Display tour = new TourSelectorDisplay();
         new TourSelectorPresenter(this.eventBus, tour);
 
+        DatasetSelector.Display dataset = new DatasetSelectorDisplay();
+        new DatasetSelectorPresenter(this.eventBus, dataset);
+
         FlowPanel topPanel = new FlowPanel();
         topPanel.setStyleName("elv-Top-Panel");
         topPanel.add(new LogoPanel());
         topPanel.add(species);
         topPanel.add(layoutSelector);
         topPanel.add(tour);
+        topPanel.add(dataset);
         // Nursa - hide the analysis tool launcher. 
         //topPanel.add(toolLauncher);
 

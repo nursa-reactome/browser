@@ -2,30 +2,27 @@ package org.reactome.web.pwp.client.details.tabs.dataset;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.*;
+
 import org.reactome.web.pwp.client.common.CommonImages;
 import org.reactome.web.pwp.client.details.tabs.DetailsTabTitle;
 import org.reactome.web.pwp.client.details.tabs.DetailsTabType;
-import org.reactome.web.pwp.client.details.tabs.dataset.events.DatasetLoadedEvent;
-import org.reactome.web.pwp.client.details.tabs.dataset.handlers.DatasetLoadedHandler;
-import org.reactome.web.pwp.client.details.tabs.dataset.widgets.*;
-import org.reactome.web.pwp.model.client.classes.*;
+import org.reactome.web.pwp.client.details.tabs.dataset.widgets.DatasetPanel;
+import org.reactome.web.pwp.nursa.model.client.classes.Dataset;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Display, DatasetLoadedHandler {
+public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Display {
 
     @SuppressWarnings("unused")
-	private DatasetTab.Presenter presenter;
+    private DatasetTab.Presenter presenter;
 
     private DockLayoutPanel container;
     private DetailsTabTitle title;
-
-    private Map<DatabaseObject, DatasetPanel> cache = new HashMap<>();
-    private DatasetPanel currentPanel;
+    private DatasetPanel content;
 
     public DatasetTabDisplay() {
         this.title = getDetailTabType().getTitle();
@@ -50,33 +47,16 @@ public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Dis
     }
 
     @Override
-    public void onDatasetLoaded(DatasetLoadedEvent datasetLoadedEvent) {
-        DatasetPanel panel = (DatasetPanel) datasetLoadedEvent.getSource();
-        if(this.currentPanel==panel){
-            this.setTitle(panel);
-        }
+    public void showDetails(Dataset dataset) {
+        this.content = new DatasetPanel(dataset);
+        this.container.clear();
+        this.container.add(this.content);
     }
 
     @Override
-    public void showDetails(DatabaseObject databaseObject) {
-        if(cache.containsKey(databaseObject)){
-            this.currentPanel = cache.get(databaseObject);
-            this.container.clear();
-            showDatasetPanel(this.currentPanel);
-        }else{
-            this.currentPanel = new EmptyDatasetPanel();
-            this.showDatasetPanel(this.currentPanel);
-            this.cache.put(databaseObject, this.currentPanel);
-        }
-    }
-
-    @Override
-    public void updateTitle(DatabaseObject databaseObject) {
-        if(this.cache.containsKey(databaseObject)){
-            this.setTitle(this.cache.get(databaseObject));
-        }else{
-            this.title.resetCounter();
-        }
+    public void showLoading(String datasetId) {
+        setTitle(datasetId);
+        showLoadingMessage();
     }
 
     @Override
@@ -91,7 +71,7 @@ public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Dis
         Image loader = new Image(CommonImages.INSTANCE.loader());
         message.add(loader);
 
-        Label label = new Label("Loading the data required to show the structure data. Please wait...");
+        Label label = new Label("Loading the dataset. Please wait...");
         label.getElement().getStyle().setMarginLeft(5, Style.Unit.PX);
         message.add(label);
 
@@ -113,13 +93,8 @@ public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Dis
         this.container.add(panel);
     }
 
-    private void showDatasetPanel(DatasetPanel datasetPanel){
-        this.container.clear();
-        this.container.add(datasetPanel);
-        this.setTitle(datasetPanel);
-    }
-
-    private void setTitle(DatasetPanel panel){
-        // TODO - implement
+    @Override
+    public void setTitle(String datasetId){
+        this.title.setTitle(datasetId);
     }
 }

@@ -1,53 +1,96 @@
 package org.reactome.web.pwp.client.details.tabs.dataset;
 
-import com.google.gwt.event.shared.EventBus;
-import org.reactome.web.pwp.client.common.events.ErrorMessageEvent;
-import org.reactome.web.pwp.client.common.events.StateChangedEvent;
-import org.reactome.web.pwp.client.common.module.AbstractPresenter;
-import org.reactome.web.pwp.client.manager.state.State;
-import org.reactome.web.pwp.model.client.classes.DatabaseObject;
-import org.reactome.web.pwp.model.client.classes.ReferenceEntity;
-import org.reactome.web.pwp.model.client.classes.ReferenceSequence;
-import org.reactome.web.pwp.model.client.common.ContentClientHandler;
-import org.reactome.web.pwp.model.client.content.ContentClient;
-import org.reactome.web.pwp.model.client.content.ContentClientError;
-
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.reactome.web.pwp.client.common.events.DatasetLoadedEvent;
+import org.reactome.web.pwp.client.common.events.DatasetSelectedEvent;
+import org.reactome.web.pwp.client.common.events.StateChangedEvent;
+import org.reactome.web.pwp.client.common.handlers.DatasetLoadedHandler;
+import org.reactome.web.pwp.client.common.handlers.DatasetSelectedHandler;
+import org.reactome.web.pwp.nursa.model.client.classes.Dataset;
+import org.reactome.web.pwp.nursa.model.client.classes.DatasetGene;
+import org.reactome.web.pwp.nursa.model.client.classes.DatasetPathway;
+
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Timer;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetTabPresenter extends AbstractPresenter implements DatasetTab.Presenter {
+public class DatasetTabPresenter
+implements DatasetTab.Presenter, DatasetSelectedHandler, DatasetLoadedHandler {
 
     private DatasetTab.Display display;
-    private DatabaseObject currentlyShown;
+    private EventBus eventBus;
 
     public DatasetTabPresenter(EventBus eventBus, DatasetTab.Display display) {
-        super(eventBus);
+        this.eventBus = eventBus;
         this.display = display;
         this.display.setPresenter(this);
+        eventBus.addHandler(DatasetSelectedEvent.TYPE, this);
+        eventBus.addHandler(DatasetLoadedEvent.TYPE, this);
     }
 
     @Override
     public void onStateChanged(StateChangedEvent event) {
-        State state = event.getState();
-        DatabaseObject target = state.getTarget();
-
-        //Is it me the one to show data?
-        if (!state.getDetailsTab().equals(display.getDetailTabType())){
-            display.updateTitle(target);
-            return;
-        }
-
-        //Show the data
-        if(target==null){
-            this.currentlyShown = null;
-            display.setInitialState();
-        }else if(!target.equals(this.currentlyShown)){
-            this.currentlyShown = target;
-            display.showDetails(target);
-        }
+        // The Dataset tab is insensitive to the object selected in the viewport.
     }
 
+    @Override
+    public void onDatasetSelected(DatasetSelectedEvent datasetSelectedEvent) {
+        String datasetId = datasetSelectedEvent.getDatasetId();
+        this.display.showLoading(datasetId);
+        
+        Timer t = new Timer() {
+            @Override
+            public void run() {
+                    Dataset dataset = mockDataset();
+                    DatasetLoadedEvent event = new DatasetLoadedEvent(dataset);
+                    eventBus.fireEventFromSource(event, this);
+            }
+          };
+          t.schedule(2000);
+    }
+
+    @Override
+    public void onDatasetLoaded(DatasetLoadedEvent datasetLoadedEvent) {
+        Dataset dataset = datasetLoadedEvent.getDataset();
+        this.display.showDetails(dataset);
+    }
+
+    private Dataset mockDataset() {
+        Dataset dataset = new Dataset();
+        dataset.setDOI("10.1621/mpN8PDaTeM");
+        
+        List<DatasetGene> genes = new ArrayList<>();
+        DatasetGene gene = new DatasetGene();
+        gene.setSymbol("RHOU");
+        gene.setFoldChange(18.867);
+        gene.setPValue(4.29E-8);
+        genes.add(gene);
+        gene = new DatasetGene();
+        gene.setSymbol("SGK1");
+        gene.setFoldChange(16.505);
+        gene.setPValue(6.59E-8);
+        genes.add(gene);
+        dataset.setGenes(genes);
+        
+        List<DatasetPathway> pathways = new ArrayList<>();
+        DatasetPathway pathway = new DatasetPathway();
+        pathway.setDescription("TP53 Regulates Transcription of Cell Death Genes");
+        pathway.setPValue(2.64E-4);
+        pathway.setFDR(9.01E-02);
+        pathway.setRegulationType(DatasetPathway.RegulationType.UP);
+        pathways.add(pathway);
+        pathway = new DatasetPathway();
+        pathway.setDescription("IRE1alpha activates chaperones");
+        pathway.setPValue(1.10E-3);
+        pathway.setFDR(1.57E-1);
+        pathway.setRegulationType(DatasetPathway.RegulationType.UP);
+        pathways.add(pathway);
+        dataset.setPathways(pathways);
+        
+        return dataset;
+    }
 }

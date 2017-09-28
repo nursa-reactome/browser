@@ -14,20 +14,20 @@ public class DatasetLoadedEvent extends GwtEvent<DatasetLoadedHandler> {
     private Dataset dataset;
 
     public DatasetLoadedEvent(Dataset dataset) {
-		this.dataset = dataset;
-	}
+        this.dataset = dataset;
+    }
 
-	public Dataset getDataset() {
-		return dataset;
-	}
+    public Dataset getDataset() {
+        return dataset;
+    }
 
-	@Override
+    @Override
     public Type<DatasetLoadedHandler> getAssociatedType() {
         return TYPE;
     }
 
-	@Override
-	protected void dispatch(DatasetLoadedHandler handler) {
+    @Override
+    protected void dispatch(DatasetLoadedHandler handler) {
         handler.onDatasetLoaded(this);
-	}
+    }
 }

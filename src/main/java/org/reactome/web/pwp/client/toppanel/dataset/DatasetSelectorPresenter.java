@@ -9,9 +9,9 @@ import org.reactome.web.pwp.client.common.events.DatasetSelectedEvent;
  */
 public class DatasetSelectorPresenter implements DatasetSelector.Presenter {
 
-	private DatasetSelector.Display display;
-	private EventBus eventBus;
-	
+    private DatasetSelector.Display display;
+    private EventBus eventBus;
+    
     public DatasetSelectorPresenter(EventBus eventBus, DatasetSelector.Display display) {
         this.eventBus = eventBus;
         this.display = display;
@@ -20,8 +20,8 @@ public class DatasetSelectorPresenter implements DatasetSelector.Presenter {
 
     @Override
     public void search() {
-    		String datasetId = "TODO - get from text box"; 
-    		DatasetSelectedEvent event = new DatasetSelectedEvent(datasetId);
-    		eventBus.fireEventFromSource(event, this);
+        String datasetId = "TODO - get from text box"; 
+        DatasetSelectedEvent event = new DatasetSelectedEvent(datasetId);
+        eventBus.fireEventFromSource(event, this);
     }
 }

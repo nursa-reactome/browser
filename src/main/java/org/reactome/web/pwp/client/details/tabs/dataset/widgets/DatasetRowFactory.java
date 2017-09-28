@@ -15,48 +15,48 @@ import java.util.List;
  */
 public abstract class DatasetRowFactory {
 
-	private static String OVERVIEW_TITLE = "Overview";
-	private static String COMPARE_TITLE = "Compare to Other Dataset";
-	private static String GENE_LIST_TITLE = "Gene List";
-	private static String PATHWAY_TITLE = "Pathway";
+    private static String OVERVIEW_TITLE = "Overview";
+    private static String COMPARE_TITLE = "Compare to Other Dataset";
+    private static String GENE_LIST_TITLE = "Gene List";
+    private static String PATHWAY_TITLE = "Pathway";
 
-	public static Widget getOverviewRow(Dataset dataset) {
-		TextPanel panel = new TextPanel("TODO - Overview panel");
-		return getDatasetRow(OVERVIEW_TITLE, panel);
-	}
+    public static Widget getOverviewRow(Dataset dataset) {
+        TextPanel panel = new TextPanel("TODO - Overview panel");
+        return getDatasetRow(OVERVIEW_TITLE, panel);
+    }
 
-	public static Widget getComparisonRow(Dataset dataset) {
-		TextPanel panel = new TextPanel("TODO - Comparison panel");
-		return getDatasetRow(COMPARE_TITLE, panel);
-	}
+    public static Widget getComparisonRow(Dataset dataset) {
+        TextPanel panel = new TextPanel("TODO - Comparison panel");
+        return getDatasetRow(COMPARE_TITLE, panel);
+    }
 
-	public static Widget getGenesRow(Dataset dataset) {
-		TextPanel panel = new TextPanel("TODO - Gene List panel");
-		return getDatasetRow(GENE_LIST_TITLE, panel);
-	}
+    public static Widget getGenesRow(Dataset dataset) {
+        TextPanel panel = new TextPanel("TODO - Gene List panel");
+        return getDatasetRow(GENE_LIST_TITLE, panel);
+    }
 
-	public static Widget getPathwayRow(Dataset dataset) {
-		TextPanel panel = new TextPanel("TODO - Pathway panel");
-		return getDatasetRow(PATHWAY_TITLE, panel);
-	}
+    public static Widget getPathwayRow(Dataset dataset) {
+        TextPanel panel = new TextPanel("TODO - Pathway panel");
+        return getDatasetRow(PATHWAY_TITLE, panel);
+    }
 
-	public static Widget getDatasetRow(String title, DetailsPanel panel) {
-		List<DetailsPanel> list = new LinkedList<>();
-		list.add(panel);
-		return getDatasetRow(title, list);
-	}
+    public static Widget getDatasetRow(String title, DetailsPanel panel) {
+        List<DetailsPanel> list = new LinkedList<>();
+        list.add(panel);
+        return getDatasetRow(title, list);
+    }
 
-	public static DatasetRow getDatasetRow(String title, List<DetailsPanel> panelList) {
-		VerticalPanel content = new VerticalPanel();
-		for (DetailsPanel detailsPanel : panelList) {
-			content.add(detailsPanel);
-		}
-		content.setWidth("100%");
+    public static DatasetRow getDatasetRow(String title, List<DetailsPanel> panelList) {
+        VerticalPanel content = new VerticalPanel();
+        for (DetailsPanel detailsPanel : panelList) {
+            content.add(detailsPanel);
+        }
+        content.setWidth("100%");
 
-		DatasetRow row = new DatasetRow();
-		row.setWidth("100%");
-		row.add(title, content);
+        DatasetRow row = new DatasetRow();
+        row.setWidth("100%");
+        row.add(title, content);
 
-		return row;
-	}
+        return row;
+    }
 }

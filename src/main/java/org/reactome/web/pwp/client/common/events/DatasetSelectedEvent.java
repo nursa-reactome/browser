@@ -13,14 +13,14 @@ public class DatasetSelectedEvent extends GwtEvent<DatasetSelectedHandler> {
     private String datasetId;
 
     public DatasetSelectedEvent(String datasetId) {
-		this.datasetId = datasetId;
-	}
+        this.datasetId = datasetId;
+    }
 
-	public String getDatasetId() {
-		return datasetId;
-	}
+    public String getDatasetId() {
+        return datasetId;
+    }
 
-	@Override
+    @Override
     public Type<DatasetSelectedHandler> getAssociatedType() {
         return TYPE;
     }

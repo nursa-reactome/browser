@@ -9,7 +9,7 @@ import org.reactome.web.pwp.nursa.model.client.classes.Dataset;
  */
 public class DatasetPanel extends ScrollPanel {
 
-	public DatasetPanel(Dataset dataset) {
+    public DatasetPanel(Dataset dataset) {
         DatasetTable table = new DatasetTable(dataset);
         add(table);
     }

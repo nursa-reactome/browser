@@ -9,7 +9,7 @@ public enum PropertyType {
     COMPARE("Compare to Other Dataset"),
     GENE_LIST("Gene List"),
     PATHWAY("Pathway");
-	
+    
     private String title;
 
     PropertyType(String title) {

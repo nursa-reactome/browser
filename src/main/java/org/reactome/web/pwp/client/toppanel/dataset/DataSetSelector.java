@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public interface DatasetSelector {
+public interface DataSetSelector {
 
     interface Presenter extends EventHandler {
         void search();

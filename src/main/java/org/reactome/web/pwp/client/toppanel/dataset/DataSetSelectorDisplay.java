@@ -11,26 +11,26 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-import org.reactome.web.pwp.client.common.events.DatasetSelectedEvent;
+import org.reactome.web.pwp.client.common.events.DataSetSelectedEvent;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutButton;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetSelectorDisplay extends Composite implements DatasetSelector.Display, ClickHandler {
+public class DataSetSelectorDisplay extends Composite implements DataSetSelector.Display, ClickHandler {
 
-    private DatasetSelector.Presenter presenter;
+    private DataSetSelector.Presenter presenter;
 
-    public DatasetSelectorDisplay() {
+    public DataSetSelectorDisplay() {
         FlowPanel flowPanel = new FlowPanel();
         flowPanel.setStyleName(RESOURCES.getCSS().layoutPanel());
-        flowPanel.add(new SimplePanel(new InlineLabel("Dataset:")));
+        flowPanel.add(new SimplePanel(new InlineLabel("DataSet:")));
         flowPanel.add(new LayoutButton("Selects the dataset...", RESOURCES.getCSS().search(), this));
         initWidget(flowPanel);
     }
 
     @Override
-    public void setPresenter(DatasetSelector.Presenter presenter) {
+    public void setPresenter(DataSetSelector.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -68,12 +68,12 @@ public class DatasetSelectorDisplay extends Composite implements DatasetSelector
     /**
      * Styles used by this widget.
      */
-    @CssResource.ImportedWithPrefix("pwp-DatasetSelector")
+    @CssResource.ImportedWithPrefix("pwp-DataSetSelector")
     public interface ResourceCSS extends CssResource {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/Dataset.css";
+        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/DataSet.css";
 
         String layoutPanel();
 

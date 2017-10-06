@@ -6,8 +6,8 @@ import com.google.gwt.user.client.ui.*;
 import org.reactome.web.pwp.client.common.CommonImages;
 import org.reactome.web.pwp.client.details.tabs.DetailsTabTitle;
 import org.reactome.web.pwp.client.details.tabs.DetailsTabType;
-import org.reactome.web.pwp.client.details.tabs.dataset.widgets.DatasetPanel;
-import org.reactome.web.pwp.nursa.model.client.classes.Dataset;
+import org.reactome.web.pwp.client.details.tabs.dataset.widgets.DataSetPanel;
+import org.reactome.web.pwp.nursa.model.DataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,16 @@ import java.util.List;
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Display {
+public class DataSetTabDisplay extends ResizeComposite implements DataSetTab.Display {
 
     @SuppressWarnings("unused")
-    private DatasetTab.Presenter presenter;
+    private DataSetTab.Presenter presenter;
 
     private DockLayoutPanel container;
     private DetailsTabTitle title;
-    private DatasetPanel content;
+    private DataSetPanel content;
 
-    public DatasetTabDisplay() {
+    public DataSetTabDisplay() {
         this.title = getDetailTabType().getTitle();
         this.container = new DockLayoutPanel(Style.Unit.EM);
         initWidget(this.container);
@@ -42,20 +42,20 @@ public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Dis
     }
 
     @Override
-    public void setPresenter(DatasetTab.Presenter presenter) {
+    public void setPresenter(DataSetTab.Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void showDetails(Dataset dataset) {
-        this.content = new DatasetPanel(dataset);
+    public void showDetails(DataSet dataset) {
+        this.content = new DataSetPanel(dataset);
         this.container.clear();
         this.container.add(this.content);
     }
 
     @Override
-    public void showLoading(String datasetId) {
-        setTitle(datasetId);
+    public void showLoading(String doi) {
+        setTitle(doi);
         showLoadingMessage();
     }
 
@@ -94,7 +94,7 @@ public class DatasetTabDisplay extends ResizeComposite implements DatasetTab.Dis
     }
 
     @Override
-    public void setTitle(String datasetId){
-        this.title.setTitle(datasetId);
+    public void setTitle(String doi){
+        this.title.setTitle(doi);
     }
 }

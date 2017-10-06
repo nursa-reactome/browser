@@ -17,7 +17,7 @@ public enum DetailsTabType {
     /* NOTE: If a new tab is added, make sure GAModule correspondence method is updated */
     DESCRIPTION("DD", "Description"),
     PARTICIPATING_MOLECULES("MT", "Molecules"),
-    DATASET("DS", "Dataset"),
+    DATASET("DS", "DataSet"),
     STRUCTURES("ST", "Structures"),
     EXPRESSION("EX", "Expression"),
     ANALYSIS("AN", "Analysis"),

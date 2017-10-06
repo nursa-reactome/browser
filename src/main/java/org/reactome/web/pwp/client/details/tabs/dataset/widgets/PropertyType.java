@@ -6,7 +6,7 @@ package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 public enum PropertyType {
 
     OVERVIEW("Overview"),
-    COMPARE("Compare to Other Dataset"),
+    COMPARE("Compare to Other DataSet"),
     GENE_LIST("Gene List"),
     PATHWAY("Pathway");
     

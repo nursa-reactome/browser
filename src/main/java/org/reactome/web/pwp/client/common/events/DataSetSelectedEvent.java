@@ -1,32 +1,32 @@
 package org.reactome.web.pwp.client.common.events;
 
-import org.reactome.web.pwp.client.common.handlers.DatasetSelectedHandler;
+import org.reactome.web.pwp.client.common.handlers.DataSetSelectedHandler;
 
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetSelectedEvent extends GwtEvent<DatasetSelectedHandler> {
-    public static Type<DatasetSelectedHandler> TYPE = new Type<>();
+public class DataSetSelectedEvent extends GwtEvent<DataSetSelectedHandler> {
+    public static Type<DataSetSelectedHandler> TYPE = new Type<>();
     
-    private String datasetId;
+    private String doi;
 
-    public DatasetSelectedEvent(String datasetId) {
-        this.datasetId = datasetId;
+    public DataSetSelectedEvent(String doi) {
+        this.doi = doi;
     }
 
-    public String getDatasetId() {
-        return datasetId;
+    public String getDOI() {
+        return doi;
     }
 
     @Override
-    public Type<DatasetSelectedHandler> getAssociatedType() {
+    public Type<DataSetSelectedHandler> getAssociatedType() {
         return TYPE;
     }
 
     @Override
-    public void dispatch(DatasetSelectedHandler handler) {
-        handler.onDatasetSelected(this);
+    public void dispatch(DataSetSelectedHandler handler) {
+        handler.onDataSetSelected(this);
     }
 }

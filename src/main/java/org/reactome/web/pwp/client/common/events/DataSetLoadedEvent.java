@@ -1,33 +1,33 @@
 package org.reactome.web.pwp.client.common.events;
 
-import org.reactome.web.pwp.client.common.handlers.DatasetLoadedHandler;
-import org.reactome.web.pwp.nursa.model.client.classes.Dataset;
+import org.reactome.web.pwp.client.common.handlers.DataSetLoadedHandler;
+import org.reactome.web.pwp.nursa.model.DataSet;
 
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetLoadedEvent extends GwtEvent<DatasetLoadedHandler> {
-    public static Type<DatasetLoadedHandler> TYPE = new Type<>();
+public class DataSetLoadedEvent extends GwtEvent<DataSetLoadedHandler> {
+    public static Type<DataSetLoadedHandler> TYPE = new Type<>();
     
-    private Dataset dataset;
+    private DataSet dataset;
 
-    public DatasetLoadedEvent(Dataset dataset) {
+    public DataSetLoadedEvent(DataSet dataset) {
         this.dataset = dataset;
     }
 
-    public Dataset getDataset() {
+    public DataSet getDataSet() {
         return dataset;
     }
 
     @Override
-    public Type<DatasetLoadedHandler> getAssociatedType() {
+    public Type<DataSetLoadedHandler> getAssociatedType() {
         return TYPE;
     }
 
     @Override
-    protected void dispatch(DatasetLoadedHandler handler) {
-        handler.onDatasetLoaded(this);
+    protected void dispatch(DataSetLoadedHandler handler) {
+        handler.onDataSetLoaded(this);
     }
 }

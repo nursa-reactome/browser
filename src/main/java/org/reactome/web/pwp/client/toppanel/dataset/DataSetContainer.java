@@ -18,16 +18,16 @@ import org.reactome.web.diagram.common.PwpButton;
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetContainer extends DialogBox implements ClickHandler {
+public class DataSetContainer extends DialogBox implements ClickHandler {
 
-    public DatasetContainer() {
+    public DataSetContainer() {
         setAutoHideEnabled(true);
         setModal(true);
         setAnimationEnabled(true);
         setGlassEnabled(true);
         setAutoHideOnHistoryEventsEnabled(false);
         this.setStyleName(RESOURCES.getCSS().popupPanel());
-        setTitlePanel("Nursa Dataset");
+        setTitlePanel("Nursa DataSet");
 
         int width = Window.getClientWidth() * 2 / 3;
         int height = Window.getClientHeight() * 2 / 3;
@@ -83,12 +83,12 @@ public class DatasetContainer extends DialogBox implements ClickHandler {
         ImageResource closeClicked();
     }
 
-    @CssResource.ImportedWithPrefix("diagram-DatasetContainer")
+    @CssResource.ImportedWithPrefix("diagram-DataSetContainer")
     public interface ResourceCSS extends CssResource {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/DatasetDialog.css";
+        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/DataSetDialog.css";
 
         String popupPanel();
 

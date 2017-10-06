@@ -6,10 +6,10 @@ import com.google.gwt.user.client.ui.*;
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetRow extends Composite {
+public class DataSetSection extends Composite {
     private VerticalPanel content;
 
-    public DatasetRow() {
+    public DataSetSection() {
         this.content = new VerticalPanel();
         this.initWidget(this.content);
         this.addStyleName("elv-Details-OverviewRow");

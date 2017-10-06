@@ -19,6 +19,7 @@
     <inherits name="uk.ac.ebi.pwp.widgets.gxa.GXA"/>
     <inherits name="uk.ac.ebi.pwp.widgets.pdb.PDB"/>
     <inherits name="uk.ac.ebi.pwp.widgets.rhea.Rhea"/>
+    <inherits name="org.fusesource.restygwt.RestyGWT"/>
 
     <!-- Specify the app entry point class.                         -->
     <entry-point class='org.reactome.web.pwp.client.Browser'/>

@@ -36,6 +36,31 @@
         <url-pattern>/ContentService/*</url-pattern>
     </servlet-mapping>
 
+    <!-- Reactome Nursa Content Configuration (ONLY USED IN DEV MODE) -->
+    <servlet>
+        <servlet-name>NursaContentProxy</servlet-name>
+        <servlet-class>org.reactome.server.utils.proxy.ProxyServlet</servlet-class>
+        <init-param>
+            <param-name>proxyHost</param-name>
+            <param-value>localhost</param-value>
+            <!--<param-value>nursa.reactome.org</param-value>-->
+        </init-param>
+        <init-param>
+            <param-name>proxyPort</param-name>
+            <param-value>8484</param-value>
+            <!--<param-value>80</param-value>-->
+        </init-param>
+        <init-param>
+            <param-name>proxyPath</param-name>
+            <param-value>/</param-value>
+            <!--<param-value>/NursaContent/</param-value>-->
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NursaContentProxy</servlet-name>
+        <url-pattern>/NursaContent/*</url-pattern>
+    </servlet-mapping>
+
     <!-- RESTFul WS PROXY Configuration (ONLY USED IN DEV MODE) -->
     <servlet>
         <servlet-name>ReactomeAnalysis</servlet-name>

@@ -1,96 +1,81 @@
 package org.reactome.web.pwp.client.details.tabs.dataset;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
-import org.reactome.web.pwp.client.common.events.DatasetLoadedEvent;
-import org.reactome.web.pwp.client.common.events.DatasetSelectedEvent;
+import org.fusesource.restygwt.client.Defaults;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.reactome.web.pwp.client.common.events.DataSetLoadedEvent;
+import org.reactome.web.pwp.client.common.events.DataSetSelectedEvent;
 import org.reactome.web.pwp.client.common.events.StateChangedEvent;
-import org.reactome.web.pwp.client.common.handlers.DatasetLoadedHandler;
-import org.reactome.web.pwp.client.common.handlers.DatasetSelectedHandler;
-import org.reactome.web.pwp.nursa.model.client.classes.Dataset;
-import org.reactome.web.pwp.nursa.model.client.classes.DatasetGene;
-import org.reactome.web.pwp.nursa.model.client.classes.DatasetPathway;
+import org.reactome.web.pwp.client.common.handlers.DataSetLoadedHandler;
+import org.reactome.web.pwp.client.common.handlers.DataSetSelectedHandler;
+import org.reactome.web.pwp.nursa.model.DataSet;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Timer;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DatasetTabPresenter
-implements DatasetTab.Presenter, DatasetSelectedHandler, DatasetLoadedHandler {
+public class DataSetTabPresenter
+implements DataSetTab.Presenter, DataSetSelectedHandler, DataSetLoadedHandler {
 
-    private DatasetTab.Display display;
+    private DataSetTab.Display display;
     private EventBus eventBus;
 
-    public DatasetTabPresenter(EventBus eventBus, DatasetTab.Display display) {
+    // Initialize the resty context root. This ensures that requests
+    // go to /NursaContent/... rather than /Browser/NursaContent/...
+    static {
+        Defaults.setServiceRoot("/");
+    }
+    
+    public DataSetTabPresenter(EventBus eventBus, DataSetTab.Display display) {
         this.eventBus = eventBus;
         this.display = display;
         this.display.setPresenter(this);
-        eventBus.addHandler(DatasetSelectedEvent.TYPE, this);
-        eventBus.addHandler(DatasetLoadedEvent.TYPE, this);
+        eventBus.addHandler(DataSetSelectedEvent.TYPE, this);
+        eventBus.addHandler(DataSetLoadedEvent.TYPE, this);
     }
 
     @Override
     public void onStateChanged(StateChangedEvent event) {
-        // The Dataset tab is insensitive to the object selected in the viewport.
+        // The DataSet tab is insensitive to the object selected in the viewport.
     }
 
     @Override
-    public void onDatasetSelected(DatasetSelectedEvent datasetSelectedEvent) {
-        String datasetId = datasetSelectedEvent.getDatasetId();
-        this.display.showLoading(datasetId);
-        
-        Timer t = new Timer() {
-            @Override
-            public void run() {
-                    Dataset dataset = mockDataset();
-                    DatasetLoadedEvent event = new DatasetLoadedEvent(dataset);
-                    eventBus.fireEventFromSource(event, this);
-            }
-          };
-          t.schedule(2000);
+    public void onDataSetSelected(DataSetSelectedEvent event) {
+        String doi = event.getDOI();
+        this.display.showLoading(doi);
+        getDataset(doi);
     }
 
     @Override
-    public void onDatasetLoaded(DatasetLoadedEvent datasetLoadedEvent) {
-        Dataset dataset = datasetLoadedEvent.getDataset();
+    public void onDataSetLoaded(DataSetLoadedEvent event) {
+        DataSet dataset = event.getDataSet();
         this.display.showDetails(dataset);
     }
 
-    private Dataset mockDataset() {
-        Dataset dataset = new Dataset();
-        dataset.setDOI("10.1621/mpN8PDaTeM");
-        
-        List<DatasetGene> genes = new ArrayList<>();
-        DatasetGene gene = new DatasetGene();
-        gene.setSymbol("RHOU");
-        gene.setFoldChange(18.867);
-        gene.setPValue(4.29E-8);
-        genes.add(gene);
-        gene = new DatasetGene();
-        gene.setSymbol("SGK1");
-        gene.setFoldChange(16.505);
-        gene.setPValue(6.59E-8);
-        genes.add(gene);
-        dataset.setGenes(genes);
-        
-        List<DatasetPathway> pathways = new ArrayList<>();
-        DatasetPathway pathway = new DatasetPathway();
-        pathway.setDescription("TP53 Regulates Transcription of Cell Death Genes");
-        pathway.setPValue(2.64E-4);
-        pathway.setFDR(9.01E-02);
-        pathway.setRegulationType(DatasetPathway.RegulationType.UP);
-        pathways.add(pathway);
-        pathway = new DatasetPathway();
-        pathway.setDescription("IRE1alpha activates chaperones");
-        pathway.setPValue(1.10E-3);
-        pathway.setFDR(1.57E-1);
-        pathway.setRegulationType(DatasetPathway.RegulationType.UP);
-        pathways.add(pathway);
-        dataset.setPathways(pathways);
-        
-        return dataset;
+    private void getDataset(String doi) {
+        NursaContentClient client = GWT.create(NursaContentClient.class);
+        final EventBus eventBus = this.eventBus;
+        client.getDataset(doi, new MethodCallback<DataSet>() {
+            
+            @Override
+            public void onSuccess(Method method, DataSet dataset) {
+                DataSetLoadedEvent event = new DataSetLoadedEvent(dataset);
+                eventBus.fireEventFromSource(event, this);
+            }
+            
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                try {
+                    throw new IOException("Dataset " + doi + " was not retrieved", exception);
+                } catch (IOException e) {
+                    // TODO - how are I/O errors handled in Reactome?
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 }

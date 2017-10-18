@@ -16,7 +16,7 @@ public abstract class DataSetSectionFactory {
 
     private static String OVERVIEW_TITLE = "Overview";
     private static String GENE_LIST_TITLE = "Gene List";
-    private static String EXPRESSION_TITLE = "Expression";
+    private static String PATHWAY_TITLE = "Pathway";
 
     public static Widget getOverviewSection(DataSet dataset) {
         Widget panel = new TextPanel(dataset.getDescription());
@@ -28,9 +28,9 @@ public abstract class DataSetSectionFactory {
         return getDataSetSection(GENE_LIST_TITLE, table);
     }
 
-    public static Widget getExpressionSection(DataSet dataset) {
-        Widget panel = new TextPanel("TODO - Expression panel");
-        return getDataSetSection(EXPRESSION_TITLE, panel);
+    public static Widget getPathwaySection(DataSet dataset) {
+        Widget table = PathwayTableFactory.getTable(dataset);
+        return getDataSetSection(PATHWAY_TITLE, table);
     }
 
     public static Widget getDataSetSection(String title, Widget child) {

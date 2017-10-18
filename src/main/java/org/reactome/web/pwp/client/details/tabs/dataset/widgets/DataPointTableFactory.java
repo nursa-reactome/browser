@@ -3,7 +3,6 @@ package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.jdt.internal.core.util.SimpleWordSet;
 import org.reactome.web.pwp.nursa.model.DataPoint;
 import org.reactome.web.pwp.nursa.model.DataSet;
 
@@ -16,9 +15,6 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;

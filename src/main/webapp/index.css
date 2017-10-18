@@ -496,6 +496,15 @@ body {
     float: left;
 }
 
+.elv-DataSet-Button{
+    background-color: #f0ffff;
+    border-radius: 5px;
+    border: 1px solid grey;
+    color: #063da0;
+    font-weight: bolder;
+    height: 2em;
+}
+
 .elv-InformationPanel-Download{
     margin: 2px 0 5px 5px;
     padding: 1px 5px 2px 5px;

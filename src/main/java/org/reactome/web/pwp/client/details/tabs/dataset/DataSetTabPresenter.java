@@ -45,7 +45,7 @@ implements DataSetTab.Presenter, DataSetSelectedHandler, DataSetLoadedHandler {
 
     @Override
     public void onDataSetSelected(DataSetSelectedEvent event) {
-        String doi = event.getDOI();
+        String doi = event.getDoi();
         this.display.showLoading(doi);
         getDataset(doi);
     }

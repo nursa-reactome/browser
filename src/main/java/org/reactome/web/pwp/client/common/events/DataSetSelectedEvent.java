@@ -16,7 +16,7 @@ public class DataSetSelectedEvent extends GwtEvent<DataSetSelectedHandler> {
         this.doi = doi;
     }
 
-    public String getDOI() {
+    public String getDoi() {
         return doi;
     }
 

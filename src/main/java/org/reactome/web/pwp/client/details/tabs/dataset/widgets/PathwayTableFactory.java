@@ -77,8 +77,9 @@ public class PathwayTableFactory {
                 return Double.compare(p1.getFdr(), p2.getFdr());
             }
         });
-        
-        Column<DataSetPathway, String> regTypeColumn = new TextColumn<DataSetPathway>() {
+
+        // Regulation type is not yet implemented.
+/*        Column<DataSetPathway, String> regTypeColumn = new TextColumn<DataSetPathway>() {
             @Override
             public String getValue(DataSetPathway pathway) {
                 return pathway.getRegulationType().toString();
@@ -91,17 +92,19 @@ public class PathwayTableFactory {
                 return p1.toString().compareTo(p2.toString());
             }
         });
-        
+*/        
         // Add the columns.
         table.addColumn(nameColumn, "Name");
         table.addColumn(pValueColumn, "P-Value");
         table.addColumn(fdrColumn, "FDR");
-        table.addColumn(regTypeColumn, "Regulation Type");
+        //table.addColumn(regTypeColumn, "Regulation Type");
+
         // Paginate the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(table);
         pager.setPageSize(20);
+
         // Assemble the widget.
         VerticalPanel vp = new VerticalPanel();
         vp.add(table);

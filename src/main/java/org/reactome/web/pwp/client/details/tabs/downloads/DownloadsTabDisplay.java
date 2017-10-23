@@ -179,7 +179,6 @@ public class DownloadsTabDisplay extends ResizeComposite implements DownloadsTab
 
         @Source("widgets/images/info.png")
         ImageResource info();
-
     }
 
     @CssResource.ImportedWithPrefix("diagram-DownloadsTabDisplay")

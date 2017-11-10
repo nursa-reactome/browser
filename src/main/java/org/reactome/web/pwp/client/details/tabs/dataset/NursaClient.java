@@ -6,10 +6,10 @@ import javax.ws.rs.QueryParam;
 
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.RestService;
-import org.reactome.web.pwp.nursa.model.DataSet;
+import org.reactome.nursa.model.DataSet;
 
-@Path("/NursaContent")
-public interface NursaContentClient extends RestService {
+@Path("/Nursa")
+public interface NursaClient extends RestService {
     @GET
     @Path("/dataset")
     public void getDataset(@QueryParam("doi") String doi, MethodCallback<DataSet> dataset);

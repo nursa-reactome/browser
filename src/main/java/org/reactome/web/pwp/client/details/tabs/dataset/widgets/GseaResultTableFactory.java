@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.reactome.gsea.model.AnalysisResult;
-import org.reactome.nursa.model.DataSet;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -19,6 +18,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
 public class GseaResultTableFactory {
+    private static final NumberCell INTEGER_CELL = new NumberCell();
     private static final NumberCell DECIMAL_CELL = new NumberCell(NumberFormat.getDecimalFormat());
     private static final NumberCell SCIENTIFIC_CELL =new NumberCell(NumberFormat.getFormat("0.00E0"));
 
@@ -37,14 +37,56 @@ public class GseaResultTableFactory {
         TextColumn<AnalysisResult> nameColumn = new TextColumn<AnalysisResult>() {
             @Override
             public String getValue(AnalysisResult result) {
-              return result.getPathway();
+              return result.getPathway().getName();
             }
         };
         nameColumn.setSortable(true);
         sorter.setComparator(nameColumn, new Comparator<AnalysisResult>() {
             @Override
             public int compare(AnalysisResult r1, AnalysisResult r2) {
-                return r1.getPathway().compareTo(r2.getPathway());
+                return r1.getPathway().getName().compareTo(r2.getPathway().getName());
+            }
+        });
+        
+        Column<AnalysisResult, Number> hitsColumn = new Column<AnalysisResult, Number>(INTEGER_CELL) {
+            @Override
+            public Integer getValue(AnalysisResult result) {
+                return result.getHitCount();
+            }
+        };
+        hitsColumn.setSortable(true);
+        sorter.setComparator(hitsColumn, new Comparator<AnalysisResult>() {
+            @Override
+            public int compare(AnalysisResult r1, AnalysisResult r2) {
+                return Integer.compare(r1.getHitCount(), r2.getHitCount());
+            }
+        });
+        
+        Column<AnalysisResult, Number> scoreColumn = new Column<AnalysisResult, Number>(DECIMAL_CELL) {
+            @Override
+            public Number getValue(AnalysisResult result) {
+                return result.getScore();
+            }
+        };
+        scoreColumn.setSortable(true);
+        sorter.setComparator(scoreColumn, new Comparator<AnalysisResult>() {
+            @Override
+            public int compare(AnalysisResult r1, AnalysisResult r2) {
+                return Double.compare(r1.getScore(), r2.getScore());
+            }
+        });
+        
+        Column<AnalysisResult, Number> nesColumn = new Column<AnalysisResult, Number>(DECIMAL_CELL) {
+            @Override
+            public Number getValue(AnalysisResult result) {
+                return result.getNormalizedScore();
+            }
+        };
+        scoreColumn.setSortable(true);
+        sorter.setComparator(nesColumn, new Comparator<AnalysisResult>() {
+            @Override
+            public int compare(AnalysisResult r1, AnalysisResult r2) {
+                return Double.compare(r1.getNormalizedScore(), r2.getNormalizedScore());
             }
         });
         
@@ -92,6 +134,9 @@ public class GseaResultTableFactory {
         
         // Add the columns.
         table.addColumn(nameColumn, "Name");
+        table.addColumn(hitsColumn, "Hits");
+        table.addColumn(scoreColumn, "Score");
+        table.addColumn(nesColumn, "NES");
         table.addColumn(pValueColumn, "P-Value");
         table.addColumn(fdrColumn, "FDR");
         table.addColumn(regTypeColumn, "Regulation Type");

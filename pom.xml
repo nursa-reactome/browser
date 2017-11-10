@@ -6,7 +6,7 @@
     <groupId>org.reactome.web.pwp</groupId>
     <artifactId>browser</artifactId>
     <packaging>war</packaging>
-    <version>3.5.0</version>
+    <version>1.0.1</version>
     <name>Reactome Pathway Portal</name>
 
     <description>
@@ -47,7 +47,8 @@
         <reactome.web.diagram>3.4.1</reactome.web.diagram>
         <reactome.web.fireworks>1.4.1</reactome.web.fireworks>
         <reactome.web.model>2.0.0</reactome.web.model>
-        <reactome.web.nursa-model>1.0.0-SNAPSHOT</reactome.web.nursa-model>
+        <reactome.nursa.model>1.0.1-SNAPSHOT</reactome.nursa.model>
+        <reactome.gsea.model>1.0.1-SNAPSHOT</reactome.gsea.model>
         <reactome.web.pdb>2.3.0</reactome.web.pdb>
         <reactome.web.chebi>1.0.1</reactome.web.chebi>
         <reactome.web.rhea>1.3.1</reactome.web.rhea>
@@ -94,9 +95,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.reactome.web.pwp</groupId>
+            <groupId>org.reactome.nursa</groupId>
             <artifactId>nursa-model</artifactId>
-            <version>${reactome.web.nursa-model}</version>
+            <version>${reactome.nursa.model}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reactome.gsea</groupId>
+            <artifactId>gsea-model</artifactId>
+            <version>${reactome.gsea.model}</version>
         </dependency>
 
         <dependency>

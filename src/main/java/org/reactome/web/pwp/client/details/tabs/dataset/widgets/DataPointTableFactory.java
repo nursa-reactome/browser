@@ -3,8 +3,8 @@ package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 import java.util.Comparator;
 import java.util.List;
 
-import org.reactome.web.pwp.nursa.model.DataPoint;
-import org.reactome.web.pwp.nursa.model.DataSet;
+import org.reactome.nursa.model.DataPoint;
+import org.reactome.nursa.model.DataSet;
 
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.core.client.GWT;
@@ -30,7 +30,7 @@ public class DataPointTableFactory {
         CellTable<DataPoint> table = new CellTable<DataPoint>();
         ListDataProvider<DataPoint> dataProvider = new ListDataProvider<DataPoint>();
         dataProvider.addDataDisplay(table);
-        dataProvider.setList(dataset.getDataPoints());
+        dataProvider.setList(dataPoints);
         ListHandler<DataPoint> sorter = new ListHandler<DataPoint>(dataProvider.getList());
         table.addColumnSortHandler(sorter);
         // The exact row count.

@@ -1,8 +1,12 @@
 package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 
-import org.reactome.web.pwp.nursa.model.DataSet;
+import java.util.Map;
 
+import org.reactome.nursa.model.DataSet;
+
+import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -18,6 +22,8 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Fred Loney <loneyf@ohsu.edu>
  */
 public class DataSetPanel extends DockLayoutPanel {
+
+    private Map<String, Widget> sections;
 
     public DataSetPanel(DataSet dataset) {
         super(Style.Unit.EM);
@@ -48,10 +54,15 @@ public class DataSetPanel extends DockLayoutPanel {
     }
 
     private Widget getMainContent(DataSet dataset) {
+        this.sections = DataSetSectionFactory.build(dataset);
         VerticalPanel vp = new VerticalPanel();
-        vp.add(DataSetSectionFactory.getOverviewSection(dataset));
-        vp.add(DataSetSectionFactory.getDataPointsSection(dataset));
-        vp.add(DataSetSectionFactory.getPathwaySection(dataset));
+        for (Widget section: this.sections.values()) {
+            vp.add(section);
+        }
         return vp;
+    }
+
+    public Widget getSection(String title) {
+        return this.sections.get(title);
     }
 }

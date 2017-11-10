@@ -1,7 +1,9 @@
 package org.reactome.web.pwp.client.details.tabs.dataset;
 
 import java.io.IOException;
-
+//import org.apache.commons.collections4.IteratorUtils;
+//import org.apache.commons.collections4.Transformer;
+//import org.apache.commons.collections4.iterators.TransformIterator;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -10,7 +12,7 @@ import org.reactome.web.pwp.client.common.events.DataSetSelectedEvent;
 import org.reactome.web.pwp.client.common.events.StateChangedEvent;
 import org.reactome.web.pwp.client.common.handlers.DataSetLoadedHandler;
 import org.reactome.web.pwp.client.common.handlers.DataSetSelectedHandler;
-import org.reactome.web.pwp.nursa.model.DataSet;
+import org.reactome.nursa.model.DataSet;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -57,7 +59,7 @@ implements DataSetTab.Presenter, DataSetSelectedHandler, DataSetLoadedHandler {
     }
 
     private void getDataset(String doi) {
-        NursaContentClient client = GWT.create(NursaContentClient.class);
+        NursaClient client = GWT.create(NursaClient.class);
         final EventBus eventBus = this.eventBus;
         client.getDataset(doi, new MethodCallback<DataSet>() {
             

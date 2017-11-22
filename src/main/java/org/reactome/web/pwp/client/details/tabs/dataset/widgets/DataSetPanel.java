@@ -4,13 +4,10 @@ import java.util.Map;
 
 import org.reactome.nursa.model.DataSet;
 
-import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;

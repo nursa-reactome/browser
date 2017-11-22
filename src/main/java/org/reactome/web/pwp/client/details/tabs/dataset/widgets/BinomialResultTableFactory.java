@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
-public class ReactomeResultTableFactory {
+public class BinomialResultTableFactory {
     private static final NumberCell DECIMAL_CELL = new NumberCell(NumberFormat.getDecimalFormat());
     private static final NumberCell SCIENTIFIC_CELL =new NumberCell(NumberFormat.getFormat("0.00E0"));
 

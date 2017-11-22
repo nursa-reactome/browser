@@ -6,7 +6,7 @@
     <groupId>org.reactome.web.pwp</groupId>
     <artifactId>browser</artifactId>
     <packaging>war</packaging>
-    <version>1.0.1</version>
+    <version>3.5.1</version>
     <name>Reactome Pathway Portal</name>
 
     <description>
@@ -87,7 +87,7 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
         </dependency>
-
+ 
         <dependency>
             <groupId>org.reactome.web.pwp</groupId>
             <artifactId>model</artifactId>

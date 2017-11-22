@@ -12,14 +12,17 @@ import org.reactome.nursa.model.DataSet;
 import org.reactome.web.analysis.client.AnalysisClient;
 import org.reactome.web.analysis.client.AnalysisHandler;
 import org.reactome.web.analysis.client.model.AnalysisError;
-import org.reactome.web.pwp.client.details.tabs.analysis.widgets.results.AnalysisResultTable;
 import org.reactome.web.pwp.client.details.tabs.dataset.GseaClient;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,28 +32,16 @@ public class PathwayPanel extends VerticalPanel {
     final String GENE_NAMES_HEADER = "#Gene names";
 
     private DataSet dataset;
+    Panel configPanel;
     private SimplePanel analysisPanel;
+
+    private GseaConfigSlider gseaConfigSlider;
 
     public PathwayPanel(DataSet dataset) {
         this.dataset = dataset;
-        HorizontalPanel btnPanel = new HorizontalPanel();
-        Button gseaButton = new Button("GSEA Enrichment");
-        gseaButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                gseaAnalyse();
-            }
-        });
-        btnPanel.add(gseaButton);
-        Button reactomeButton = new Button("Reactome Enrichment");
-        reactomeButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                reactomeAnalyse();
-            }
-        });
-        btnPanel.add(reactomeButton);
-        add(btnPanel);
+        // The configuration control panel.
+        configPanel = buildConfigPanel();
+        add(configPanel);
         // The analysis display panel.
         analysisPanel = new SimplePanel();
         add(analysisPanel);
@@ -65,8 +56,12 @@ public class PathwayPanel extends VerticalPanel {
                     .stream()
                     .map(PathwayPanel::pullRank)
                     .collect(Collectors.toList());
+        // Obtain the dataset size parameters.
+        int[] dataSetBounds = gseaConfigSlider.getValues();
+        Integer dataSetSizeMinOpt = new Integer(dataSetBounds[0]);
+        Integer dataSetSizeMaxOpt = new Integer(dataSetBounds[1]);
         // Call the GSEA REST service.
-        client.analyse(rankedList, new MethodCallback<List<AnalysisResult>>() {
+        client.analyse(rankedList, dataSetSizeMinOpt, dataSetSizeMaxOpt, new MethodCallback<List<AnalysisResult>>() {
         
             @Override
             public void onSuccess(Method method, List<AnalysisResult> result) {
@@ -90,7 +85,7 @@ public class PathwayPanel extends VerticalPanel {
         analysisPanel.setWidget(table);
     }
 
-    protected void reactomeAnalyse() {
+    protected void binomialAnalyse() {
         // The input is a table of gene symbol lines.
         List<String> rankedList =
                 this.dataset.getDataPoints()
@@ -107,7 +102,7 @@ public class PathwayPanel extends VerticalPanel {
 
             @Override
             public void onAnalysisResult(org.reactome.web.analysis.client.model.AnalysisResult result, long time) {
-                showReactomeResult(result);
+                showBinomialResult(result);
             }
 
             @Override
@@ -118,8 +113,8 @@ public class PathwayPanel extends VerticalPanel {
         });
     }
 
-    protected void showReactomeResult(org.reactome.web.analysis.client.model.AnalysisResult result) {
-        Widget table = ReactomeResultTableFactory.getTable(result);
+    protected void showBinomialResult(org.reactome.web.analysis.client.model.AnalysisResult result) {
+        Widget table = BinomialResultTableFactory.getTable(result);
         analysisPanel.setWidget(table);
     }
     
@@ -134,6 +129,51 @@ public class PathwayPanel extends VerticalPanel {
         return Arrays.asList(
                 dataPoint.getSymbol(),
                 Double.toString(dataPoint.getFoldChange())
-         );
+        );
     }
-}
+
+    private Panel buildConfigPanel() {
+        RadioButton gseaBtn = new RadioButton("technique", "GSEA");
+        RadioButton binomialBtn = new RadioButton("technique", "Binomial");
+        gseaBtn.setValue(true);
+        Button launchBtn = new Button("Launch");        
+        launchBtn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (gseaBtn.getValue()) {
+                    gseaAnalyse();
+                } else {
+                    binomialAnalyse();
+                }
+            }
+        });
+        Image img = new Image("static/images/gear.png");
+        img.setPixelSize(16, 16);
+        final Button configBtn = new Button();
+        configBtn.getElement().appendChild(img.getElement());
+        configBtn.getElement().getStyle().setPadding(1, Unit.PX);
+        configBtn.getElement().getStyle().setPaddingTop(3, Unit.PX);
+        gseaConfigSlider = new GseaConfigSlider();
+        final Panel sliderPanel = new SimplePanel();
+        sliderPanel.addStyleName("gsea-config");
+        sliderPanel.getElement().appendChild(gseaConfigSlider.getElement());
+        sliderPanel.setVisible(false);
+        configBtn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                sliderPanel.setVisible(true);
+                configBtn.setEnabled(false);
+            }
+        });
+
+        // Assemble the panel.
+        HorizontalPanel configPanel = new HorizontalPanel();
+        configPanel.add(gseaBtn);
+        configPanel.add(binomialBtn);
+        configPanel.add(launchBtn);
+        configPanel.add(configBtn);
+        configPanel.add(sliderPanel);
+        
+        return configPanel;
+    }
+ }

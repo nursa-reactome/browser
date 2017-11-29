@@ -1,0 +1,295 @@
+.analysisTitle {
+  text-align: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.analysisTitle span {
+  color: #0e7cb3;
+  font-size: x-large;
+  font-weight: bolder;
+}
+
+.analysisText {
+  color: #0e7cb3;
+  font-size: medium;
+  font-weight: bold;
+  text-align: justify;
+  margin: 15px 5px;
+}
+
+.analysisSubmission {
+  padding: 5px 5px 33px 0;
+  color: white;
+  font-size: medium;
+}
+
+.analysisMainSubmitter {
+  background-color: #58c3e5;
+  border: 1px solid #0e7cb3;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  height: 10px;
+}
+
+.analysisSubmission input {
+  float: left;
+  padding-left: 12px;
+  padding-top: 8px;
+}
+
+.analysisSubmission span {
+  float: left;
+  padding-left: 5px;
+  padding-top: 5px;
+}
+
+.analysisSubmission button {
+  background: #1e95cf;
+  color: white;
+  border-radius: 16px;
+  border: 1px solid #0e7cb3;
+  float: right;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 10px 25px;
+  outline: none;
+}
+
+.analysisSubmission button:hover {
+  background: #066b9e;
+  border: 1px solid #1e95cf;
+}
+
+.analysisSubmission button:active:hover {
+  color: #066b9e;
+  background: white;
+  border: 2px solid #066b9e;
+}
+
+.analysisSubmission img {
+  float: right;
+  margin-right: 15px;
+  margin-top: 5px;
+}
+
+.analysisSubmission select {
+  float: left;
+  margin: 0 0 0 10px;
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  outline: none;
+}
+
+.analysisSubmission select option {
+  color: black;
+}
+
+.emphasis {
+  font-size: larger;
+  margin-top: -4px;
+  font-weight: bold;
+}
+
+.postSubmitter div {
+  color: white;
+  margin: 5px;
+}
+
+.postSubmitter textarea {
+  border: 1px solid gray;
+  height: 265px;
+  overflow-x: scroll;
+  margin-left: 5px;
+  width: 98%;
+}
+
+.postSubmitterExamples div {
+  color: white;
+  margin: 5px;
+}
+
+.postSubmitterExamples button {
+  background: #1e95cf;
+  border-radius: 5px;
+  color: white;
+  font-weight: normal;
+  font-size: 13px;
+  margin: 0 5px 4px 0;
+  width: 220px;
+  height: 30px;
+  outline: none;
+  padding: 0 !important;
+}
+
+.postSubmitterExamples button:hover {
+  background: #066b9e;
+  border: 1px solid #1e95cf;
+}
+
+.postSubmitterExamples button:active:hover {
+  color: #066b9e;
+  background: white;
+  border: 1px solid #066b9e;
+}
+
+.postSubmitterButtons {
+  margin: 5px;
+}
+
+.postSubmitterClear {
+  float: left !important;
+}
+
+.optionsPanelCheckBox {
+  margin: 20px 0 0 50px;
+  color: #0e7cb3;
+  vertical-align: middle;
+  font-size: large;
+  display: block;
+}
+
+.optionsPanelCheckBox input {
+  cursor: pointer;
+}
+
+.optionsPanelDisclosure {
+  margin-left: 75px;
+}
+
+.optionsPanelDisclosureContent {
+  border: 0 none !important;
+  padding: 0 !important;
+}
+
+.optionsPanelButtons {
+  background-color: #58c3e5;
+  border: 1px solid #0e7cb3;
+  border-radius: 5px;
+  margin: 25px 5px;
+  height: 50px;
+}
+
+.optionsPanelButtons button {
+  background: #1e95cf;
+  border-radius: 20px;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 5px;
+  padding: 10px 25px;
+  outline: none;
+}
+
+.optionsPanelButtons button:hover {
+  background: #066b9e;
+  border: 1px solid #1e95cf;
+}
+
+.optionsPanelButtons button:active:hover {
+  color: #066b9e;
+  background: white;
+  border: 1px solid #066b9e;
+}
+
+.errorMessage {
+  opacity: 0;
+  transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+}
+
+.errorMessage span {
+  color: #b71c1c;
+  float: left;
+}
+
+.errorMessage img {
+  margin: 8px 0 8px 20px;
+  float: left !important;
+}
+
+.analysisProgress {
+  background-color: #1b87c5;
+  border: 2px solid #2a93bd;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 4px 4px 2px #888;
+  height: 150px;
+  width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: 75px;
+  margin-left: -300px;
+  padding: 30px;
+  text-align: center;
+  font-size: large;
+  transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+}
+
+.analysisError {
+  opacity: 0;
+  background-color: #b71c1c;
+  border: 2px solid #c62828;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 4px 4px 2px #888;
+  min-height: 150px;
+  max-height: 400px;
+  overflow: auto;
+  width: 500px;
+  position: absolute;
+  left: 50%;
+  margin-top: 30px;
+  margin-left: -300px;
+  margin-bottom: 50px;
+  text-align: center;
+  font-size: large;
+  transition: opacity 1s;
+  -webkit-transition: opacity 1s;
+}
+
+.analysisErrorButton {
+  opacity: 0;
+  background: #1e95cf;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 4px 4px 2px #888;
+  height: 50px;
+  overflow: auto;
+  width: 500px;
+  position: absolute;
+  left: 50%;
+  margin-top: 450px;
+  margin-left: -300px;
+  margin-bottom: 50px;
+  text-align: center;
+  font-size: large;
+  transition: opacity 1s;
+  -webkit-transition: opacity 1s;
+}
+
+.analysisErrorButton:hover {
+  background: #066b9e;
+  border: 1px solid #1e95cf;
+}
+
+.analysisErrorButton:active:hover {
+  color: #066b9e;
+  background: white;
+  border: 1px solid #066b9e;
+}
+
+.wizardTop {
+  margin: 5px;
+}
+
+.wizardTop img {
+  height: 45px;
+  width: auto !important;
+}

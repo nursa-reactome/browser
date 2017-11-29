@@ -64,7 +64,7 @@ public class DetailsTabTitle extends Composite {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/details/tabs/DetailsTabTitle.css";
+        String CSS = "org/reactome/web/pwp/client/details/tabs/DetailsTabTitle.gss";
 
         String titleContainer();
 

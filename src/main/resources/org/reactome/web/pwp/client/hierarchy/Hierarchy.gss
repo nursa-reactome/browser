@@ -1,0 +1,30 @@
+.hierarchyPanelTitle {
+  background-color: #58c3e5;
+  color: white;
+  font-weight: bolder;
+  padding: 5px;
+}
+
+.hierarchyPanelTitle img {
+  height: 12px !important;
+  width: 12px !important;
+  margin-right: 5px;
+}
+
+.hierarchyContainer {
+  background-color: #58c3e5;
+  border: 0 solid transparent;
+  border-radius: 0 15px 0 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.hierarchyPanel {
+  background-color: white;
+  border: 0 solid transparent;
+  border-radius: 0 15px 0 0;
+}

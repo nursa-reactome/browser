@@ -35,7 +35,7 @@ public abstract class AnalysisTabStyleFactory {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String DEFAULT_CSS = "org/reactome/web/pwp/client/details/tabs/analysis/style/AnalysisTabStyle.css";
+        String DEFAULT_CSS = "org/reactome/web/pwp/client/details/tabs/analysis/style/AnalysisTabStyle.gss";
 
         String analysisTabSummary();
 

@@ -105,7 +105,7 @@ public class HierarchyContainer extends DeckPanel {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/hierarchy/widget/HierarchyContainerPanel.css";
+        String CSS = "org/reactome/web/pwp/client/hierarchy/widget/HierarchyContainerPanel.gss";
 
         String hierarchyContent();
     }

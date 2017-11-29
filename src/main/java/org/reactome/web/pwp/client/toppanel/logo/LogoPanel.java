@@ -132,7 +132,7 @@ public class LogoPanel extends Composite {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/logo/LogoPanel.css";
+        String CSS = "org/reactome/web/pwp/client/toppanel/logo/LogoPanel.gss";
 
         String logo();
 

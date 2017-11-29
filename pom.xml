@@ -44,8 +44,8 @@
         <reactome.web.analyitics>2.0.1</reactome.web.analyitics>
         <reactome.web.analysis-client>1.4.0</reactome.web.analysis-client>
         <reactome.web.carrousel>1.0.2</reactome.web.carrousel>
-        <reactome.web.diagram>3.4.1</reactome.web.diagram>
-        <reactome.web.fireworks>1.4.1</reactome.web.fireworks>
+        <reactome.web.diagram>3.4.3</reactome.web.diagram>
+        <reactome.web.fireworks>1.4.3</reactome.web.fireworks>
         <reactome.web.model>2.0.0</reactome.web.model>
         <reactome.nursa.model>1.0.1-SNAPSHOT</reactome.nursa.model>
         <reactome.gsea.model>1.0.1-SNAPSHOT</reactome.gsea.model>

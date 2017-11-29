@@ -1,0 +1,29 @@
+.detailsTab {
+  background: none repeat scroll 0 0 #58c3e5 !important;
+  border-left: 1px white solid !important;
+  border-right: 1px white solid !important;
+}
+
+.detailsTabSelected {
+  background: none repeat scroll 0 0 #1e94d0 !important;
+  color: white !important;
+  font-weight: bolder;
+}
+
+.initialStateMessage {
+  padding: 20px;
+  color: #1e94d0;
+  width: 750px;
+}
+
+.initialStateMessage img {
+  float: left;
+}
+
+.initialStateMessage div {
+  float: left;
+  font-size: larger;
+  margin-left: 20px;
+  width: 500px;
+  text-align: justify;
+}

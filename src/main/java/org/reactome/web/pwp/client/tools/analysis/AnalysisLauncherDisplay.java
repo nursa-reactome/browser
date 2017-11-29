@@ -214,7 +214,7 @@ public class AnalysisLauncherDisplay extends PopupPanel implements AnalysisLaunc
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/tools/analysis/AnalysisLauncher.css";
+        String CSS = "org/reactome/web/pwp/client/tools/analysis/AnalysisLauncher.gss";
 
         String popupPanel();
 

@@ -31,7 +31,7 @@ public abstract class AnalysisStyleFactory {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String DEFAULT_CSS = "org/reactome/web/pwp/client/tools/analysis/style/AnalysisStyle.css";
+        String DEFAULT_CSS = "org/reactome/web/pwp/client/tools/analysis/style/AnalysisStyle.gss";
 
         String analysisTitle();
 

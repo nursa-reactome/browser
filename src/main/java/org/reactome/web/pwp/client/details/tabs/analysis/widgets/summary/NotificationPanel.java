@@ -79,7 +79,7 @@ public class NotificationPanel extends Anchor implements ClickHandler {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/details/tabs/analysis/widgets/summary/NoticationPanel.css";
+        String CSS = "org/reactome/web/pwp/client/details/tabs/analysis/widgets/summary/NoticationPanel.gss";
 
         String notificationPanel();
 

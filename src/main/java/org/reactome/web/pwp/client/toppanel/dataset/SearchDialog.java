@@ -18,16 +18,16 @@ import org.reactome.web.diagram.common.PwpButton;
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DataSetContainer extends DialogBox implements ClickHandler {
+public class SearchDialog extends DialogBox implements ClickHandler {
 
-    public DataSetContainer() {
+    public SearchDialog() {
         setAutoHideEnabled(true);
         setModal(true);
         setAnimationEnabled(true);
         setGlassEnabled(true);
         setAutoHideOnHistoryEventsEnabled(false);
         this.setStyleName(RESOURCES.getCSS().popupPanel());
-        setTitlePanel("Nursa DataSet");
+        setTitlePanel("Search DataSet");
 
         int width = Window.getClientWidth() * 2 / 3;
         int height = Window.getClientHeight() * 2 / 3;
@@ -39,13 +39,13 @@ public class DataSetContainer extends DialogBox implements ClickHandler {
             w = height * 1.7778 + "px";
             h = height + "px";
         }
-        String videoIframe = "<iframe width=\"" + w + "\" height=\"" + h + "\" src=\"https://www.youtube.com/embed/-skixrvI4nU\" frameborder=\"0\" allowfullscreen></iframe>";
-        HTMLPanel video =new HTMLPanel(SafeHtmlUtils.fromTrustedString(videoIframe));
-        video.setStyleName(RESOURCES.getCSS().video());
+        String bogus = "<span>TODO - Insert combo box here</span>";
+        HTMLPanel combo = new HTMLPanel(SafeHtmlUtils.fromTrustedString(bogus));
+        combo.setStyleName(RESOURCES.getCSS().dialog());
 
         FlowPanel container = new FlowPanel();
         container.add(new PwpButton("Close", RESOURCES.getCSS().close(), this));
-        container.add(video);
+        container.add(combo);
         setWidget(container);
     }
 
@@ -88,7 +88,7 @@ public class DataSetContainer extends DialogBox implements ClickHandler {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/DataSetDialog.css";
+        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/SearchDialog.gss";
 
         String popupPanel();
 
@@ -96,7 +96,7 @@ public class DataSetContainer extends DialogBox implements ClickHandler {
 
         String headerText();
 
-        String video();
+        String dialog();
 
         String close();
     }

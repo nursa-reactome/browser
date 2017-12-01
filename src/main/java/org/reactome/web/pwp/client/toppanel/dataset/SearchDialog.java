@@ -11,14 +11,19 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+
 import org.reactome.web.diagram.common.PwpButton;
+import org.reactome.web.pwp.client.common.widgets.SearchComboBox;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
 public class SearchDialog extends DialogBox implements ClickHandler {
+    private static final String URL = "http://www.sencha.com/forum/topics-remote.php";
+    private static final String HEADING = "Dataset Search";
 
     public SearchDialog() {
         setAutoHideEnabled(true);
@@ -29,8 +34,8 @@ public class SearchDialog extends DialogBox implements ClickHandler {
         this.setStyleName(RESOURCES.getCSS().popupPanel());
         setTitlePanel("Search DataSet");
 
-        int width = Window.getClientWidth() * 2 / 3;
-        int height = Window.getClientHeight() * 2 / 3;
+        int width = Window.getClientWidth() / 2;
+        int height = Window.getClientHeight() / 4;
         String w, h;
         if (width > height) {
             w = width + "px";
@@ -39,8 +44,8 @@ public class SearchDialog extends DialogBox implements ClickHandler {
             w = height * 1.7778 + "px";
             h = height + "px";
         }
-        String bogus = "<span>TODO - Insert combo box here</span>";
-        HTMLPanel combo = new HTMLPanel(SafeHtmlUtils.fromTrustedString(bogus));
+        IsWidget comboView = new SearchComboBox();
+        Widget combo = comboView.asWidget();
         combo.setStyleName(RESOURCES.getCSS().dialog());
 
         FlowPanel container = new FlowPanel();
@@ -61,7 +66,6 @@ public class SearchDialog extends DialogBox implements ClickHandler {
         getCaption().setHTML(safeHtml);
         getCaption().asWidget().setStyleName(RESOURCES.getCSS().header());
     }
-
 
     public static Resources RESOURCES;
     static {

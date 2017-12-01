@@ -33,9 +33,8 @@
     cursor: default;
 }
 
-.video iframe {
-    border-radius: 10px;
-    margin-top: 8px;
+.dialog {
+    margin-top: 4px;
 }
 
 @sprite .close {

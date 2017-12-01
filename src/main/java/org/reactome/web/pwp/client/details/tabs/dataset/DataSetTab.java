@@ -2,8 +2,6 @@ package org.reactome.web.pwp.client.details.tabs.dataset;
 
 import org.reactome.web.pwp.client.details.tabs.DetailsTab;
 
-import com.google.gwt.event.shared.EventBus;
-
 import org.reactome.nursa.model.DataSet;
 
 /**

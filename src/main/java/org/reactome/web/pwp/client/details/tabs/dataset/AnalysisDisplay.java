@@ -4,16 +4,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.*;
 
 import org.reactome.web.pwp.client.common.CommonImages;
-import org.reactome.web.pwp.client.common.module.BrowserModule;
-import org.reactome.web.pwp.client.details.tabs.DetailsTabTitle;
-import org.reactome.web.pwp.client.details.tabs.DetailsTabType;
-import org.reactome.web.pwp.client.details.tabs.dataset.widgets.DataSetPanel;
-import org.reactome.web.pwp.client.details.tabs.dataset.widgets.DataSetSectionFactory;
-import org.reactome.gsea.model.AnalysisResult;
-import org.reactome.nursa.model.DataSet;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>

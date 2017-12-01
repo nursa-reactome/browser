@@ -11,7 +11,7 @@ public class DataSetSelectorPresenter implements DataSetSelector.Presenter {
 
     private DataSetSelector.Display display;
     private EventBus eventBus;
-    
+
     public DataSetSelectorPresenter(EventBus eventBus, DataSetSelector.Display display) {
         this.eventBus = eventBus;
         this.display = display;
@@ -20,7 +20,9 @@ public class DataSetSelectorPresenter implements DataSetSelector.Presenter {
 
     @Override
     public void search() {
-        String doi = "10.1621/gTqItVnDEP"; 
+        SearchDialog dialog = new SearchDialog();
+        dialog.show();
+        String doi = "10.1621/gTqItVnDEP";
         DataSetSelectedEvent event = new DataSetSelectedEvent(doi);
         eventBus.fireEventFromSource(event, this);
     }

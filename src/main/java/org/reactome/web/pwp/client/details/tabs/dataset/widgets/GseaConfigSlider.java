@@ -1,7 +1,7 @@
 package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 
 import org.reactome.gsea.config.PreRanked;
-import org.reactome.web.pwp.client.common.widgets.MinMaxSlider;
+import org.reactome.web.widgets.sliders.MinMaxSlider;
 
 public class GseaConfigSlider extends MinMaxSlider {
     private static int[] BOUNDS = {0, 500};

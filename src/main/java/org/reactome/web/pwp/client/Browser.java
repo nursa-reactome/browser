@@ -6,6 +6,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+
+import org.fusesource.restygwt.client.Defaults;
 import org.reactome.web.pwp.client.common.utils.Console;
 import org.reactome.web.pwp.client.manager.state.token.Token;
 import org.reactome.web.pwp.client.manager.title.event.TitleChangedEvent;
@@ -20,6 +22,12 @@ public class Browser implements EntryPoint {
     public static final Boolean BETA = false;
 
     public static boolean VERBOSE = true;
+
+    // Initialize the resty context root. This ensures that requests
+    // go to /<module>/... rather than /Browser/<module>/...
+    static {
+        Defaults.setServiceRoot("/");
+    }
 
     /**
      * This is the entry point method.

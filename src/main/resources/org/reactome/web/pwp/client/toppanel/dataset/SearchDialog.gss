@@ -1,4 +1,6 @@
-.popupPanel {
+.main {
+  width: 30em;
+  height: 16em;
   border: 3px solid gray !important;
   border-radius: 15px;
   padding: 5px 10px 5px 10px;
@@ -12,15 +14,20 @@
   font-size: small !important;
 }
 
+/* Work around the following apparent GWT bug:
+   * Setting a dialog box width does not set the width of the content.
+     The work-around is to set the width of the table which implements
+     the dialog box.
+ */
+.main > div > table {
+    width: 100%;	
+}
+
 .header {
-  float: left;
   padding: 2px 0 2px 0;
-  width: 100%;
 }
 
 .headerText {
-  float: left;
-  min-width: 370px;
   color: white;
   font-weight: bolder;
   font-size: large;
@@ -30,8 +37,9 @@
   cursor: default;
 }
 
-.dialog {
+.combo {
   margin-top: 4px;
+  height: 14em;
 }
 
 .close {

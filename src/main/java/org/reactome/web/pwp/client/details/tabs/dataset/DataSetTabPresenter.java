@@ -1,12 +1,12 @@
 package org.reactome.web.pwp.client.details.tabs.dataset;
 
 import java.io.IOException;
-import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.reactome.web.pwp.client.common.events.DataSetSelectedEvent;
 import org.reactome.web.pwp.client.common.events.StateChangedEvent;
 import org.reactome.web.pwp.client.common.handlers.DataSetSelectedHandler;
+import org.reactome.web.pwp.client.tools.dataset.NursaClient;
 import org.reactome.nursa.model.DataSet;
 
 import com.google.gwt.core.shared.GWT;
@@ -18,20 +18,12 @@ import com.google.gwt.event.shared.EventBus;
 public class DataSetTabPresenter implements DataSetTab.Presenter, DataSetSelectedHandler {
 
     private DataSetTab.Display display;
-
-    // Initialize the resty context root. This ensures that requests
-    // go to /NursaContent/... rather than /Browser/NursaContent/...
-    //
-    // Note: if additional widgets use a resty helper, then it would
-    // be cleaner to move this initializer to a global init class.
-    static {
-        Defaults.setServiceRoot("/");
-    }
     
     public DataSetTabPresenter(EventBus eventBus, DataSetTab.Display display) {
         this.display = display;
         this.display.setPresenter(this);
         eventBus.addHandler(DataSetSelectedEvent.TYPE, this);
+        DataSetTabPresenter.INSTANCE = this;
     }
 
     @Override
@@ -42,6 +34,13 @@ public class DataSetTabPresenter implements DataSetTab.Presenter, DataSetSelecte
     @Override
     public void onDataSetSelected(DataSetSelectedEvent event) {
         String doi = event.getDoi();
+        loadDataset(doi);
+    }
+
+    // FIXME - awful work-around for brain-dead modal event handling.
+    public static DataSetTabPresenter INSTANCE;
+    
+    public void loadDataset(String doi) {
         this.display.showLoading(doi);
         getDataset(doi);
     }

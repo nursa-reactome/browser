@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-import org.reactome.web.pwp.client.common.events.DataSetSelectedEvent;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutButton;
 
 /**

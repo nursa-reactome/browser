@@ -3,7 +3,6 @@ package org.reactome.web.pwp.client.details.tabs.dataset;
 import java.util.List;
 
 import org.reactome.gsea.model.AnalysisResult;
-import org.reactome.nursa.model.DataSet;
 
 import com.google.gwt.event.shared.GwtEvent;
 

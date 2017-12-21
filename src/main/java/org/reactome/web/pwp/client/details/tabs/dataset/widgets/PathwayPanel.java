@@ -53,9 +53,9 @@ public class PathwayPanel extends VerticalPanel {
         // payload using the Java8 list comprehension idiom.
         List<List<String>> rankedList =
                 this.dataset.getDataPoints()
-                    .stream()
-                    .map(PathwayPanel::pullRank)
-                    .collect(Collectors.toList());
+                            .stream()
+                            .map(PathwayPanel::pullRank)
+                            .collect(Collectors.toList());
         // Obtain the dataset size parameters.
         int[] dataSetBounds = gseaConfigSlider.getValues();
         Integer dataSetSizeMinOpt = new Integer(dataSetBounds[0]);

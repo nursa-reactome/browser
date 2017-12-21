@@ -46,13 +46,14 @@
         <reactome.web.carrousel>1.0.2</reactome.web.carrousel>
         <reactome.web.diagram>3.4.3</reactome.web.diagram>
         <reactome.web.fireworks>1.4.3</reactome.web.fireworks>
+        <reactome.web.widgets>1.0.1</reactome.web.widgets>
         <reactome.web.model>2.0.0</reactome.web.model>
-        <reactome.nursa.model>1.0.1-SNAPSHOT</reactome.nursa.model>
-        <reactome.gsea.model>1.0.1-SNAPSHOT</reactome.gsea.model>
         <reactome.web.pdb>2.3.0</reactome.web.pdb>
         <reactome.web.chebi>1.0.1</reactome.web.chebi>
         <reactome.web.rhea>1.3.1</reactome.web.rhea>
         <reactome.web.gxa>3.0.3</reactome.web.gxa>
+        <reactome.nursa.model>1.0.1</reactome.nursa.model>
+        <reactome.gsea.model>1.0.1</reactome.gsea.model>
 
         <reactome.utils.version>1.0.3</reactome.utils.version>
 
@@ -125,6 +126,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.reactome.web</groupId>
+            <artifactId>carrousel</artifactId>
+            <version>${reactome.web.carrousel}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reactome.web</groupId>
+            <artifactId>widgets</artifactId>
+            <version>${reactome.web.widgets}</version>
+        </dependency>
+
+        <dependency>
             <groupId>uk.ac.ebi.pwp.widgets</groupId>
             <artifactId>pdb</artifactId>
             <version>${reactome.web.pdb}</version>
@@ -152,12 +165,6 @@
             <groupId>org.reactome.web.utils</groupId>
             <artifactId>analytics</artifactId>
             <version>${reactome.web.analyitics}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactome.web</groupId>
-            <artifactId>carrousel</artifactId>
-            <version>${reactome.web.carrousel}</version>
         </dependency>
 
         <dependency>

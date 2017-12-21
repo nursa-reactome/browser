@@ -190,7 +190,7 @@ public class DisclosureHeader extends Composite implements OpenHandler<Disclosur
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String DEFAULT_CSS = "org/reactome/web/pwp/client/details/common/widgets/disclosure/css/DisclosureHeader.gss";
+        String DEFAULT_CSS = "org/reactome/web/pwp/client/details/common/widgets/disclosure/css/DisclosureHeader.css";
 
         /**
          * Applied to the widget.

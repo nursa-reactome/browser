@@ -117,7 +117,7 @@ public class SearchDialog extends DialogBox implements ClickHandler {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "SearchDialog.gss";
+        String CSS = "SearchDialog.css";
 
         String main();
 

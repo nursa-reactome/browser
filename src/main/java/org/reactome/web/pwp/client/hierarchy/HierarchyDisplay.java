@@ -302,7 +302,7 @@ public class HierarchyDisplay extends Composite implements OpenHandler<TreeItem>
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/hierarchy/Hierarchy.gss";
+        String CSS = "org/reactome/web/pwp/client/hierarchy/Hierarchy.css";
 
         String hierarchyPanelTitle();
 

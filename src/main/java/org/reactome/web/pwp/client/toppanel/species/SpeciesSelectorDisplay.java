@@ -80,7 +80,7 @@ public class SpeciesSelectorDisplay extends FlowPanel implements SpeciesSelector
 
     @CssResource.ImportedWithPrefix("pwp-SpeciesDisplay")
     public interface Styles extends CssResource {
-        String CSS = "org/reactome/web/pwp/client/toppanel/species/SpeciesPanel.gss";
+        String CSS = "org/reactome/web/pwp/client/toppanel/species/SpeciesPanel.css";
 
         String speciesPanel();
 

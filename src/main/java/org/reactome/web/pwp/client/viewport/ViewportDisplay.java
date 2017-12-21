@@ -95,7 +95,7 @@ public class ViewportDisplay extends TabLayoutPanel implements Viewport.Display 
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/viewport/Viewport.gss";
+        String CSS = "org/reactome/web/pwp/client/viewport/Viewport.css";
 
         String viewportContainer();
 

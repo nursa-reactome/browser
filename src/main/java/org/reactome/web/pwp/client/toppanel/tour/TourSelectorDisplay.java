@@ -72,7 +72,7 @@ public class TourSelectorDisplay extends Composite implements TourSelector.Displ
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/tour/Tour.gss";
+        String CSS = "org/reactome/web/pwp/client/toppanel/tour/Tour.css";
 
         String layoutPanel();
 

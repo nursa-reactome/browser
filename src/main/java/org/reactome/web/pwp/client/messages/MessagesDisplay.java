@@ -107,7 +107,7 @@ public class MessagesDisplay extends PopupPanel implements Messages.Display {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/messages/Messages.gss";
+        String CSS = "org/reactome/web/pwp/client/messages/Messages.css";
 
         String popupPanel();
 

@@ -283,7 +283,7 @@ public class HierarchyItem extends TreeItem implements HasHandlers, MouseOverHan
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/hierarchy/widget/HierarchyItem.gss";
+        String CSS = "org/reactome/web/pwp/client/hierarchy/widget/HierarchyItem.css";
 
         String hierarchyItem();
 

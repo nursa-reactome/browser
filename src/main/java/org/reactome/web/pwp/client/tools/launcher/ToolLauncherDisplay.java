@@ -81,7 +81,7 @@ public class ToolLauncherDisplay extends Composite implements ToolLauncher.Displ
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/tools/launcher/ToolLauncher.gss";
+        String CSS = "org/reactome/web/pwp/client/tools/launcher/ToolLauncher.css";
 
         String launcherPanel();
 

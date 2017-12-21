@@ -72,7 +72,7 @@ public class DataSetSelectorDisplay extends Composite implements DataSetSelector
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/DataSet.gss";
+        String CSS = "org/reactome/web/pwp/client/toppanel/dataset/DataSet.css";
 
         String layoutPanel();
 

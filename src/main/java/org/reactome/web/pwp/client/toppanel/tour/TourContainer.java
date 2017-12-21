@@ -88,7 +88,7 @@ public class TourContainer extends DialogBox implements ClickHandler {
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/tour/TourDialog.gss";
+        String CSS = "org/reactome/web/pwp/client/toppanel/tour/TourDialog.css";
 
         String popupPanel();
 

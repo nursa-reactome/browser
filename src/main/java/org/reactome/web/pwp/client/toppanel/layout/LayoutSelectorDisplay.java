@@ -102,7 +102,7 @@ public class LayoutSelectorDisplay extends Composite implements LayoutSelector.D
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/toppanel/layout/Layout.gss";
+        String CSS = "org/reactome/web/pwp/client/toppanel/layout/Layout.css";
 
         String layoutPanel();
 

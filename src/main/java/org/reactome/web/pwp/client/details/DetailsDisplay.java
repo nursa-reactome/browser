@@ -108,7 +108,7 @@ public class DetailsDisplay extends ResizeComposite implements Details.Display, 
         /**
          * The path to the default CSS styles used by this resource.
          */
-        String CSS = "org/reactome/web/pwp/client/details/tabs/DetailsTab.gss";
+        String CSS = "org/reactome/web/pwp/client/details/tabs/DetailsTab.css";
 
         String detailsTab();
 

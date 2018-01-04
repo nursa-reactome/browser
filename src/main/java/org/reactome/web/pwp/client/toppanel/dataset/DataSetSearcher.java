@@ -17,6 +17,9 @@ import org.reactome.web.widgets.search.Searcher;
 import org.reactome.web.widgets.search.Suggestion;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeUri;
 
 
 public class DataSetSearcher implements Searcher {
@@ -28,6 +31,10 @@ public class DataSetSearcher implements Searcher {
             this.dataset = dataset;
         }
         
+        public DataSet getDataset() {
+            return dataset;
+        }
+
         @Override
         public String getKey() {
             return dataset.getDoi();
@@ -39,8 +46,13 @@ public class DataSetSearcher implements Searcher {
         }
         
         @Override
+        public SafeUri getImage() {
+            return RESOURCES.dataset().getSafeUri();
+        }
+        
+        @Override
         public List<String> getSecondary() {
-            return Arrays.asList(getKey());
+            return Arrays.asList(dataset.getDescription(), getKey());
         }
     }
 
@@ -90,6 +102,17 @@ public class DataSetSearcher implements Searcher {
                 }
             }
         });
+    }
+
+    public static Resources RESOURCES;
+
+    static {
+        RESOURCES = GWT.create(Resources.class);
+    }
+
+    interface Resources extends ClientBundle {
+        @Source("images/dataset_icon.png")
+        ImageResource dataset();
     }
 
 }

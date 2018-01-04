@@ -10,14 +10,23 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import java.util.function.Consumer;
+
+import org.reactome.nursa.model.DataSet;
 import org.reactome.web.diagram.common.PwpButton;
+import org.reactome.web.pwp.client.common.CommonImages;
 import org.reactome.web.pwp.client.common.events.DataSetSelectedEvent;
+import org.reactome.web.pwp.client.toppanel.dataset.DataSetSearcher.DataSetAdapter;
 import org.reactome.web.widgets.search.Searcher;
 import org.reactome.web.widgets.search.SuggestionComboBox;
 
@@ -26,7 +35,15 @@ import org.reactome.web.widgets.search.SuggestionComboBox;
  */
 public class SearchDialog extends DialogBox implements ClickHandler {
 
-    private static final int TOP_PANEL_HEIGHT = 40;
+    private static final String HELP_TEXT =
+            "Enter three or more search characters. The matching datasets" +
+            " are listed with name, description and DOI. If the name or" +
+            " description is elided, hover over the field to see the full text." +
+            " Select a dataset and click Load to display it in the DataSet tab below.";
+
+    private static final int TOP_PANEL_HEIGHT = 42;
+
+    protected DataSet dataset;
 
     public SearchDialog(final EventBus eventBus) {
         setAutoHideEnabled(false);
@@ -58,24 +75,55 @@ public class SearchDialog extends DialogBox implements ClickHandler {
 
         });      
         
+        // The searcher provides suggestions.
         Searcher searcher = new DataSetSearcher();
-        Consumer<String> consumer = new Consumer<String>() {
+        // The suggestion selection consumer.
+        Consumer<DataSetAdapter> consumer = new Consumer<DataSetAdapter>() {
 
             @Override
-            public void accept(String doi) {
-                if (doi != null) {
-                    eventBus.fireEventFromSource(new DataSetSelectedEvent(doi), this);
+            public void accept(DataSetAdapter suggestion) {
+                
+                loadBtn.setEnabled(suggestion != null);
+                if (suggestion != null) {
+                    dataset = suggestion.getDataset();
+                    description.setText(dataset.getDescription());
                 }
             }
   
         };
-        SuggestionComboBox<String> comboBox = new SuggestionComboBox<String>(searcher, consumer);
+        // The search dialog content container panel.
+        FlowPanel container = new FlowPanel();
+        // The help tooltip.
+        Widget info = getInfo();
+        container.add(info);
+        // The dataset load button.
+        loadBtn = new Button("Load");
+        loadBtn.setStyleName(RESOURCES.getCSS().load());
+        loadBtn.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.fireEventFromSource(new DataSetSelectedEvent(dataset), this);
+            }
+            
+        });
+        loadBtn.setEnabled(false);
+        container.add(loadBtn);
+        // The dialog close button.
+        PwpButton close = new PwpButton("Close", RESOURCES.getCSS().close(), new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                SearchDialog.this.hide();
+            }
+            
+        });
+        container.add(close);
+        // The suggestion combo box shows suggestions.
+        SuggestionComboBox<DataSetAdapter> comboBox =
+                new SuggestionComboBox<DataSetAdapter>(searcher, consumer);
         Widget combo = comboBox.asWidget();
         combo.addStyleName(RESOURCES.getCSS().combo());
-
-        FlowPanel container = new FlowPanel();
-        PwpButton close = new PwpButton("Close", RESOURCES.getCSS().close(), this);
-        container.add(close);
         container.add(combo);
         setWidget(container);
     }
@@ -92,8 +140,27 @@ public class SearchDialog extends DialogBox implements ClickHandler {
         getCaption().setHTML(safeHtml);
         getCaption().asWidget().setStyleName(RESOURCES.getCSS().header());
     }
+    
+    /**
+     * @return Widget a short instruction on how to use the search dialog
+     */
+    private Widget getInfo() {
+        // This builder is adapted from MoleculesPanel.
+        Panel infoPanel = new HorizontalPanel();
+        infoPanel.setStyleName(RESOURCES.getCSS().info());
+        infoPanel.setTitle(HELP_TEXT);
+        Image image = new Image(CommonImages.INSTANCE.information());
+        infoPanel.add(image);
+        HTMLPanel label = new HTMLPanel("Info");
+        infoPanel.add(label);
+        return infoPanel;
+    }
 
     public static Resources RESOURCES;
+
+    private Button loadBtn;
+
+    private Label description;
     static {
         RESOURCES = GWT.create(Resources.class);
         RESOURCES.getCSS().ensureInjected();
@@ -102,6 +169,9 @@ public class SearchDialog extends DialogBox implements ClickHandler {
     public interface Resources extends ClientBundle {
         @Source(Css.CSS)
         Css getCSS();
+
+        @Source("images/minihelp_normal.png")
+        ImageResource info();
 
         @Source("images/close_normal.png")
         ImageResource closeNormal();
@@ -120,6 +190,10 @@ public class SearchDialog extends DialogBox implements ClickHandler {
         String CSS = "SearchDialog.css";
 
         String main();
+
+        String info();
+
+        String load();
 
         String header();
 

@@ -1,5 +1,6 @@
 package org.reactome.web.pwp.client.common.events;
 
+import org.reactome.nursa.model.DataSet;
 import org.reactome.web.pwp.client.common.handlers.DataSetSelectedHandler;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -10,14 +11,14 @@ import com.google.gwt.event.shared.GwtEvent;
 public class DataSetSelectedEvent extends GwtEvent<DataSetSelectedHandler> {
     public static Type<DataSetSelectedHandler> TYPE = new Type<>();
     
-    private String doi;
+    private DataSet dataset;
 
-    public DataSetSelectedEvent(String doi) {
-        this.doi = doi;
+    public DataSetSelectedEvent(DataSet dataset) {
+        this.dataset = dataset;
     }
 
-    public String getDoi() {
-        return doi;
+    public DataSet getDataSet() {
+        return dataset;
     }
 
     @Override

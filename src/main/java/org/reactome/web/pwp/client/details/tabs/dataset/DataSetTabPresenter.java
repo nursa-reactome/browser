@@ -23,7 +23,6 @@ public class DataSetTabPresenter implements DataSetTab.Presenter, DataSetSelecte
         this.display = display;
         this.display.setPresenter(this);
         eventBus.addHandler(DataSetSelectedEvent.TYPE, this);
-        DataSetTabPresenter.INSTANCE = this;
     }
 
     @Override
@@ -33,13 +32,10 @@ public class DataSetTabPresenter implements DataSetTab.Presenter, DataSetSelecte
 
     @Override
     public void onDataSetSelected(DataSetSelectedEvent event) {
-        String doi = event.getDoi();
-        loadDataset(doi);
+        DataSet dataset = event.getDataSet();
+        loadDataset(dataset.getDoi());
     }
 
-    // FIXME - awful work-around for brain-dead modal event handling.
-    public static DataSetTabPresenter INSTANCE;
-    
     public void loadDataset(String doi) {
         this.display.showLoading(doi);
         getDataset(doi);

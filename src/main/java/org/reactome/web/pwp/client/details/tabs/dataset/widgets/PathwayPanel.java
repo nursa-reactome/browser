@@ -13,38 +13,77 @@ import org.reactome.web.analysis.client.AnalysisClient;
 import org.reactome.web.analysis.client.AnalysisHandler;
 import org.reactome.web.analysis.client.model.AnalysisError;
 import org.reactome.web.pwp.client.details.tabs.dataset.GseaClient;
-
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PathwayPanel extends VerticalPanel {
+public class PathwayPanel extends Composite {
+    
+    /**
+     * The UiBinder interface.
+     */
+    interface Binder extends UiBinder<Widget, PathwayPanel> {
+    }
+    static final Binder uiBinder = GWT.create(Binder.class);
 
     final String GENE_NAMES_HEADER = "#Gene names";
 
     private DataSet dataset;
-    Panel configPanel;
-    private SimplePanel analysisPanel;
+    
+    /**
+     * The GSEA analysis radio button.
+     */
+    @UiField()
+    RadioButton gseaBtn;
+    
+    /**
+     * The binomial analysis radio button.
+     */
+    @UiField()
+    RadioButton binomialBtn;
+
+    /**
+     * The config slider button.
+     */
+    @UiField()
+    Button launchBtn;
+
+    /**
+     * The config slider button.
+     */
+    @UiField()
+    Button sliderBtn;
+
+    /**
+     * The config slider container.
+     */
+    @UiField()
+    SimplePanel sliderPanel;
+
+    /**
+     * The analysis result display.
+     */
+    @UiField()
+    SimplePanel analysisPanel;
 
     private GseaConfigSlider gseaConfigSlider;
 
     public PathwayPanel(DataSet dataset) {
         this.dataset = dataset;
+        initWidget(uiBinder.createAndBindUi(this));
         // The configuration control panel.
-        configPanel = buildConfigPanel();
-        add(configPanel);
-        // The analysis display panel.
-        analysisPanel = new SimplePanel();
-        add(analysisPanel);
+        buildConfigPanel();
     }
 
     protected void gseaAnalyse() {
@@ -132,11 +171,8 @@ public class PathwayPanel extends VerticalPanel {
         );
     }
 
-    private Panel buildConfigPanel() {
-        RadioButton gseaBtn = new RadioButton("technique", "GSEA");
-        RadioButton binomialBtn = new RadioButton("technique", "Binomial");
+    private void buildConfigPanel() {
         gseaBtn.setValue(true);
-        Button launchBtn = new Button("Launch");        
         launchBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -147,33 +183,91 @@ public class PathwayPanel extends VerticalPanel {
                 }
             }
         });
-        Image img = new Image("static/images/gear.png");
-        img.setPixelSize(16, 16);
-        final Button configBtn = new Button();
-        configBtn.getElement().appendChild(img.getElement());
-        configBtn.getElement().getStyle().setPadding(1, Unit.PX);
-        configBtn.getElement().getStyle().setPaddingTop(3, Unit.PX);
+        // Note: it would be preferable to set the style in PathwayPanel.ui.xml:
+        //     <ui:style src="PathwayPanel.css" />
+        // and then add the styles to the corresponding widgets, e.g:
+        //     <g:Button ui:field='sliderBtn' addStyleNames="{style.sliderBtn}">
+        // GWT and SO snippets suggest this is feasible and recommended, e.g.
+        // https://stackoverflow.com/questions/1899007/add-class-name-to-element-in-uibinder-xml-file
+        // However, doing so results in an obscure browser binding genereated
+        // code error. The work-around is to set the style the old-fashioned
+        // verbose way with the CSS resource below.
+        sliderBtn.addStyleName(RESOURCES.getCSS().sliderBtn());
+        //sliderBtn.getElement().getStyle().setPadding(1, Unit.PX);
+        //sliderBtn.getElement().getStyle().setPaddingTop(3, Unit.PX);
+        sliderBtn.setVisible(gseaBtn.getValue());
         gseaConfigSlider = new GseaConfigSlider();
-        final Panel sliderPanel = new SimplePanel();
         sliderPanel.addStyleName("gsea-config");
         sliderPanel.getElement().appendChild(gseaConfigSlider.getElement());
         sliderPanel.setVisible(false);
-        configBtn.addClickHandler(new ClickHandler() {
+        // The slider button toggles the slider panel display.
+        sliderBtn.addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
-                sliderPanel.setVisible(true);
-                configBtn.setEnabled(false);
+                sliderPanel.setVisible(!sliderPanel.isVisible());
             }
-        });
 
-        // Assemble the panel.
-        HorizontalPanel configPanel = new HorizontalPanel();
-        configPanel.add(gseaBtn);
-        configPanel.add(binomialBtn);
-        configPanel.add(launchBtn);
-        configPanel.add(configBtn);
-        configPanel.add(sliderPanel);
-        
-        return configPanel;
+        });
+        // For now, the slider panel only applies to GSEA.
+        // Per the RadioButton javadoc, the value change event is only
+        // triggered when the button is clicked, not when it is cleared,
+        // but it is good form to check the value here anyway.
+        gseaBtn.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> event) {
+                if (event.getValue()) {
+                    sliderBtn.setVisible(true);
+                }
+            }
+
+        });
+        binomialBtn.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> event) {
+                if (event.getValue()) {
+                    sliderBtn.setVisible(false);
+                    sliderPanel.setVisible(false);
+                }
+            }
+
+        });
     }
- }
+
+    public static Resources RESOURCES;
+
+    static {
+        RESOURCES = GWT.create(Resources.class);
+        RESOURCES.getCSS().ensureInjected();
+    }
+ 
+    /**
+     * A ClientBundle of resources used by this widget.
+     */
+    interface Resources extends ClientBundle {
+ 
+        /**
+         * The styles used in this widget.
+         */
+        @Source(Css.CSS)
+        Css getCSS();
+
+    }
+
+    /**
+     * Styles used by this widget.
+     */
+    interface Css extends CssResource {
+ 
+        /**
+         * The path to the default CSS styles used by this resource.
+         */
+        String CSS = "PathwayPanel.css";
+
+        String main();
+
+        String sliderBtn();
+
+    }}

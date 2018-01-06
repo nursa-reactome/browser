@@ -93,22 +93,6 @@ public class SearchDialog extends DialogBox implements ClickHandler {
         };
         // The search dialog content container panel.
         FlowPanel container = new FlowPanel();
-        // The help tooltip.
-        Widget info = getInfo();
-        container.add(info);
-        // The dataset load button.
-        loadBtn = new Button("Load");
-        loadBtn.setStyleName(RESOURCES.getCSS().load());
-        loadBtn.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.fireEventFromSource(new DataSetSelectedEvent(dataset), this);
-            }
-            
-        });
-        loadBtn.setEnabled(false);
-        container.add(loadBtn);
         // The dialog close button.
         PwpButton close = new PwpButton("Close", RESOURCES.getCSS().close(), new ClickHandler() {
 
@@ -125,6 +109,22 @@ public class SearchDialog extends DialogBox implements ClickHandler {
         Widget combo = comboBox.asWidget();
         combo.addStyleName(RESOURCES.getCSS().combo());
         container.add(combo);
+        // The dataset load button.
+        loadBtn = new Button("Load");
+        loadBtn.setStyleName(RESOURCES.getCSS().load());
+        loadBtn.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.fireEventFromSource(new DataSetSelectedEvent(dataset), this);
+            }
+            
+        });
+        loadBtn.setEnabled(false);
+        container.add(loadBtn);
+        // The help tooltip.
+        Widget info = getInfo();
+        container.add(info);
         setWidget(container);
     }
 

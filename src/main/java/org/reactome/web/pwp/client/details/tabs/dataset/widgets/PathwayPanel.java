@@ -24,6 +24,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -40,6 +41,12 @@ public class PathwayPanel extends Composite {
     final String GENE_NAMES_HEADER = "#Gene names";
 
     private DataSet dataset;
+    
+    /**
+     * The panel content.
+     */
+    @UiField()
+    Panel content;
     
     /**
      * The GSEA analysis radio button.
@@ -172,7 +179,8 @@ public class PathwayPanel extends Composite {
     }
 
     private void buildConfigPanel() {
-        gseaBtn.setValue(true);
+        content.addStyleName(RESOURCES.getCSS().main());
+ 
         launchBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -183,15 +191,35 @@ public class PathwayPanel extends Composite {
                 }
             }
         });
+
+        // For now, the slider panel only applies to GSEA.
+        // Per the RadioButton javadoc, the value change event is only
+        // triggered when the button is clicked, not when it is cleared,
+        // but it is good form to check the value here anyway.
+        gseaBtn.setValue(true);
+        gseaBtn.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> event) {
+                if (event.getValue()) {
+                    sliderBtn.setVisible(true);
+                }
+            }
+
+        });
+        
         // Note: it would be preferable to set the style in PathwayPanel.ui.xml:
         //     <ui:style src="PathwayPanel.css" />
         // and then add the styles to the corresponding widgets, e.g:
         //     <g:Button ui:field='sliderBtn' addStyleNames="{style.sliderBtn}">
         // GWT and SO snippets suggest this is feasible and recommended, e.g.
         // https://stackoverflow.com/questions/1899007/add-class-name-to-element-in-uibinder-xml-file
-        // However, doing so results in an obscure browser binding genereated
-        // code error. The work-around is to set the style the old-fashioned
-        // verbose way with the CSS resource below.
+        // However, doing so results in the following browser binding generation
+        // code error:
+        //   Exception: com.google.gwt.core.client.JavaScriptException: (TypeError) :
+        //   this.get_clientBundleFieldNameUnlikelyToCollideWithUserSpecifiedFieldOkay_4_g$(...).style_19_g$ is not a function
+        // The work-around is to set the style the old-fashioned verbose way with
+        // the CSS resource below.
         sliderBtn.addStyleName(RESOURCES.getCSS().sliderBtn());
         //sliderBtn.getElement().getStyle().setPadding(1, Unit.PX);
         //sliderBtn.getElement().getStyle().setPaddingTop(3, Unit.PX);
@@ -209,20 +237,7 @@ public class PathwayPanel extends Composite {
             }
 
         });
-        // For now, the slider panel only applies to GSEA.
-        // Per the RadioButton javadoc, the value change event is only
-        // triggered when the button is clicked, not when it is cleared,
-        // but it is good form to check the value here anyway.
-        gseaBtn.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
-            @Override
-            public void onValueChange(ValueChangeEvent<Boolean> event) {
-                if (event.getValue()) {
-                    sliderBtn.setVisible(true);
-                }
-            }
-
-        });
         binomialBtn.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
             @Override
@@ -270,4 +285,5 @@ public class PathwayPanel extends Composite {
 
         String sliderBtn();
 
-    }}
+    }
+}

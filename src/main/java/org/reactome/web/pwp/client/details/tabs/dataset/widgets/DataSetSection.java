@@ -1,6 +1,8 @@
 package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -21,15 +23,53 @@ public class DataSetSection extends Composite {
     }
 
     private void addTitle(String title){
-        Label lbl = new Label(title);
-        lbl.addStyleName("elv-Details-OverviewProperty");
-        this.content.add(lbl);
+        Label label = new Label(title);
+        label.addStyleName(RESOURCES.getCSS().title());
+        this.content.add(label);
     }
 
     private void addWidget(Widget widget){
         SimplePanel aux = new SimplePanel();
-        aux.getElement().getStyle().setPaddingLeft(5, Style.Unit.PX);
+        aux.addStyleName(RESOURCES.getCSS().widget());
         aux.add(widget);
         this.content.add(aux);
+    }
+
+    public static Resources RESOURCES;
+
+    static {
+        RESOURCES = GWT.create(Resources.class);
+        RESOURCES.getCSS().ensureInjected();
+    }
+ 
+    /**
+     * A ClientBundle of resources used by this widget.
+     */
+    interface Resources extends ClientBundle {
+ 
+        /**
+         * The styles used in this widget.
+         */
+        @Source(Css.CSS)
+        Css getCSS();
+
+    }
+
+    /**
+     * Styles used by this widget.
+     */
+    interface Css extends CssResource {
+ 
+        /**
+         * The path to the default CSS styles used by this resource.
+         */
+        String CSS = "DataSetSection.css";
+
+        String main();
+
+        String widget();
+
+        String title();
+
     }
 }

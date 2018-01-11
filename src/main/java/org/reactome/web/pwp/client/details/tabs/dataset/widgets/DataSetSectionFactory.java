@@ -30,6 +30,7 @@ public abstract class DataSetSectionFactory {
 
     private static Widget getOverviewSection(DataSet dataset) {
         Widget panel = new TextPanel(dataset.getDescription());
+        panel.setStyleName(DataSetPanel.RESOURCES.getCSS().overview());
         return getDataSetSection(OVERVIEW_TITLE, panel);
     }
 

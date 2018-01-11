@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
-	<g:VerticalPanel>
+	<g:VerticalPanel ui:field='content'>
 		<g:HorizontalPanel>
 			<!-- The radio button group. -->
 			<g:HorizontalPanel>

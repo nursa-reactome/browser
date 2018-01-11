@@ -128,7 +128,7 @@ public class GseaResultTableFactory {
         sorter.setComparator(regTypeColumn, new Comparator<AnalysisResult>() {
             @Override
             public int compare(AnalysisResult r1, AnalysisResult r2) {
-                return r1.toString().compareTo(r2.toString());
+                return r1.getRegulationType().compareTo(r2.getRegulationType());
             }
         });
         

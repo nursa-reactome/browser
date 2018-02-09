@@ -1,15 +1,21 @@
 package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 
-import java.util.Map;
-
 import org.reactome.nursa.model.DataSet;
+import org.reactome.web.pwp.client.details.tabs.dataset.AnalysisCompletedEvent;
+import org.reactome.web.pwp.client.details.tabs.dataset.AnalysisCompletedHandler;
+
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -20,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DataSetPanel extends DockLayoutPanel {
+public class DataSetPanel extends DockLayoutPanel implements AnalysisCompletedHandler {
     /**
      * The UiBinder interface.
      */
@@ -28,18 +34,66 @@ public class DataSetPanel extends DockLayoutPanel {
 //    }
 //    static final Binder uiBinder = GWT.create(Binder.class);
 
-    private Map<String, Widget> sections;
+    private ScrollPanel scrollPanel;
+
+    private Panel contentPanel;
+   
+    private EventBus eventBus;
+
+    private Integer analysisStartPosition;
 
     public DataSetPanel(DataSet dataset) {
         super(Style.Unit.EM);
+        eventBus = new SimpleEventBus();
+        eventBus.addHandler(AnalysisCompletedEvent.TYPE, this);
         addStyleName(RESOURCES.getCSS().main());
-        //initWidget(uiBinder.createAndBindUi(this));
-        HorizontalPanel topBar = getTopBar(dataset);
+        topBar = getTopBar(dataset);
         addNorth(topBar, 4);
-        ScrollPanel scrollPanel = new ScrollPanel();
-        Widget table = getMainContent(dataset);
-        scrollPanel.add(table);
+        scrollPanel = new ScrollPanel();
+        contentPanel = getMainContent(dataset);
+        scrollPanel.add(contentPanel);
         add(scrollPanel);
+    }
+
+    public void onLoad() {
+        super.onLoad();
+        analysisStartPosition = scrollPanel.getMaximumVerticalScrollPosition();
+    }
+
+    public void onResize() {
+        super.onResize();
+        // Reset the analysis start position, if necessary.
+        // If the analysis start position was cleared on analysis
+        // completion, then resize is irrelevant.
+        if (analysisStartPosition != null) {
+            analysisStartPosition = scrollPanel.getMaximumVerticalScrollPosition();;
+        }
+    }
+
+    @Override
+    public void onAnalysisCompleted() {
+        // If this is the first analysis, then the analysis start position
+        // was set by load or resize and not cleared by a previous call to
+        // this method. In the case, scroll to the start of the analysis
+        // section and clear the analysis start position variable. Clearing
+        // the variable signals that subsequent analyses do not need to
+        // scroll on completion.
+        if (analysisStartPosition != null) {
+            final int start = analysisStartPosition;
+            Scheduler.get().scheduleDeferred(new Command() {
+  
+                public void execute () {
+                    int max = scrollPanel.getMaximumVerticalScrollPosition();
+                    int height = scrollPanel.getOffsetHeight();
+                    int offset = topBar.getOffsetHeight();
+                    int pos = Math.min(max, start + height - offset);
+                    scrollPanel.setVerticalScrollPosition(pos);
+                }
+ 
+            });
+            
+            analysisStartPosition = null;
+        }
     }
 
     private HorizontalPanel getTopBar(DataSet dataset) {
@@ -61,20 +115,18 @@ public class DataSetPanel extends DockLayoutPanel {
         return topBar;
     }
 
-    private Widget getMainContent(DataSet dataset) {
-        this.sections = DataSetSectionFactory.build(dataset);
+    private Panel getMainContent(DataSet dataset) {
+        DataSetSections sections = new DataSetSections(dataset, eventBus);
         VerticalPanel vp = new VerticalPanel();
-        for (Widget section: this.sections.values()) {
+        for (Widget section: sections) {
             vp.add(section);
         }
         return vp;
     }
 
-    public Widget getSection(String title) {
-        return this.sections.get(title);
-    }
-
     public static Resources RESOURCES;
+
+    private HorizontalPanel topBar;
 
     static {
         RESOURCES = GWT.create(Resources.class);
@@ -110,4 +162,5 @@ public class DataSetPanel extends DockLayoutPanel {
 
         String overview();
 
-    }}
+    }
+}

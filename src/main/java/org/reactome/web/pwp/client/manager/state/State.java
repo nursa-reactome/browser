@@ -1,6 +1,8 @@
 package org.reactome.web.pwp.client.manager.state;
 
 import com.google.gwt.http.client.URL;
+
+import org.reactome.nursa.model.DataSet;
 import org.reactome.web.pwp.client.common.AnalysisStatus;
 import org.reactome.web.pwp.client.common.PathwayPortalTool;
 import org.reactome.web.pwp.client.common.utils.Console;
@@ -47,6 +49,8 @@ public class State {
     private PathwayPortalTool tool;
 
     private AnalysisStatus analysisStatus = new AnalysisStatus();
+    
+    private DataSet dataSet;
 
     private String flag;
 
@@ -125,6 +129,9 @@ public class State {
         this.tool = state.tool;
         this.analysisStatus = state.analysisStatus;
         this.flag = state.flag;
+        // Note: the dataSet is not copied to a new state.
+        // The dataSet field is only set by the StateManager
+        // when a dataset is selected.
     }
 
     public void doConsistencyCheck(final StateLoadedHandler handler){
@@ -221,6 +228,14 @@ public class State {
     public void setAnalysisParameters(String analysisToken, String resource) {
         //IMPORTANT! Do no use setToken! ALWAYS create a new object here
         this.analysisStatus = new AnalysisStatus(analysisToken, resource);
+    }
+
+    public DataSet getDataSet() {
+        return dataSet;
+    }
+
+    public void setDataSet(DataSet dataSet) {
+        this.dataSet = dataSet;
     }
 
     public String getFlag() {

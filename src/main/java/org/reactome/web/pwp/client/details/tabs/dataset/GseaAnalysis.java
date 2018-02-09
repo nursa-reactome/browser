@@ -6,7 +6,7 @@ import org.reactome.gsea.model.AnalysisResult;
 
 public interface GseaAnalysis {
 
-    public interface Presenter extends DataSetAnalysis.Presenter, GseaCompletedHandler {
+    interface Presenter extends DataSetAnalysis.Presenter {
     }
 
     interface Display extends DataSetAnalysis.Display {

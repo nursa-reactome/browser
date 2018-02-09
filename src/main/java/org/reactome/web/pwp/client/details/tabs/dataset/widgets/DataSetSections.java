@@ -1,5 +1,6 @@
 package org.reactome.web.pwp.client.details.tabs.dataset.widgets;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -7,54 +8,69 @@ import org.reactome.web.pwp.client.details.common.widgets.panels.TextPanel;
 import org.reactome.nursa.model.DataSet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public abstract class DataSetSectionFactory {
+public class DataSetSections implements Iterable<Widget> {
 
-    public static String OVERVIEW_TITLE = "Overview";
-    public static String GENE_LIST_TITLE = "Gene List";
-    public static String PATHWAY_TITLE = "Pathway";
+    private static String OVERVIEW_TITLE = "Overview";
+    private static String GENE_LIST_TITLE = "Gene List";
+    private static String PATHWAY_TITLE = "Pathway";
+    
+    private List<Widget> sections;
+    private Widget overview;
+    private Widget dataPoints;
+    private Widget pathways;
 
-    public static Map<String, Widget> build(DataSet dataset) {
-        HashMap<String, Widget> sections = new HashMap<String, Widget>();
-        sections.put(OVERVIEW_TITLE, getOverviewSection(dataset));
-        sections.put(GENE_LIST_TITLE, getDataPointsSection(dataset));
-        sections.put(PATHWAY_TITLE, getPathwaySection(dataset));
-        return sections;
+    public DataSetSections(DataSet dataset, EventBus eventBus) {
+        sections = new ArrayList<Widget>();
+        overview = createOverviewSection(dataset);
+        sections.add(overview);
+        dataPoints = createDataPointsSection(dataset);
+        sections.add(dataPoints);
+        pathways = createPathwaySection(dataset, eventBus);
+        sections.add(pathways);
     }
 
-    private static Widget getOverviewSection(DataSet dataset) {
+    public Widget getOverviewSection() {
+        return overview;
+    }
+
+    public Widget getPathwaysSection() {
+        return pathways;
+    }
+
+    public Widget getDataPointsSection() {
+        return dataPoints;
+    }
+
+    @Override
+    public Iterator<Widget> iterator() {
+        return sections.iterator();
+    }
+
+    private static Widget createOverviewSection(DataSet dataset) {
         Widget panel = new TextPanel(dataset.getDescription());
         panel.setStyleName(DataSetPanel.RESOURCES.getCSS().overview());
-        return getDataSetSection(OVERVIEW_TITLE, panel);
+        return createDataSetSection(OVERVIEW_TITLE, panel);
     }
 
-    private static Widget getDataPointsSection(DataSet dataset) {
+    private static Widget createDataPointsSection(DataSet dataset) {
         Widget table = DataPointTableFactory.getTable(dataset);
-        return getDataSetSection(GENE_LIST_TITLE, table);
+        return createDataSetSection(GENE_LIST_TITLE, table);
     }
 
-    private static Widget getPathwaySection(DataSet dataset) {
-        Widget panel = new PathwayPanel(dataset);
-        return getDataSetSection(PATHWAY_TITLE, panel);
+    private static Widget createPathwaySection(DataSet dataset, EventBus eventBus) {
+        Widget panel = new PathwayPanel(dataset, eventBus);
+        return createDataSetSection(PATHWAY_TITLE, panel);
     }
 
-    private static Widget getDataSetSection(String title, Widget child) {
-        List<Widget> children = new ArrayList<Widget>(1);
-        children.add(child);
-        return getDataSetSection(title, children);
-    }
-
-    private static Widget getDataSetSection(String title, List<Widget> children) {
+    private static Widget createDataSetSection(String title, Widget child) {
         VerticalPanel content = new VerticalPanel();
-        for (Widget child : children) {
-            content.add(child);
-        }
+        content.add(child);
         content.setWidth("100%");
         DataSetSection section = new DataSetSection();
         section.setWidth("100%");

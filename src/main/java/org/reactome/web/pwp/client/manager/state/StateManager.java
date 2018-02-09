@@ -31,7 +31,7 @@ import java.util.List;
 public class StateManager implements BrowserModule.Manager, ValueChangeHandler<String>,
         State.StateLoadedHandler, StateChangedHandler, DatabaseObjectSelectedHandler, DetailsTabChangedHandler,
         DiagramObjectsFlagResetHandler, AnalysisCompletedHandler, AnalysisResetHandler, ResourceChangedHandler,
-        ToolSelectedHandler {
+        ToolSelectedHandler, DataSetSelectedHandler {
 
     private EventBus eventBus;
 
@@ -51,6 +51,7 @@ public class StateManager implements BrowserModule.Manager, ValueChangeHandler<S
         this.eventBus.addHandler(AnalysisResetEvent.TYPE, this);
         this.eventBus.addHandler(DiagramObjectsFlagResetEvent.TYPE, this);
         this.eventBus.addHandler(ResourceChangedEvent.TYPE, this);
+        this.eventBus.addHandler(DataSetSelectedEvent.TYPE, this);
     }
 
     @Override
@@ -86,6 +87,14 @@ public class StateManager implements BrowserModule.Manager, ValueChangeHandler<S
     public void onAnalysisReset() {
         State desiredState = new State(this.currentState);
         desiredState.setAnalysisParameters(null, null);
+        this.eventBus.fireEventFromSource(new StateChangedEvent(desiredState), this);
+    }
+
+    @Override
+    public void onDataSetSelected(DataSetSelectedEvent datasetSelectedEvent) {
+        State desiredState = new State(this.currentState);
+        desiredState.setDetailsTab(DetailsTabType.DATASET);
+        desiredState.setDataSet(datasetSelectedEvent.getDataSet());
         this.eventBus.fireEventFromSource(new StateChangedEvent(desiredState), this);
     }
 

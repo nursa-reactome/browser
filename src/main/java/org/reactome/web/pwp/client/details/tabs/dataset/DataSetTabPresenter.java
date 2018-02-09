@@ -3,9 +3,9 @@ package org.reactome.web.pwp.client.details.tabs.dataset;
 import java.io.IOException;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
-import org.reactome.web.pwp.client.common.events.DataSetSelectedEvent;
 import org.reactome.web.pwp.client.common.events.StateChangedEvent;
-import org.reactome.web.pwp.client.common.handlers.DataSetSelectedHandler;
+import org.reactome.web.pwp.client.common.module.AbstractPresenter;
+import org.reactome.web.pwp.client.manager.state.State;
 import org.reactome.web.pwp.client.tools.dataset.NursaClient;
 import org.reactome.nursa.model.DataSet;
 
@@ -15,25 +15,35 @@ import com.google.gwt.event.shared.EventBus;
 /**
  * @author Fred Loney <loneyf@ohsu.edu>
  */
-public class DataSetTabPresenter implements DataSetTab.Presenter, DataSetSelectedHandler {
+public class DataSetTabPresenter extends AbstractPresenter implements DataSetTab.Presenter {
 
     private DataSetTab.Display display;
+    private DataSet dataset;
     
     public DataSetTabPresenter(EventBus eventBus, DataSetTab.Display display) {
+        super(eventBus);
         this.display = display;
         this.display.setPresenter(this);
-        eventBus.addHandler(DataSetSelectedEvent.TYPE, this);
     }
 
     @Override
     public void onStateChanged(StateChangedEvent event) {
-        // The DataSet tab is insensitive to the object selected in the viewport.
-    }
-
-    @Override
-    public void onDataSetSelected(DataSetSelectedEvent event) {
-        DataSet dataset = event.getDataSet();
-        loadDataset(dataset.getDoi());
+        State state = event.getState();
+        if (!state.getDetailsTab().equals(display.getDetailTabType())) {
+            return;
+        }
+        if (state.getDataSet() == null) {
+            // The dataset tab was clicked.
+            return;
+        }
+        // A dataset was selected by the search dialog.
+        // Note: we do not check whether the selected dataset
+        // DOI is the same as the current dataset DOI. A loaded
+        // dataset could have been reselected. In that case,
+        // reload the dataset anyway since that is presumably
+        // the user's intent.
+        this.dataset = state.getDataSet();
+        loadDataset(this.dataset.getDoi());
     }
 
     public void loadDataset(String doi) {
@@ -47,7 +57,17 @@ public class DataSetTabPresenter implements DataSetTab.Presenter, DataSetSelecte
             
             @Override
             public void onSuccess(Method method, DataSet dataset) {
-                display.showDetails(dataset);
+                // Guard against a loaded dataset which differs from
+                // the loading dataset. This could occur in the rare
+                // case of a second dataset being selected in the
+                // search dialog while the first dataset is being
+                // loaded. In that case, ignore the loaded dataset,
+                // throwing away the result and continuing to wait
+                // for the second selected dataset load to complete.
+                if (DataSetTabPresenter.this.dataset.getDoi() == dataset.getDoi()) {
+                    DataSetTabPresenter.this.dataset = dataset;
+                    display.showDetails(dataset);
+                }
             }
             
             @Override

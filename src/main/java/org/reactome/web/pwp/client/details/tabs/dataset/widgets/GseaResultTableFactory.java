@@ -22,7 +22,7 @@ public class GseaResultTableFactory {
     private static final NumberCell DECIMAL_CELL = new NumberCell(NumberFormat.getDecimalFormat());
     private static final NumberCell SCIENTIFIC_CELL =new NumberCell(NumberFormat.getFormat("0.00E0"));
 
-    public static Widget getTable(List<AnalysisResult> result) {
+    public static Widget createTable(List<AnalysisResult> result) {
         // The sortable table.
         CellTable<AnalysisResult> table = new CellTable<AnalysisResult>();
         ListDataProvider<AnalysisResult> dataProvider = new ListDataProvider<AnalysisResult>();

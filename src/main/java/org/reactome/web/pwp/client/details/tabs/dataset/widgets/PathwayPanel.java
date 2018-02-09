@@ -12,12 +12,14 @@ import org.reactome.nursa.model.DataSet;
 import org.reactome.web.analysis.client.AnalysisClient;
 import org.reactome.web.analysis.client.AnalysisHandler;
 import org.reactome.web.analysis.client.model.AnalysisError;
+import org.reactome.web.pwp.client.details.tabs.dataset.AnalysisCompletedEvent;
 import org.reactome.web.pwp.client.details.tabs.dataset.GseaClient;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -39,8 +41,6 @@ public class PathwayPanel extends Composite {
     static final Binder uiBinder = GWT.create(Binder.class);
 
     final String GENE_NAMES_HEADER = "#Gene names";
-
-    private DataSet dataset;
     
     /**
      * The panel content.
@@ -84,10 +84,15 @@ public class PathwayPanel extends Composite {
     @UiField()
     SimplePanel analysisPanel;
 
+    private DataSet dataset;
+
     private GseaConfigSlider gseaConfigSlider;
 
-    public PathwayPanel(DataSet dataset) {
+    private EventBus eventBus;
+
+    public PathwayPanel(DataSet dataset, EventBus eventBus) {
         this.dataset = dataset;
+        this.eventBus = eventBus;
         initWidget(uiBinder.createAndBindUi(this));
         // The configuration control panel.
         buildConfigPanel();
@@ -108,26 +113,27 @@ public class PathwayPanel extends Composite {
         Integer dataSetSizeMaxOpt = new Integer(dataSetBounds[1]);
         // Call the GSEA REST service.
         client.analyse(rankedList, dataSetSizeMinOpt, dataSetSizeMaxOpt, new MethodCallback<List<AnalysisResult>>() {
-        
+
             @Override
             public void onSuccess(Method method, List<AnalysisResult> result) {
-                 showGseaResult(result);
-             }
-             
-             @Override
-             public void onFailure(Method method, Throwable exception) {
-                 try {
-                     throw new IOException("GSEA execution unsuccessful", exception);
-                 } catch (IOException e) {
-                     // TODO - how are I/O errors handled in Reactome?
-                     throw new RuntimeException(e);
-                 }
-             }
+                showGseaResult(result);
+                eventBus.fireEventFromSource(new AnalysisCompletedEvent(), PathwayPanel.this);
+            }
+
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                try {
+                    throw new IOException("GSEA execution unsuccessful", exception);
+                } catch (IOException e) {
+                    // TODO - how are I/O errors handled in Reactome?
+                    throw new RuntimeException(e);
+                }
+            }
          });
     }
 
     protected void showGseaResult(List<AnalysisResult> result) {
-        Widget table = GseaResultTableFactory.getTable(result);
+        Widget table = GseaResultTableFactory.createTable(result);
         analysisPanel.setWidget(table);
     }
 
@@ -149,6 +155,7 @@ public class PathwayPanel extends Composite {
             @Override
             public void onAnalysisResult(org.reactome.web.analysis.client.model.AnalysisResult result, long time) {
                 showBinomialResult(result);
+                eventBus.fireEventFromSource(new AnalysisCompletedEvent(), PathwayPanel.this);
             }
 
             @Override

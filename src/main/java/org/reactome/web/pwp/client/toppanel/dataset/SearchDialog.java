@@ -47,9 +47,9 @@ public class SearchDialog extends DialogBox implements ClickHandler {
 
     public SearchDialog(final EventBus eventBus) {
         setAutoHideEnabled(false);
-        setModal(false);
+        setModal(true);
         setAnimationEnabled(true);
-        setGlassEnabled(false);
+        setGlassEnabled(true);
         setAutoHideOnHistoryEventsEnabled(false);
         setStyleName(RESOURCES.getCSS().main());
         setTitlePanel("DataSet Search");
@@ -117,6 +117,7 @@ public class SearchDialog extends DialogBox implements ClickHandler {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.fireEventFromSource(new DataSetSelectedEvent(dataset), this);
+                SearchDialog.this.hide();
             }
             
         });

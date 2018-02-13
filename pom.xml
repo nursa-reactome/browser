@@ -46,14 +46,11 @@
         <reactome.web.carrousel>1.0.2</reactome.web.carrousel>
         <reactome.web.diagram>3.4.2</reactome.web.diagram>
         <reactome.web.fireworks>1.4.1</reactome.web.fireworks>
-        <reactome.web.widgets>1.0.1</reactome.web.widgets>
         <reactome.web.model>2.0.0</reactome.web.model>
         <reactome.web.pdb>2.3.0</reactome.web.pdb>
         <reactome.web.chebi>1.0.1</reactome.web.chebi>
         <reactome.web.rhea>1.3.1</reactome.web.rhea>
         <reactome.web.gxa>3.0.3</reactome.web.gxa>
-        <reactome.nursa.model>1.0.1</reactome.nursa.model>
-        <reactome.gsea.model>1.0.1</reactome.gsea.model>
 
         <reactome.utils.version>1.0.3</reactome.utils.version>
 
@@ -96,18 +93,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.reactome.nursa</groupId>
-            <artifactId>nursa-model</artifactId>
-            <version>${reactome.nursa.model}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reactome.gsea</groupId>
-            <artifactId>gsea-model</artifactId>
-            <version>${reactome.gsea.model}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.reactome.web.pwp</groupId>
             <artifactId>analysis-client</artifactId>
             <version>${reactome.web.analysis-client}</version>
@@ -130,13 +115,6 @@
             <artifactId>carrousel</artifactId>
             <version>${reactome.web.carrousel}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.reactome.web</groupId>
-            <artifactId>widgets</artifactId>
-            <version>${reactome.web.widgets}</version>
-        </dependency>
-
         <dependency>
             <groupId>uk.ac.ebi.pwp.widgets</groupId>
             <artifactId>pdb</artifactId>
@@ -189,23 +167,7 @@
             <artifactId>javax.ws.rs-api</artifactId>
             <version>2.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.fusesource.restygwt</groupId>
-            <artifactId>restygwt</artifactId>
-            <version>2.2.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>gwt-jackson-parent</artifactId>
-                    <groupId>com.github.nmorel.gwtjackson</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <artifactId>gwt-jackson</artifactId>
-            <groupId>com.github.nmorel.gwtjackson</groupId>
-            <version>0.14.1</version>
-        </dependency>
-    </dependencies>
+     </dependencies>
 
     <build>
         <!-- Output classes directly into the webapp, so that IDEs and "mvn process-classes"
@@ -214,6 +176,13 @@
         <finalName>${fileName}-${project.version}</finalName>
 
         <plugins>
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>

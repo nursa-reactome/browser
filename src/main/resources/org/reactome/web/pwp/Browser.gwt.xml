@@ -12,16 +12,12 @@
     <inherits name="org.reactome.web.carrousel.Carrousel"/>
     <inherits name="org.reactome.web.diagram.DiagramViewer"/>
     <inherits name="org.reactome.web.fireworks.Fireworks"/>
-    <inherits name="org.reactome.web.Widgets"/>
     <inherits name='org.reactome.web.pwp.model.PathwayPortalModel'/>
-    <inherits name='org.reactome.nursa.NursaModel'/>
-    <inherits name='org.reactome.gsea.GseaModel'/>
     <inherits name="org.reactome.web.utils.analytics.GoogleAnalytics"/>
     <inherits name="uk.ac.ebi.pwp.widgets.chebi.ChEBI"/>
     <inherits name="uk.ac.ebi.pwp.widgets.gxa.GXA"/>
     <inherits name="uk.ac.ebi.pwp.widgets.pdb.PDB"/>
     <inherits name="uk.ac.ebi.pwp.widgets.rhea.Rhea"/>
-    <inherits name="org.fusesource.restygwt.RestyGWT"/>
 
     <!-- Specify the app entry point class.                         -->
     <entry-point class='org.reactome.web.pwp.client.Browser'/>

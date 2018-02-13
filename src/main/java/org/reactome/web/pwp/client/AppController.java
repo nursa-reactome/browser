@@ -2,6 +2,7 @@ package org.reactome.web.pwp.client;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -13,18 +14,24 @@ import org.reactome.web.pwp.client.details.Details;
 import org.reactome.web.pwp.client.details.DetailsDisplay;
 import org.reactome.web.pwp.client.details.DetailsPresenter;
 import org.reactome.web.pwp.client.details.tabs.DetailsTab;
-import org.reactome.web.pwp.client.details.tabs.dataset.DataSetTab;
-import org.reactome.web.pwp.client.details.tabs.dataset.DataSetTabDisplay;
-import org.reactome.web.pwp.client.details.tabs.dataset.DataSetTabPresenter;
+import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTab;
+import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTabDisplay;
+import org.reactome.web.pwp.client.details.tabs.analysis.AnalysisTabPresenter;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTab;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTabDisplay;
 import org.reactome.web.pwp.client.details.tabs.description.DescriptionTabPresenter;
 import org.reactome.web.pwp.client.details.tabs.downloads.DownloadsTab;
 import org.reactome.web.pwp.client.details.tabs.downloads.DownloadsTabDisplay;
 import org.reactome.web.pwp.client.details.tabs.downloads.DownloadsTabPresenter;
+import org.reactome.web.pwp.client.details.tabs.expression.ExpressionTab;
+import org.reactome.web.pwp.client.details.tabs.expression.ExpressionTabDisplay;
+import org.reactome.web.pwp.client.details.tabs.expression.ExpressionTabPresenter;
 import org.reactome.web.pwp.client.details.tabs.molecules.MoleculesTab;
 import org.reactome.web.pwp.client.details.tabs.molecules.MoleculesTabDisplay;
 import org.reactome.web.pwp.client.details.tabs.molecules.MoleculesTabPresenter;
+import org.reactome.web.pwp.client.details.tabs.structures.StructuresTab;
+import org.reactome.web.pwp.client.details.tabs.structures.StructuresTabDisplay;
+import org.reactome.web.pwp.client.details.tabs.structures.StructuresTabPresenter;
 import org.reactome.web.pwp.client.hierarchy.Hierarchy;
 import org.reactome.web.pwp.client.hierarchy.HierarchyDisplay;
 import org.reactome.web.pwp.client.hierarchy.HierarchyPresenter;
@@ -43,9 +50,6 @@ import org.reactome.web.pwp.client.tools.analysis.AnalysisLauncherPresenter;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncher;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncherDisplay;
 import org.reactome.web.pwp.client.tools.launcher.ToolLauncherPresenter;
-import org.reactome.web.pwp.client.toppanel.dataset.DataSetSelector;
-import org.reactome.web.pwp.client.toppanel.dataset.DataSetSelectorDisplay;
-import org.reactome.web.pwp.client.toppanel.dataset.DataSetSelectorPresenter;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelector;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelectorDisplay;
 import org.reactome.web.pwp.client.toppanel.layout.LayoutSelectorPresenter;
@@ -77,7 +81,7 @@ import java.util.List;
  */
 public class AppController implements BrowserReadyHandler {
 
-    private final EventBus eventBus;
+    protected final EventBus eventBus;
     private final IsWidget main;
 
     public AppController() {
@@ -126,7 +130,7 @@ public class AppController implements BrowserReadyHandler {
 
     public static final List<DetailsTab.Display> DETAILS_TABS = new LinkedList<>();
 
-    private IsWidget getTopPanel(){
+    protected ComplexPanel getTopPanel(){
         LayoutSelector.Display layoutSelector = new LayoutSelectorDisplay();
         new LayoutSelectorPresenter(this.eventBus, layoutSelector);
 
@@ -139,18 +143,13 @@ public class AppController implements BrowserReadyHandler {
         TourSelector.Display tour = new TourSelectorDisplay();
         new TourSelectorPresenter(this.eventBus, tour);
 
-        DataSetSelector.Display dataset = new DataSetSelectorDisplay();
-        new DataSetSelectorPresenter(this.eventBus, dataset);
-
         FlowPanel topPanel = new FlowPanel();
         topPanel.setStyleName("elv-Top-Panel");
         topPanel.add(new LogoPanel());
         topPanel.add(species);
         topPanel.add(layoutSelector);
         topPanel.add(tour);
-        topPanel.add(dataset);
-        // Nursa - hide the analysis tool launcher. 
-        //topPanel.add(toolLauncher);
+        topPanel.add(toolLauncher);
 
         return topPanel;
     }
@@ -175,7 +174,7 @@ public class AppController implements BrowserReadyHandler {
         return viewport;
     }
 
-    private void initialiseDetailsTabsList(){
+    protected void initialiseDetailsTabsList(){
         DescriptionTab.Display description = new DescriptionTabDisplay();
         new DescriptionTabPresenter(this.eventBus, description);
         DETAILS_TABS.add(description);
@@ -184,9 +183,17 @@ public class AppController implements BrowserReadyHandler {
         new MoleculesTabPresenter(this.eventBus, molecules);
         DETAILS_TABS.add(molecules);
 
-        DataSetTab.Display dataset = new DataSetTabDisplay();
-        new DataSetTabPresenter(this.eventBus, dataset);
-        DETAILS_TABS.add(dataset);
+        StructuresTab.Display structures = new StructuresTabDisplay();
+        new StructuresTabPresenter(this.eventBus, structures);
+        DETAILS_TABS.add(structures);
+
+        ExpressionTab.Display expression = new ExpressionTabDisplay();
+        new ExpressionTabPresenter(this.eventBus, expression);
+        DETAILS_TABS.add(expression);
+
+        AnalysisTab.Display analysis = new AnalysisTabDisplay();
+        new AnalysisTabPresenter(this.eventBus, analysis);
+        DETAILS_TABS.add(analysis);
 
         DownloadsTab.Display downloads = new DownloadsTabDisplay();
         new DownloadsTabPresenter(this.eventBus, downloads);

@@ -33,9 +33,9 @@ public class StateManager implements BrowserModule.Manager, ValueChangeHandler<S
         DiagramObjectsFlagResetHandler, AnalysisCompletedHandler, AnalysisResetHandler, ResourceChangedHandler,
         ToolSelectedHandler {
 
-    protected EventBus eventBus;
+    private EventBus eventBus;
 
-    protected State currentState;
+    private State currentState;
 
     public StateManager(EventBus eventBus) {
         this.eventBus = eventBus;

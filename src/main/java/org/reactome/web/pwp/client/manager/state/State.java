@@ -1,7 +1,6 @@
 package org.reactome.web.pwp.client.manager.state;
 
 import com.google.gwt.http.client.URL;
-
 import org.reactome.web.pwp.client.common.AnalysisStatus;
 import org.reactome.web.pwp.client.common.PathwayPortalTool;
 import org.reactome.web.pwp.client.common.utils.Console;
@@ -126,9 +125,6 @@ public class State {
         this.tool = state.tool;
         this.analysisStatus = state.analysisStatus;
         this.flag = state.flag;
-        // Note: the dataSet is not copied to a new state.
-        // The dataSet field is only set by the StateManager
-        // when a dataset is selected.
     }
 
     public void doConsistencyCheck(final StateLoadedHandler handler){

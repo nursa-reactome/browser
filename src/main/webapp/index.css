@@ -128,16 +128,6 @@ body {
     padding: 50px;
 }
 
-.elv-Details-Title-Wrap {
-    background-color: #8ec5cf;
-    border-radius: 5px;
-    border: 1px solid grey;
-    color: #2b5e6d;
-    font-weight: bolder;
-    margin: 0 0 5px 5px;
-    padding: 4px 10px 4px 10px;
-}
-
 .elv-Details-Title {
     background-color: #8ec5cf;
     border-radius: 5px;
@@ -494,15 +484,6 @@ body {
     height: 30px;
     margin: 0 0 5px 2px;
     float: left;
-}
-
-.elv-DataSet-Button{
-    background-color: #f0ffff;
-    border-radius: 5px;
-    border: 1px solid grey;
-    color: #063da0;
-    font-weight: bolder;
-    height: 2em;
 }
 
 .elv-InformationPanel-Download{

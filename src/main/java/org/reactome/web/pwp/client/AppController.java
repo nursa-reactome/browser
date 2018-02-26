@@ -103,9 +103,13 @@ public class AppController implements BrowserReadyHandler {
     }
 
     private void initManager(){
-        new StateManager(this.eventBus);
+        initStateManager();
         new OrthologyManager(this.eventBus);
         new GAManager(this.eventBus);
+    }
+    
+    protected void initStateManager() {
+        new StateManager(this.eventBus);
     }
 
     private IsWidget getDesktopBrowser(){

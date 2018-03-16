@@ -39,9 +39,9 @@ import java.util.Set;
 public class HierarchyDisplay extends Composite implements OpenHandler<TreeItem>, SelectionHandler<TreeItem>,
         Hierarchy.Display, HierarchyItemMouseOverHandler, HierarchyItemMouseOutHandler, HierarchyItemDoubleClickedHandler {
 
-    private Hierarchy.Presenter presenter;
+    protected Hierarchy.Presenter presenter;
 
-    private HierarchyTree hierarchyTree;
+    protected HierarchyTree hierarchyTree;
     private HierarchyContainer hierarchyContainer;
 
     public HierarchyDisplay() {
@@ -231,11 +231,15 @@ public class HierarchyDisplay extends Composite implements OpenHandler<TreeItem>
         this.hierarchyContainer.addHierarchyTree(species, this.hierarchyTree);
 
         try {
-            this.hierarchyTree.loadPathwayChildren(null, tlps);
+            loadHierarchy(tlps);
             this.presenter.hierarchyChanged(species);
         } catch (Exception e) {
             Console.error(e.getLocalizedMessage());
         }
+    }
+
+    protected void loadHierarchy(List<? extends Event> tlps) throws Exception {
+        this.hierarchyTree.loadPathwayChildren(null, tlps);
     }
 
 
@@ -307,6 +311,8 @@ public class HierarchyDisplay extends Composite implements OpenHandler<TreeItem>
         String hierarchyPanelTitle();
 
         String hierarchyContainer();
+
+        String hierarchyFirstTree();
 
         String hierarchyPanel();
     }

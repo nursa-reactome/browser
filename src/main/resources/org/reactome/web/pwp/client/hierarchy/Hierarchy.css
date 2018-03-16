@@ -1,3 +1,7 @@
+@external .org-reactome-web-pwp-client-hierarchy-widget-HierarchyItem-ResourceCSS-hierarchyItem;
+@external .org-reactome-web-pwp-client-hierarchy-widget-HierarchyItem-ResourceCSS-hierarchyItemSelected;
+@external .org-reactome-web-pwp-client-hierarchy-widget-HierarchyItem-ResourceCSS-hierarchyItemHighlighted;
+
 .hierarchyPanelTitle {
     background-color: rgb(88, 195, 229);
     color: white;
@@ -30,3 +34,17 @@
     border: 0 solid transparent;
     border-radius: 0 15px 0 0;
 }
+
+.hierarchyFirstTree .org-reactome-web-pwp-client-hierarchy-widget-HierarchyItem-ResourceCSS-hierarchyItem {
+    color: SlateBlue;
+    font-weight: bold;
+}
+
+.hierarchyFirstTree .org-reactome-web-pwp-client-hierarchy-widget-HierarchyItem-ResourceCSS-hierarchyItemSelected {
+    color: white;
+}
+
+.hierarchyFirstTree .org-reactome-web-pwp-client-hierarchy-widget-HierarchyItem-ResourceCSS-hierarchyItemHighlighted {
+    color: white;
+}
+

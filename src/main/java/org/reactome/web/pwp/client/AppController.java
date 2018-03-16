@@ -81,8 +81,10 @@ import java.util.List;
  */
 public class AppController implements BrowserReadyHandler {
 
+    public static final List<DetailsTab.Display> DETAILS_TABS = new LinkedList<>();
+
     protected final EventBus eventBus;
-    private final IsWidget main;
+    protected final IsWidget main;
 
     public AppController() {
         this.printMessage();
@@ -120,7 +122,7 @@ public class AppController implements BrowserReadyHandler {
         Messages.Display messages = new MessagesDisplay();
         new MessagesPresenter(this.eventBus, messages);
 
-        Hierarchy.Display hierarchy = new HierarchyDisplay();
+        Hierarchy.Display hierarchy = createHierarchyDisplay();
         new HierarchyPresenter(this.eventBus, hierarchy);
 
         Details.Display details = new DetailsDisplay();
@@ -132,7 +134,9 @@ public class AppController implements BrowserReadyHandler {
         return main;
     }
 
-    public static final List<DetailsTab.Display> DETAILS_TABS = new LinkedList<>();
+    protected HierarchyDisplay createHierarchyDisplay() {
+        return new HierarchyDisplay();
+    }
 
     protected ComplexPanel getTopPanel(){
         LayoutSelector.Display layoutSelector = new LayoutSelectorDisplay();

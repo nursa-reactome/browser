@@ -16,16 +16,15 @@ public class ErrorMessageEvent extends GwtEvent<ErrorMessageHandler> {
     private Throwable throwable;
 
     public ErrorMessageEvent(String message) {
-        this.message = Collections.singletonList(message);
+        this(Collections.singletonList(message));
     }
 
     public ErrorMessageEvent(List<String> message) {
-        this.message = message;
+        this(message, null);
     }
 
     public ErrorMessageEvent(String message, Throwable throwable) {
-        this.message = Collections.singletonList(message);
-        this.throwable = throwable;
+        this(Collections.singletonList(message), throwable);
     }
 
     public ErrorMessageEvent(List<String> message, Throwable throwable) {

@@ -77,7 +77,7 @@ public class StateManager implements BrowserModule.Manager, ValueChangeHandler<S
         ResourceSummary resource = resources.size() == 2 ? resources.get(1) : resources.get(0); //IMPORTANT!
 
         State desiredState = new State(this.currentState);
-        desiredState.setDetailsTab(analysisTabType());
+        desiredState.setDetailsTab(DetailsTabType.ANALYSIS);
         desiredState.setAnalysisParameters(summary.getToken(), resource.getResource());
         this.eventBus.fireEventFromSource(new StateChangedEvent(desiredState), this);
     }
@@ -203,10 +203,6 @@ public class StateManager implements BrowserModule.Manager, ValueChangeHandler<S
         State desiredState = new State(this.currentState);
         desiredState.setTool(event.getTool());
         this.eventBus.fireEventFromSource(new StateChangedEvent(desiredState), this);
-    }
-
-    protected DetailsTabType analysisTabType() {
-        return DetailsTabType.ANALYSIS;
     }
 
     private void tokenError(String token) {

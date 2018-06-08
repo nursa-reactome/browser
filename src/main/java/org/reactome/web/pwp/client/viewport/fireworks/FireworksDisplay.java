@@ -26,7 +26,7 @@ public class FireworksDisplay extends DockLayoutPanel implements Fireworks.Displ
         NodeHoverHandler, NodeSelectedHandler, NodeSelectedResetHandler, NodeHoverResetHandler, NodeOpenedHandler,
         ProfileChangedHandler, NodeFlaggedResetHandler {
 
-    private FireworksViewer fireworks;
+    protected FireworksViewer fireworks;
     private Fireworks.Presenter presenter;
     private List<HandlerRegistration> handlers;
 
@@ -47,7 +47,7 @@ public class FireworksDisplay extends DockLayoutPanel implements Fireworks.Displ
     public void loadSpeciesFireworks(String speciesJson) {
         this.removeHandlers(); //Needed to allow the garbage collection to get rid of previous instances of fireworks
 //        FireworksFactory.EVENT_BUS_VERBOSE = true;
-        this.fireworks = FireworksFactory.createFireworksViewer(speciesJson);
+        this.fireworks = createFireworksViewer(speciesJson);
         handlers.add(this.fireworks.addAnalysisResetHandler(this));
         handlers.add(this.fireworks.addNodeFlaggedResetHandler(this));
         handlers.add(this.fireworks.addNodeHoverHandler(this));
@@ -65,6 +65,10 @@ public class FireworksDisplay extends DockLayoutPanel implements Fireworks.Displ
                 applyCarriedActions();
             }
         });
+    }
+
+    protected FireworksViewer createFireworksViewer(String speciesJson) {
+        return FireworksFactory.createFireworksViewer(speciesJson);
     }
 
     @Override

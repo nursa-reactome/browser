@@ -43,7 +43,7 @@ public class FireworksPresenter extends AbstractPresenter implements Fireworks.P
     private AnalysisStatus analysisStatus;
     private String flag;
 
-    private Fireworks.Display display;
+    protected Fireworks.Display display;
 
     public FireworksPresenter(EventBus eventBus, Fireworks.Display display) {
         super(eventBus);

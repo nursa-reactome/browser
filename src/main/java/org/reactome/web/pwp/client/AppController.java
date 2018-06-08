@@ -173,13 +173,21 @@ public class AppController implements BrowserReadyHandler {
 
             viewport = new ViewportDisplay(diagram, welcome);
         } else {
-            Fireworks.Display fireworks = new FireworksDisplay();
-            new FireworksPresenter(this.eventBus, fireworks);
+            Fireworks.Display fireworks = getFireworksDisplay();
+            createFireworksPresenter(fireworks);
 
             viewport = new ViewportDisplay(diagram, fireworks);
         }
         new ViewportPresenter(this.eventBus, viewport);
         return viewport;
+    }
+
+    protected FireworksPresenter createFireworksPresenter(Fireworks.Display fireworks) {
+        return new FireworksPresenter(this.eventBus, fireworks);
+    }
+
+    protected FireworksDisplay getFireworksDisplay() {
+        return new FireworksDisplay();
     }
 
     protected void initialiseDetailsTabsList(){

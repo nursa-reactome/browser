@@ -33,7 +33,7 @@ public class PostSubmitter extends DockLayoutPanel implements ClickHandler {
         addStyleName(AnalysisStyleFactory.getAnalysisStyle().analysisMainSubmitter());
         setHeight(this.height + "px");
 
-        addEast(getExampleButtons(), 230);
+        addEast(getExampleButtons(), 240);
 
         FlowPanel submissionPanel = new FlowPanel();
         submissionPanel.addStyleName(AnalysisStyleFactory.getAnalysisStyle().postSubmitterButtons());
@@ -135,6 +135,12 @@ public class PostSubmitter extends DockLayoutPanel implements ClickHandler {
                 textArea.setText(AnalysisExamples.EXAMPLES.getCancerGeneCensus().getText());
             }
         }));
+        examples.add(new Button("Tissue Specific Expression (HPA)", new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                textArea.setText(AnalysisExamples.EXAMPLES.getHPANormalTissueExpression().getText());
+            }
+        }));
         return examples;
     }
 
@@ -174,5 +180,9 @@ public class PostSubmitter extends DockLayoutPanel implements ClickHandler {
 
         @Source("metabolomics.txt")
         TextResource getMetabolomics();
+
+        @Source("HPANormalTissueExpressionIHC.txt")
+        TextResource getHPANormalTissueExpression();
+
     }
 }

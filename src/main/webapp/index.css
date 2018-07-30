@@ -153,6 +153,7 @@ body {
     color: #3f3586;
     font-weight: bolder;
     height: 30px;
+    white-space:nowrap;
     margin: 0 0 5px 5px;
     padding: 4px 10px 4px 10px;
 }
@@ -169,6 +170,7 @@ body {
     font-weight: bolder;
     height: 30px;
     margin: 0 0 5px 5px;
+    white-space:nowrap;
     padding: 4px 10px 4px 10px;
 }
 
@@ -280,35 +282,24 @@ body {
 }
 
 .elv-Download-Title{
-    background-color: azure;
+    background-color: #8ec5cf;
     border-radius: 5px;
     border: 1px solid grey;
-    color: #063da0;
+    color: #2b5e6d;
     font-weight: bolder;
     height: 30px;
     margin: 0 0 5px 5px;
     padding: 4px 10px 4px 10px;
-}
-
-.elv-Download-Explanation{
-    background-color: #eeffe4;
-    border-radius: 5px;
-    border: 1px solid grey;
-    color: black;
-    font-size: small;
-    height: 18px;
-    margin: 5px 0 5px 5px;
-    padding: 4px 10px 4px 10px;
+    float: left;
 }
 
 .elv-Download-ItemsPanel {
-    border-radius: 7px;
-    border: 1px solid grey;
     margin: 5px;
 }
 
 .elv-Download-Item {
     color: blue;
+    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
 }
 /*####################### DOWNLOAD TAB [END] #########################################################################*/
 
@@ -449,7 +440,12 @@ body {
 .elv-Details-Name-MoleculesRow{
     position: absolute;
     left: 250px;
+    max-height: 1.5em;
     margin-top: 5px;
+    margin-right: 55px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
 }
 
 .elv-Molecules-InfoPanel{

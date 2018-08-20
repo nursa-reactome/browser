@@ -98,6 +98,10 @@ public class HierarchyDisplay extends Composite implements OpenHandler<TreeItem>
         HierarchyItem item = (HierarchyItem) selectionEvent.getSelectedItem();
         if (item == null) return;
 
+        onSelection(item);
+    }
+
+    protected void onSelection(HierarchyItem item) {
         this.hierarchyTree.clearHighlights();
         item.highlightPath();
 

@@ -23,9 +23,13 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
 
     private Diagram.Presenter presenter;
 
-    private DiagramViewer diagram;
+    protected DiagramViewer diagram;
 
     public DiagramDisplay() {
+        this(DiagramFactory.createDiagramViewer());
+    }
+    
+    protected DiagramDisplay(DiagramViewer diagram) {
         super(Style.Unit.PX);
 
         DiagramFactory.CONSOLE_VERBOSE = false;
@@ -33,7 +37,7 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
         DiagramFactory.SHOW_INFO = false;
         DiagramFactory.WATERMARK = false;
 
-        this.diagram = DiagramFactory.createDiagramViewer();
+        this.diagram = diagram;
         this.diagram.asWidget().setStyleName(ViewportDisplay.RESOURCES.getCSS().viewportPanel());
 
         //When the pathway browser is configured to run on the Curator site, the Fireworks

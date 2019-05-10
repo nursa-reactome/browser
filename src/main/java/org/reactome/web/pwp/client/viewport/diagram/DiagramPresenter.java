@@ -29,7 +29,7 @@ import java.util.Objects;
 public class DiagramPresenter extends AbstractPresenter implements Diagram.Presenter, ViewportChangedHandler,
         DatabaseObjectHoveredHandler {
 
-    private Diagram.Display display;
+    protected Diagram.Display display;
 
     private Pathway displayedPathway;
 

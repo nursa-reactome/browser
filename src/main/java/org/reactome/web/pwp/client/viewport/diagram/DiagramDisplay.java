@@ -18,8 +18,9 @@ import org.reactome.web.pwp.model.client.classes.Pathway;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
-        ContentLoadedHandler, GraphObjectSelectedHandler, GraphObjectHoveredHandler, DiagramObjectsFlagResetHandler,
-        AnalysisResetHandler, FireworksOpenedHandler {
+        ContentLoadedHandler, GraphObjectSelectedHandler, GraphObjectHoveredHandler,
+        DiagramObjectsFlaggedHandler, DiagramObjectsFlagResetHandler,
+        AnalysisResetHandler, FireworksOpenedHandler, DiagramProfileChangedHandler, AnalysisProfileChangedHandler {
 
     private Diagram.Presenter presenter;
 
@@ -32,7 +33,7 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
     protected DiagramDisplay(DiagramViewer diagram) {
         super(Style.Unit.PX);
 
-        DiagramFactory.CONSOLE_VERBOSE = false;
+        DiagramFactory.CONSOLE_VERBOSE = true;
         DiagramFactory.EVENT_BUS_VERBOSE = false;
         DiagramFactory.SHOW_INFO = false;
         DiagramFactory.WATERMARK = false;
@@ -61,6 +62,10 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
         this.diagram.addAnalysisResetHandler(this);
         this.diagram.addFireworksOpenedHandler(this);
         this.diagram.addDiagramObjectsFlagResetHandler(this);
+        this.diagram.addDiagramObjectsFlaggedHandler(this);
+
+        this.diagram.addDiagramProfileChangedHandler(this);
+        this.diagram.addAnalysisProfileChangedHandler(this);
     }
 
     @Override
@@ -69,11 +74,11 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
     }
 
     @Override
-    public void flag(String flag) {
+    public void flag(String flag, Boolean includeInteractors) {
         if (flag == null) {
             this.diagram.resetFlaggedItems();
         } else {
-            this.diagram.flagItems(flag);
+            this.diagram.flagItems(flag, includeInteractors);
         }
     }
 
@@ -105,6 +110,10 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
         this.presenter.analysisReset();
     }
 
+    @Override
+    public void onDiagramObjectsFlagged(DiagramObjectsFlaggedEvent event) {
+        this.presenter.diagramFlagPerformed(event.getTerm(), event.getIncludeInteractors());
+    }
 
     @Override
     public void onDiagramObjectsFlagReset(DiagramObjectsFlagResetEvent event) {
@@ -148,5 +157,15 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         this.diagram.setVisible(visible);
+    }
+
+    @Override
+    public void onAnalysisProfileChanged(AnalysisProfileChangedEvent event) {
+        presenter.analysisProfileChanged(event);
+    }
+
+    @Override
+    public void onDiagramProfileChanged(DiagramProfileChangedEvent event) {
+        presenter.diagramProfileChanged(event);
     }
 }

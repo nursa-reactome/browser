@@ -5,28 +5,51 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import org.reactome.web.pwp.model.client.common.ContentClientAbstract;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Antonio Fabregat (fabregat@ebi.ac.uk)
  */
 public enum DownloadType {
-    SBML        ("SBML", ContentClientAbstract.CONTENT_SERVICE + "exporter/sbml/__ID__.xml", "SMBL", DownloadIcons.INSTANCE.SBMLIcon()),
-    SBGN        ("SBGN", "/ReactomeRESTfulAPI/RESTfulWS/sbgnExporter/__ID__", "SBGN", DownloadIcons.INSTANCE.SBGNIcon()),
-    BIOPAX_2    ("BIOPAX 2", "/ReactomeRESTfulAPI/RESTfulWS/biopaxExporter/Level2/__ID__", "Biopax 2", DownloadIcons.INSTANCE.BioPAX2Icon()),
-    BIOPAX_3    ("BIOPAX 3", "/ReactomeRESTfulAPI/RESTfulWS/biopaxExporter/Level3/__ID__", "Biopax 3", DownloadIcons.INSTANCE.BioPAX3Icon()),
-    PDF         ("PDF", "/cgi-bin/pdfexporter?DB=__DB__&ID=__ID__", "PDF", DownloadIcons.INSTANCE.PDFIcon()),
-    WORD        ("Word", "/cgi-bin/rtfexporter?DB=__DB__&ID=__ID__", "RTF", DownloadIcons.INSTANCE.WordIcon()),
-    PROTEGE     ("Protege", "/cgi-bin/protegeexporter?DB=__DB__&ID=__ID__", "OWL", DownloadIcons.INSTANCE.ProtegeIcon());
+    SBML        ("SBML", ContentClientAbstract.CONTENT_SERVICE + "exporter/event/__STID__.sbml", "SMBL", DownloadIcons.INSTANCE.SBMLIcon(), Group.FORMAT),
+    SBGN        ("SBGN", ContentClientAbstract.CONTENT_SERVICE + "exporter/event/__STID__.sbgn", "SBGN", DownloadIcons.INSTANCE.SBGNIcon(), Group.FORMAT),
+    BIOPAX_2    ("BIOPAX 2", "/ReactomeRESTfulAPI/RESTfulWS/biopaxExporter/Level2/__ID__", "Biopax 2", DownloadIcons.INSTANCE.BioPAX2Icon(), Group.FORMAT ),
+    BIOPAX_3    ("BIOPAX 3", "/ReactomeRESTfulAPI/RESTfulWS/biopaxExporter/Level3/__ID__", "Biopax 3", DownloadIcons.INSTANCE.BioPAX3Icon(), Group.FORMAT),
+    PDF         ("PDF", ContentClientAbstract.CONTENT_SERVICE + "exporter/document/event/__STID__.pdf__PARAMS__", "PDF", DownloadIcons.INSTANCE.PDFIcon(), Group.FORMAT),
+    PROTEGE     ("Protege", "/cgi-bin/protegeexporter?DB=__DB__&ID=__ID__", "OWL", DownloadIcons.INSTANCE.ProtegeIcon(), Group.FORMAT),
+    SVG         ("SVG", ContentClientAbstract.CONTENT_SERVICE + "exporter/diagram/__STID__.svg__PARAMS__", "SVG", DownloadIcons.INSTANCE.SVGIcon(), Group.DIAGRAM),
+    //    POWERPOINT  ("Powerpoint", ContentClientAbstract.CONTENT_SERVICE + "exporter/diagram/__STID__.pptx__PARAMS__", "PPTX", DownloadIcons.INSTANCE.PowerPointIcon(), Group.FORMAT),
+    PNG         ("PNG", ContentClientAbstract.CONTENT_SERVICE + "exporter/diagram/__STID__.png__PARAMS__", "PNG", DownloadIcons.INSTANCE.PNGIcon(), Group.DIAGRAM, true),
+    JPEG        ("JPEG", ContentClientAbstract.CONTENT_SERVICE + "exporter/diagram/__STID__.jpeg__PARAMS__", "JPEG", DownloadIcons.INSTANCE.JPEGIcon(), Group.DIAGRAM, true),
+    GIF         ("GIF", ContentClientAbstract.CONTENT_SERVICE + "exporter/diagram/__STID__.gif__PARAMS__", "GIF", DownloadIcons.INSTANCE.GIFIcon(), Group.DIAGRAM, true);
+
+    //NOTE: please put the quality values below in ascending order
+    public static final List<Integer> QUALITIES = Arrays.asList(2, 5, 7);
 
     private String name;
     private String url;
     private String tooltip;
     private transient ImageResource icon;
+    private Group group;
 
-    DownloadType(String name, String url, String tooltip, ImageResource icon) {
+    public enum Group {
+        FORMAT,
+        DIAGRAM
+    }
+    private boolean hasQualityOptions;
+
+    DownloadType(String name, String url, String tooltip, ImageResource icon, Group group) {
+        this(name, url, tooltip, icon, group, false);
+    }
+
+    DownloadType(String name, String url, String tooltip, ImageResource icon, Group group, boolean hasQualityOptions) {
         this.name = name;
         this.url = url;
         this.tooltip = tooltip;
         this.icon = icon;
+        this.group = group;
+        this.hasQualityOptions = hasQualityOptions;
     }
 
     public String getName() {
@@ -37,12 +60,20 @@ public enum DownloadType {
         return tooltip;
     }
 
-    public String getUrl(String db, Long dbId){
-        return this.url.replace("__DB__",db).replace("__ID__", String.valueOf(dbId));
+    public String getUrl() {
+        return url;
     }
 
     public ImageResource getIcon() {
         return icon;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public boolean hasQualityOptions() {
+        return hasQualityOptions;
     }
 
     public interface DownloadIcons extends ClientBundle {
@@ -69,5 +100,20 @@ public enum DownloadType {
 
         @Source("images/Protege_download.png")
         ImageResource ProtegeIcon();
+
+        @Source("images/PowerPoint_download.png")
+        ImageResource PowerPointIcon();
+
+        @Source("images/PNG_download.png")
+        ImageResource PNGIcon();
+
+        @Source("images/SVG_download.png")
+        ImageResource SVGIcon();
+
+        @Source("images/JPEG_download.png")
+        ImageResource JPEGIcon();
+
+        @Source("images/GIF_download.png")
+        ImageResource GIFIcon();
     }
 }

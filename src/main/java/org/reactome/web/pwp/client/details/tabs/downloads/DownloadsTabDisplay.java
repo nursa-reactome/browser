@@ -3,19 +3,23 @@ package org.reactome.web.pwp.client.details.tabs.downloads;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.resources.client.TextResource;
 import com.google.gwt.user.client.ui.*;
+import org.reactome.web.pwp.client.common.AnalysisStatus;
 import org.reactome.web.pwp.client.common.CommonImages;
 import org.reactome.web.pwp.client.common.utils.Console;
 import org.reactome.web.pwp.client.details.common.help.HelpPopupImage;
 import org.reactome.web.pwp.client.details.common.help.InstanceTypeExplanation;
 import org.reactome.web.pwp.client.details.tabs.DetailsTabTitle;
 import org.reactome.web.pwp.client.details.tabs.DetailsTabType;
+import org.reactome.web.pwp.client.details.tabs.downloads.widgets.DownloadGroupPanel;
+import org.reactome.web.pwp.client.details.tabs.downloads.widgets.DownloadItem;
 import org.reactome.web.pwp.client.details.tabs.downloads.widgets.DownloadType;
+import org.reactome.web.pwp.client.details.tabs.downloads.widgets.DownloadURLBuilder;
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
+
+import java.util.List;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
@@ -25,6 +29,13 @@ public class DownloadsTabDisplay extends ResizeComposite implements DownloadsTab
     DownloadsTab.Presenter presenter;
 
     private String dbName = null;
+    private AnalysisStatus analysisStatus = null;
+    private String selected;
+    private String flag;
+    private String diagramProfile;
+    private String analysisProfile;
+
+
     private DockLayoutPanel container;
     private DetailsTabTitle title;
 
@@ -58,36 +69,38 @@ public class DownloadsTabDisplay extends ResizeComposite implements DownloadsTab
 
     @Override
     public void showDetails(DatabaseObject databaseObject) {
-//        this.showWaitingMessage();
-
-        //To continue ahead the dbName is needed. If it is null, the presenter should still
-        //be trying to retrieve that from the db
-//        if(this.dbName==null){
-//            (new Timer() {
-//                @Override
-//                public void run() {
-//                    showInstanceDetailsIfExists(pathway, databaseObject);
-//                }
-//            }).schedule(250);
-//            return;
-//        }
-
         DockLayoutPanel aux = new DockLayoutPanel(Style.Unit.PX);
 
         FlowPanel titlePanel = new FlowPanel();
         titlePanel.add(getTitle(databaseObject));
         aux.addNorth(titlePanel, 33);
 
-        //Molecules Download
-        FlowPanel flowPanel = new FlowPanel();
+        DownloadGroupPanel formatGroup = new DownloadGroupPanel(
+                "Pathway Format",
+                RESOURCES.formatInfo().getText());
+        DownloadGroupPanel diagramGroup = new DownloadGroupPanel(
+                "Pathway Diagram",
+                RESOURCES.diagramInfo().getText());
+
         for (DownloadType downloadType : DownloadType.values()) {
-            Anchor dp = getDownloadAnchor(this.dbName, downloadType, databaseObject);
-            dp.setStyleName(RESOURCES.getCSS().downloadItem());
-            flowPanel.add(dp);
+            List<String> urls  = new DownloadURLBuilder(downloadType, dbName, databaseObject, analysisStatus)
+                                                                    .setDiagramProfile(diagramProfile)
+                                                                    .setAnalysisProfile(analysisProfile)
+                                                                    .setSelected(selected)
+                                                                    .setFlagged(flag)
+                                                                    .generateUrlList();
+
+            DownloadItem dp = new DownloadItem(downloadType, urls);
+            if (downloadType.getGroup() == DownloadType.Group.FORMAT) {
+                formatGroup.insert(dp);
+            } else if (downloadType.getGroup() == DownloadType.Group.DIAGRAM) {
+                diagramGroup.insert(dp);
+            }
         }
 
-        Widget explanation = getExplanation();
-        flowPanel.add(explanation);
+        FlowPanel flowPanel = new FlowPanel();
+        flowPanel.add(formatGroup);
+        flowPanel.add(diagramGroup);
 
         ScrollPanel sp = new ScrollPanel(flowPanel);
         sp.setStyleName("elv-Download-ItemsPanel");
@@ -111,14 +124,6 @@ public class DownloadsTabDisplay extends ResizeComposite implements DownloadsTab
         this.container.add(message);
     }
 
-    private Anchor getDownloadAnchor(final String dbName, final DownloadType type, final DatabaseObject databaseObject) {
-        SafeHtml image = SafeHtmlUtils.fromSafeConstant(new Image(type.getIcon()).toString());
-        Anchor rtn = new Anchor(image, type.getUrl(dbName, databaseObject.getDbId()), "_blank");
-        rtn.addStyleName("elv-Download-Item");
-        rtn.setTitle("View/download in " + type.getTooltip() + " format");
-        return rtn;
-    }
-
     private Widget getTitle(DatabaseObject databaseObject){
         HorizontalPanel titlePanel = new HorizontalPanel();
         titlePanel.setStyleName("elv-Download-Title");
@@ -138,19 +143,12 @@ public class DownloadsTabDisplay extends ResizeComposite implements DownloadsTab
         return titlePanel;
     }
 
-    private Widget getExplanation(){
-        FlowPanel explanation = new FlowPanel();
-        explanation.add(new Image(RESOURCES.info()));
-        explanation.add(new Label("The download options below are for the selected pathway, " +
-                "not individual events or entities selected in it."));
-        explanation.setStyleName(RESOURCES.getCSS().explanationPanel());
-        return explanation;
-    }
-
     @Override
     public void showErrorMessage(String message){
         HorizontalPanel panel = new HorizontalPanel();
         Image loader = new Image(CommonImages.INSTANCE.warning());
+        loader.setHeight("16px");
+        loader.setWidth("auto");
         panel.add(loader);
 
         Label label = new Label(message);
@@ -162,35 +160,49 @@ public class DownloadsTabDisplay extends ResizeComposite implements DownloadsTab
     }
 
     @Override
+    public void setAnalysisStatus(AnalysisStatus status) {
+        this.analysisStatus = status;
+    }
+
+    @Override
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
 
+    @Override
+    public void setSelected(DatabaseObject selected) {
+        this.selected = selected == null ?  null : selected.getStId();
+    }
+
+    @Override
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    @Override
+    public void setDiagramProfile(String profile) {
+        this.diagramProfile = profile;
+    }
+
+    @Override
+    public void setAnalysisProfile(String profile) {
+        this.analysisProfile = profile;
+    }
 
     public static Resources RESOURCES;
     static {
         RESOURCES = GWT.create(Resources.class);
-        RESOURCES.getCSS().ensureInjected();
     }
 
     public interface Resources extends ClientBundle {
-        @Source(ResourceCSS.CSS)
-        ResourceCSS getCSS();
 
         @Source("widgets/images/info.png")
         ImageResource info();
 
-    }
+        @Source("widgets/text/formatInfo.txt")
+        TextResource formatInfo();
 
-    @CssResource.ImportedWithPrefix("diagram-DownloadsTabDisplay")
-    public interface ResourceCSS extends CssResource {
-        /**
-         * The path to the default CSS styles used by this resource.
-         */
-        String CSS = "org/reactome/web/pwp/client/details/tabs/downloads/DownloadsTabDisplay.css";
-
-        String explanationPanel();
-
-        String downloadItem();
+        @Source("widgets/text/diagramInfo.txt")
+        TextResource diagramInfo();
     }
 }

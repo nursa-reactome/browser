@@ -16,7 +16,8 @@
         <init-param>
             <param-name>proxyHost</param-name>
             <!--<param-value>localhost</param-value>-->
-            <param-value>reactome.org</param-value>
+            <param-value>dev.reactome.org</param-value>
+            <!--<param-value>reactome.org</param-value>-->
         </init-param>
         <init-param>
             <param-name>proxyPort</param-name>
@@ -46,12 +47,13 @@
         <init-param>
             <param-name>proxyHost</param-name>
             <!--<param-value>localhost</param-value>-->
-            <param-value>reactome.org</param-value>
+            <!--<param-value>reactome.org</param-value>-->
+            <param-value>dev.reactome.org</param-value>
         </init-param>
         <init-param>
             <param-name>proxyPort</param-name>
-            <param-value>8080</param-value>
-            <!--<param-value>80</param-value>-->
+            <!--<param-value>8080</param-value>-->
+            <param-value>80</param-value>
         </init-param>
         <!-- ONLY when connecting to localhost -->
         <!--<init-param>-->
@@ -60,8 +62,8 @@
         <!--</init-param>-->
         <init-param>
             <param-name>proxyPath</param-name>
-            <param-value>/</param-value>
-            <!--<param-value>/AnalysisService</param-value>-->
+            <!--<param-value>/</param-value>-->
+            <param-value>/AnalysisService</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -181,6 +183,37 @@
         <url-pattern>/rhea/rest/*</url-pattern>
     </servlet-mapping>
 
+    <!-- Reactome Experiment Digester Configuration (ONLY USED IN DEV MODE) -->
+    <servlet>
+        <servlet-name>ExperimentDigesterProxy</servlet-name>
+        <servlet-class>org.reactome.server.utils.proxy.ProxyServlet</servlet-class>
+        <init-param>
+            <param-name>proxyHost</param-name>
+            <!--<param-value>localhost</param-value>-->
+            <param-value>dev.reactome.org</param-value>
+            <!--<param-value>reactome.org</param-value>-->
+        </init-param>
+        <init-param>
+            <param-name>proxyPort</param-name>
+            <!--<param-value>8686</param-value>-->
+            <param-value>80</param-value>
+            <!--<param-value>8080</param-value>-->
+        </init-param>
+        <!-- ONLY when connecting to localhost -->
+        <init-param>
+            <param-name>proxyProtocol</param-name>
+            <param-value>https</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxyPath</param-name>
+            <!--<param-value>/</param-value>-->
+            <param-value>/ExperimentDigester/</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExperimentDigesterProxy</servlet-name>
+        <url-pattern>/ExperimentDigester/*</url-pattern>
+    </servlet-mapping>
 
     <!-- Still needed for some download links -->
     <!-- RESTFul WS PROXY Configuration (ONLY USED IN DEV MODE) -->
@@ -190,7 +223,10 @@
         <init-param>
             <param-name>proxyHost</param-name>
             <!--<param-value>localhost</param-value>-->
-            <param-value>curator.reactome.org</param-value>
+            <!--<param-value>reactome.org</param-value>-->
+            <param-value>dev.reactome.org</param-value>
+            <!--<param-value>reactomecurator.oicr.on.ca</param-value>-->
+            <!--<param-value>reactomerelease.oicr.on.ca</param-value>-->
         </init-param>
         <init-param>
             <param-name>proxyPort</param-name>
@@ -209,11 +245,38 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>UserGuide</servlet-name>
+        <servlet-class>org.reactome.server.utils.proxy.ProxyServlet</servlet-class>
+        <init-param>
+            <param-name>proxyHost</param-name>
+            <!--<param-value>localhost</param-value>-->
+            <!--<param-value>reactome.org</param-value>-->
+            <param-value>dev.reactome.org</param-value>
+            <!--<param-value>reactomecurator.oicr.on.ca</param-value>-->
+            <!--<param-value>reactomerelease.oicr.on.ca</param-value>-->
+        </init-param>
+        <init-param>
+            <param-name>proxyPort</param-name>
+            <!--<param-value>9090</param-value>-->
+            <param-value>80</param-value>
+            <!--<param-value>8080</param-value>-->
+        </init-param>
+        <init-param>
+            <param-name>proxyPath</param-name>
+            <param-value>/user/guide</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserGuide</servlet-name>
+        <url-pattern>/user/guide/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Templates</servlet-name>
         <servlet-class>org.reactome.server.utils.proxy.ProxyServlet</servlet-class>
         <init-param>
             <param-name>proxyHost</param-name>
-            <param-value>reactome.org</param-value>
+            <param-value>dev.reactome.org</param-value>
         </init-param>
         <init-param>
             <param-name>proxyPort</param-name>

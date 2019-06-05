@@ -19,10 +19,18 @@ import java.util.Map;
 public abstract class TableRowFactory {
     private static final boolean EMPTY_ROWS_AS_NA = !GWT.isScript();
 
-    public static Widget getAbstractModifiedResidue(String title, List<AbstractModifiedResidue> modifiedResidues) {
+    public static Widget getTranslationalModification(String title, List<AbstractModifiedResidue> abstractModifiedResidues) {
         List<DetailsPanel> panels = new LinkedList<>();
-        for (AbstractModifiedResidue modifiedResidue : modifiedResidues) {
-            panels.add(new AbstractModifiedResiduePanel(modifiedResidue));
+        for (AbstractModifiedResidue modifiedResidue : abstractModifiedResidues) {
+            if(modifiedResidue instanceof TranslationalModification) panels.add(new AbstractModifiedResiduePanel(modifiedResidue));
+        }
+        return getOverviewRow(title, panels);
+    }
+
+    public static Widget getGeneticallyModifiedResidue(String title, List<AbstractModifiedResidue> abstractModifiedResidues) {
+        List<DetailsPanel> panels = new LinkedList<>();
+        for (AbstractModifiedResidue modifiedResidue : abstractModifiedResidues) {
+            if(modifiedResidue instanceof GeneticallyModifiedResidue) panels.add(new AbstractModifiedResiduePanel(modifiedResidue));
         }
         return getOverviewRow(title, panels);
     }
@@ -205,6 +213,14 @@ public abstract class TableRowFactory {
         return getOverviewRow(title, panels);
     }
 
+    public static OverviewRow getNormalReactionLikeEventRow(String title, ReactionLikeEvent reactionLikeEvent) {
+        List<DetailsPanel> panels = new LinkedList<>();
+        if (reactionLikeEvent != null) {
+            panels.add(new EventPanel(reactionLikeEvent));
+        }
+        return getOverviewRow(title, panels);
+    }
+
     public static OverviewRow getNormalReactionLikeEventRow(String title, List<ReactionLikeEvent> reactionLikeEvents) {
         List<DetailsPanel> panels = new LinkedList<>();
         for (ReactionLikeEvent reactionLikeEvent : reactionLikeEvents) {
@@ -225,6 +241,14 @@ public abstract class TableRowFactory {
         List<DetailsPanel> panels = new LinkedList<>();
         if (referenceEntity != null) {
             panels.add(new ReferenceEntityPanel(referenceEntity));
+        }
+        return getOverviewRow(title, panels);
+    }
+
+    public static OverviewRow getReferenceTherapeuticRow(String title, ReferenceTherapeutic referenceTherapeutic) {
+        List<DetailsPanel> panels = new LinkedList<>();
+        if (referenceTherapeutic != null) {
+            panels.add(new ReferenceTherapeuticPanel(referenceTherapeutic));
         }
         return getOverviewRow(title, panels);
     }

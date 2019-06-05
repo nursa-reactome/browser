@@ -49,10 +49,6 @@ public abstract class OverviewTableFactory {
             return new ComplexTable((Complex) databaseObject);
         }
 
-//        if(databaseObject instanceof OpenSet){
-//            return new OpenSetTable((OpenSet) databaseObject);
-//        }
-
         if(databaseObject instanceof CandidateSet){
             return new CandidateSetTable((CandidateSet) databaseObject);
         }
@@ -67,6 +63,10 @@ public abstract class OverviewTableFactory {
 
         if(databaseObject instanceof SimpleEntity){
             return new SimpleEntityTable((SimpleEntity) databaseObject);
+        }
+
+        if(databaseObject instanceof Drug){
+            return new DrugTable((Drug) databaseObject);
         }
 
         if(databaseObject instanceof PhysicalEntity){

@@ -30,8 +30,8 @@
     <link type="text/css" rel="stylesheet" href="https://www.ebi.ac.uk/pdbe-apps/widgets/css/pdbprints.css"/>
 
     <!-- GenomeSpace -->
-    <script type="text/javascript" language="JavaScript" src="https://gsui.genomespace.org/jsui/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" language="JavaScript" src="https://gsui.genomespace.org/jsui/upload/gsuploadwindow.js"></script>
+    <script type="text/javascript" language="JavaScript" src="https://gsui.genomespace.org/jsui/js/jquery-1.7.2.min.js" defer></script>
+    <script type="text/javascript" language="JavaScript" src="https://gsui.genomespace.org/jsui/upload/gsuploadwindow.js" defer></script>
 
     <!-- Scripts for ParticipatingMolecules download, FileSaver (sometimes) needs Blob as -->
     <!-- the standard W3C File API Blob interface is not available in all browsers. -->
@@ -48,6 +48,30 @@
         </div>
         <div class="loaderDiv">
             <img class="loaderIcon" src="static/images/loader_lines.gif" alt="loading..."> Please wait while loading the pathway browser...
+        </div>
+    </div>
+
+    <div id="appErrorMessage" class="app-Outage" style="display:none">
+        <div class="headerDiv">
+            <img class="headerLogo"src="static/images/logo.png" alt="Reactome logo">
+        </div>
+        <div class="mainDiv">
+            <div class="outageIconDiv">
+                <img src="static/images/outage_icon.png" alt="Reactome outage icon">
+            </div>
+            <div class="outageMessageDiv">
+                <div class="outageMessageTitle">Ooops!</div>
+                <div class="outageMessageSubtitle">This is unexpected...</div>
+                <div class="outageMessageText">
+                    <p>An error has occured and we are working to fix the problem.
+                        We'll be up and running shortly.<br>
+                        Thank you for your patience.<br>
+                        If you need immediate assistance please contact
+                        <a href="mailto:help@reactome.org">help@reactome.org</a>.
+                    </p>
+                </div>
+                <button class="retryButton" onclick="window.location.reload(true);">Try again</button>
+            </div>
         </div>
     </div>
 

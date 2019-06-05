@@ -3,25 +3,25 @@ package org.reactome.web.pwp.client.details.tabs.description.widgets.table;
 import com.google.gwt.user.client.ui.Widget;
 import org.reactome.web.pwp.client.details.tabs.description.widgets.table.factory.PropertyType;
 import org.reactome.web.pwp.client.details.tabs.description.widgets.table.factory.TableRowFactory;
-import org.reactome.web.pwp.model.client.classes.OpenSet;
+import org.reactome.web.pwp.model.client.classes.Drug;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class OpenSetTable extends EntitySetTable {
-    private OpenSet openSet;
+public class DrugTable extends PhysicalEntityTable {
+    private Drug drug;
 
-    public OpenSetTable(OpenSet openSet) {
-        super(openSet);
-        this.openSet = openSet;
+    public DrugTable(Drug drug) {
+        super(drug);
+        this.drug = drug;
     }
 
     @Override
     protected Widget getTableRow(PropertyType propertyType) {
         String title = propertyType.getTitle();
         switch (propertyType){
-            case REFERENCE_ENTITY:
-                return TableRowFactory.getReferenceEntityRow(title, this.openSet.getReferenceEntity());
+            case DISEASE:
+                return TableRowFactory.getExternalOntologyRow(title, drug.getDisease());
             default:
                 return super.getTableRow(propertyType);
         }

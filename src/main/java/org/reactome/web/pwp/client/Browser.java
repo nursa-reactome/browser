@@ -8,6 +8,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
+import org.reactome.web.fireworks.client.FireworksFactory;
 import org.reactome.web.pwp.client.common.utils.Console;
 import org.reactome.web.pwp.client.manager.state.token.Token;
 import org.reactome.web.pwp.client.manager.title.event.TitleChangedEvent;
@@ -66,6 +67,7 @@ public class Browser implements EntryPoint, ContentClientHandler.DatabaseInfo {
         TitleChangedEvent.REPORT = false;
         Token.DEFAULT_SPECIES_ID = 48887L; //Homo sapiens
         Token.DELIMITER = "&";
+        FireworksFactory.SHOW_FOAM_BTN = (hostName.equals("localhost") || hostName.equals("127.0.0.1")) || hostName.equals("dev.reactome.org");
     }
 
     private void removeLoadingMessage() {

@@ -4,9 +4,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -14,38 +12,36 @@ import org.reactome.web.analysis.client.AnalysisHandler;
 import org.reactome.web.analysis.client.model.AnalysisError;
 import org.reactome.web.analysis.client.model.AnalysisResult;
 import org.reactome.web.analysis.client.model.PathwaySummary;
-import org.reactome.web.diagram.profiles.analysis.AnalysisColours;
-import org.reactome.web.diagram.profiles.diagram.DiagramColours;
 import org.reactome.web.diagram.util.Console;
-import org.reactome.web.fireworks.profiles.FireworksColours;
-import org.reactome.web.pwp.client.common.CommonImages;
-import org.reactome.web.pwp.client.details.common.widgets.button.CustomButton;
 import org.reactome.web.pwp.client.details.tabs.analysis.providers.AnalysisAsyncDataProvider;
+import org.reactome.web.pwp.client.details.tabs.analysis.style.AnalysisTabStyleFactory;
 import org.reactome.web.pwp.client.details.tabs.analysis.widgets.common.CustomPager;
+import org.reactome.web.pwp.client.details.tabs.analysis.widgets.filtering.AppliedFiltersPanel;
+import org.reactome.web.pwp.client.details.tabs.analysis.widgets.filtering.Filter;
+import org.reactome.web.pwp.client.details.tabs.analysis.widgets.filtering.handlers.FilterRemovedHandler;
 import org.reactome.web.pwp.client.details.tabs.analysis.widgets.results.events.*;
 import org.reactome.web.pwp.client.details.tabs.analysis.widgets.results.handlers.*;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Kostas Sidiropoulos <ksidiro@ebi.ac.uk>
  */
 public class AnalysisResultPanel extends DockLayoutPanel implements SelectionChangeEvent.Handler, RowHoverEvent.Handler, MouseOutHandler,
-        AnalysisAsyncDataProvider.PageLoadedHandler, AnalysisHandler.Page, EntitiesPathwaySelectedHandler, InteractorsPathwaySelectedHandler {
+        AnalysisAsyncDataProvider.PageLoadedHandler, AnalysisHandler.Page, EntitiesPathwaySelectedHandler, InteractorsPathwaySelectedHandler, SortingChangedHandler {
 
     private AnalysisAsyncDataProvider dataProvider;
     private AnalysisResultTable table;
     private CustomPager pager;
+    private AppliedFiltersPanel appliedFiltersPanel;
 
     private Long candidateForSelection;
     private Long selected;
     private Long hovered;
 
-    private String species;
-
-    private String resource;
-
     public AnalysisResultPanel() {
         super(Style.Unit.EM);
 
+        this.appliedFiltersPanel = new AppliedFiltersPanel();
         this.pager = new CustomPager(); // Create paging controls.
         this.pager.getElement().getStyle().setDisplay(Style.Display.INLINE_BLOCK);
     }
@@ -68,6 +64,10 @@ public class AnalysisResultPanel extends DockLayoutPanel implements SelectionCha
 
     public HandlerRegistration addPathwayHoveredResetHandler(PathwayHoveredResetHandler handler){
         return this.addHandler(handler, PathwayHoveredResetEvent.TYPE);
+    }
+
+    public HandlerRegistration addFilterRemovedHandler(FilterRemovedHandler handler) {
+        return appliedFiltersPanel.addFilterRemovedHandler(handler);
     }
 
     public void clearSelection() {
@@ -111,26 +111,19 @@ public class AnalysisResultPanel extends DockLayoutPanel implements SelectionCha
         }
     }
 
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
-
-    public void setSpecies(String species) {
-        this.species = species;
-    }
-
     public void showPage(int page) {
         if(this.pager!=null){
             this.pager.setPage(page - 1);
         }
     }
 
-    public void showResult(final AnalysisResult analysisResult, final String resource) {
+    public void showResult(final AnalysisResult analysisResult, final Filter filter) {
 //        ColumnSortEvent.ListHandler<PathwaySummary> sortHandler = new ColumnSortEvent.ListHandler<PathwaySummary>(analysisResult.getPathways());
-        this.table = new AnalysisResultTable(analysisResult.getExpression().getColumnNames(), analysisResult.getSummary().getInteractors());
+        this.table = new AnalysisResultTable(analysisResult.getSummary().getType(), analysisResult.getExpression().getColumnNames(), analysisResult.getSummary().getInteractors());
         this.table.addSelectionChangeHandler(this);
         this.table.addRowHoverHandler(this);
         this.table.addMouseOutHandler(this);
+        this.table.addSortingChangedHandler(this);
 
         this.table.addEntitiesPathwaySelectedHandler(this);
         this.table.addInteractorsPathwaySelectedHandler(this);
@@ -139,46 +132,18 @@ public class AnalysisResultPanel extends DockLayoutPanel implements SelectionCha
         this.pager.setDisplay(this.table);
         this.pager.setPageSize(AnalysisResultTable.PAGE_SIZE);
 
-        this.dataProvider = new AnalysisAsyncDataProvider(table, pager, analysisResult, resource);
-        this.dataProvider.addPageLoadedHanlder(this);
+        this.dataProvider = new AnalysisAsyncDataProvider(table, pager, analysisResult, filter);
+        //this.dataProvider.setAppliedFilter(filter);
+        this.dataProvider.addPageLoadedHandler(this);
 
-        CustomButton downloadCVS = new CustomButton(CommonImages.INSTANCE.downloadFile(), "Result");
-        downloadCVS.setTitle("Click to download the pathway analysis results in Comma Separated Values format for " + resource);
-        downloadCVS.getElement().getStyle().setFloat(Style.Float.LEFT);
-        downloadCVS.addClickHandler(event -> {
-            String token = analysisResult.getSummary().getToken();
-            Window.open("/AnalysisService/download/" + token + "/pathways/" + resource + "/result.csv", "_self", "");
-        });
-
-        CustomButton downloadMapping = new CustomButton(CommonImages.INSTANCE.downloadFile(), "Mapping");
-        downloadMapping.setTitle("Click to download the identifier mapping between the submitted data and the selected resource (" + resource + ")");
-        downloadMapping.getElement().getStyle().setFloat(Style.Float.LEFT);
-        downloadMapping.addClickHandler(event -> {
-            String token = analysisResult.getSummary().getToken();
-            Window.open("/AnalysisService/download/" + token + "/entities/found/" + resource + "/mapping.csv", "_self", "");
-        });
-
-        CustomButton pdfExport = new CustomButton(CommonImages.INSTANCE.downloadFile(), "Report (PDF)");
-        pdfExport.setTitle("Click to download the most significant analysis results in PDF");
-        pdfExport.getElement().getStyle().setFloat(Style.Float.LEFT);
-        pdfExport.addClickHandler(event -> {
-            String diagramProfile = DiagramColours.get().PROFILE.getName();
-            String analysisProfile = AnalysisColours.get().PROFILE.getName();
-            String fireworksProfile = FireworksColours.getSelectedProfileName();
-            if (fireworksProfile == null || fireworksProfile.equals("undefined")) fireworksProfile = FireworksColours.ProfileType.getStandard().getProfile().getName();
-            String token = analysisResult.getSummary().getToken();
-            Window.open("/AnalysisService/report/" + token + "/" + URL.encode(species) + "/report.pdf?resource=" + resource + "&diagramProfile=" + diagramProfile + "&analysisProfile=" + analysisProfile + "&fireworksProfile=" + fireworksProfile, "_blank", "");
-        });
+        this.appliedFiltersPanel.setFilter(filter);
 
         this.clear();
         FlowPanel pagerPanel = new FlowPanel();
-        pagerPanel.setWidth("100%");
-        pagerPanel.getElement().getStyle().setTextAlign(Style.TextAlign.CENTER);
-        pagerPanel.add(downloadCVS);
-        pagerPanel.add(downloadMapping);
-        pagerPanel.add(pdfExport);
+        pagerPanel.setStyleName(AnalysisTabStyleFactory.RESOURCES.css().panelFooter());
         pagerPanel.add(pager);
-        this.addSouth(pagerPanel, 2);
+        pagerPanel.add(appliedFiltersPanel);
+        this.addSouth(pagerPanel, 1.6);
 
         this.add(this.table);
     }
@@ -218,6 +183,10 @@ public class AnalysisResultPanel extends DockLayoutPanel implements SelectionCha
         this.selected = null;
     }
 
+    public void switchClustering(boolean enable) {
+        table.switchClusterColouring(enable);
+    }
+
     @Override
     public void onAnalysisServerException(String message) {
         Console.warn(getClass().getSimpleName() + " --> TODO");
@@ -245,5 +214,10 @@ public class AnalysisResultPanel extends DockLayoutPanel implements SelectionCha
     @Override
     public void onPathwayFoundInteractorsSelected(InteractorsPathwaySelectedEvent event) {
         fireEvent(event);
+    }
+
+    @Override
+    public void onSortingChanged(SortingChangedEvent event) {
+        //TODO: handle sorting
     }
 }

@@ -12,8 +12,10 @@ import org.reactome.web.pwp.client.common.events.DatabaseObjectSelectedEvent;
 import org.reactome.web.pwp.client.common.events.ErrorMessageEvent;
 import org.reactome.web.pwp.client.common.events.StateChangedEvent;
 import org.reactome.web.pwp.client.common.module.AbstractPresenter;
+import org.reactome.web.pwp.client.details.tabs.analysis.widgets.filtering.Filter;
+import org.reactome.web.pwp.client.details.tabs.analysis.widgets.filtering.events.FilterAppliedEvent;
 import org.reactome.web.pwp.client.details.tabs.analysis.widgets.results.AnalysisResultTable;
-import org.reactome.web.pwp.client.details.tabs.analysis.widgets.summary.events.ResourceChangedEvent;
+import org.reactome.web.pwp.client.details.tabs.analysis.widgets.summary.events.AnalysisFilterChangedEvent;
 import org.reactome.web.pwp.client.manager.state.State;
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.classes.Pathway;
@@ -65,8 +67,9 @@ public class AnalysisTabPresenter extends AbstractPresenter implements AnalysisT
 
         if(!analysisStatus.equals(this.analysisStatus)){
             if(this.analysisStatus.isEmpty()) display.showLoadingMessage();
-            this.analysisStatus = analysisStatus;
-            this.loadAnalysisData(analysisStatus.getToken(), analysisStatus.getResource());
+            this.analysisStatus = analysisStatus.clone();
+            Filter filter = Filter.fromAnalysisStatus(this.analysisStatus);
+            this.loadAnalysisData(analysisStatus.getToken(), filter);
         }
     }
 
@@ -123,12 +126,12 @@ public class AnalysisTabPresenter extends AbstractPresenter implements AnalysisT
     }
 
     @Override
-    public void onResourceSelected(ResourceChangedEvent event) {
-        this.eventBus.fireEventFromSource(event, this);
+    public void onFilterChanged(FilterAppliedEvent event) {
+        this.eventBus.fireEventFromSource(new AnalysisFilterChangedEvent(event.getFilter()), this);
     }
 
-    private void loadAnalysisData(final String token, final String resource){
-        AnalysisClient.getResult(token, resource, AnalysisResultTable.PAGE_SIZE, 1, new AnalysisHandler.Result() {
+    private void loadAnalysisData(final String token, final Filter filter){
+        AnalysisClient.getResult(token, filter, AnalysisResultTable.PAGE_SIZE, 1, null, null, new AnalysisHandler.Result() {
             @Override
             public void onAnalysisResult(final AnalysisResult result, long time) {
                 Long speciesId = result.getSummary().getSpecies();
@@ -138,13 +141,13 @@ public class AnalysisTabPresenter extends AbstractPresenter implements AnalysisT
                         public void onObjectLoaded(DatabaseObject databaseObject) {
                             result.getSummary().setSpeciesName(databaseObject.getDisplayName());
                             display.clearSelection();
-                            display.showResult(result, resource);
+                            display.showResult(result, filter);
                             display.selectPathway(selected);
                         }
 
                         @Override
                         public void onContentClientException(Type type, String message) {
-                            String errorMsg = "No species information available for '" + resource + "'. ERROR: " + message;
+                            String errorMsg = "No species information available for '" + filter.getResource() + "'. ERROR: " + message;
                             eventBus.fireEventFromSource(new ErrorMessageEvent(errorMsg), AnalysisTabPresenter.this);
                             display.setInitialState();
                         }
@@ -157,7 +160,7 @@ public class AnalysisTabPresenter extends AbstractPresenter implements AnalysisT
                     });
                 } else {
                     display.clearSelection();
-                    display.showResult(result, resource);
+                    display.showResult(result, filter);
                     display.selectPathway(selected);
                 }
             }
@@ -170,7 +173,7 @@ public class AnalysisTabPresenter extends AbstractPresenter implements AnalysisT
 
             @Override
             public void onAnalysisServerException(String message) {
-                String errorMsg = "The requested detailed data for '" + resource + "' in the Analysis could not be received. ERROR: " + message;
+                String errorMsg = "The requested detailed data for '" + filter.getResource() + "' in the Analysis could not be received. ERROR: " + message;
                 eventBus.fireEventFromSource(new ErrorMessageEvent(errorMsg), AnalysisTabPresenter.this);
                 display.setInitialState();
             }

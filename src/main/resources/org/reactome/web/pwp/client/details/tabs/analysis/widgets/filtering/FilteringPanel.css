@@ -1,0 +1,262 @@
+.main {
+    padding: 0 5px 0 5px;
+
+    -webkit-transition: 250ms -webkit-filter ease-in;
+    -moz-transition: 250ms -moz-filter ease-in;
+    -o-transition: 250ms -o-filter ease-in;
+    transition: 250ms filter ease-in;
+}
+
+.mainTitle {
+    color: #126c9c;
+    font-weight: bolder;
+    height: 1.5em;
+}
+
+.flexContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.firstColumnPanel {
+    display: inline-block;
+    max-width: 350px;
+    flex-grow: 1;
+}
+
+.bySpeciesPanel {
+    display: inline-block;
+    max-width: 300px;
+    flex-grow: 1;
+}
+
+.byVariousPanel {
+    display: inline-block;
+    max-width: 400px;
+    align-self: stretch;
+    flex-grow: 1;
+}
+
+.byPValuePanel {
+    position: relative;
+}
+
+.innerTitle {
+    color: #126c9c;
+    font-weight: bolder;
+    font-size: 1.1em;
+}
+
+.subtitle {
+    color: #126c9c;
+    margin-left: 8px;
+    margin-bottom: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.compactInnerTitle {
+    color: #126c9c;
+    font-weight: bolder;
+    font-size: 1.1em;
+    margin-top: -6px;
+}
+
+.compactSubtitle {
+    color: #126c9c;
+    margin-left: 8px;
+    margin-bottom: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.resourcePanel {
+    float: right;
+    background: #FFFFFF;
+    border: 1px solid #126c9c;
+    border-radius: 5px;
+    color: #126c9c;
+    margin: 7px 4px 0 0;
+    padding: 0px 0 0px 0;
+    line-height: normal;
+}
+
+.resourcePanel select {
+    background: transparent;
+    border: none;
+    /*color: #126c9c;*/
+    /*font-size: smaller;*/
+    /*font-weight: bolder;*/
+    color: #02a0e3;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0 !important;
+    padding: 0 !important;
+    outline: none;
+}
+
+.sizeFilterLb {
+    float: right;
+    margin: 10px 10px 0 0;
+    color: #02a0e3;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.pValueFilterLb {
+    position: absolute;
+    top: 3px;
+    left: 190px;
+    color: #02a0e3;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.listPanel {
+    display: flex;
+}
+
+.speciesListBox {
+    max-height: 90px;
+    overflow: auto;
+    margin-left: 5px;
+    min-width: 220px;
+    border-style: solid;
+    border-color: #DDDDDD;
+    border-width: 1px 0 1px 1px;
+    border-radius: 5px 0 0 0;
+}
+
+.listButtonsPanel {
+    width: 30px;
+    margin-right: 5px;
+    border: 1px solid #dddddd;
+    border-radius: 0 5px 0 0;
+}
+
+.selectBtn {
+    float: right;
+    margin: 5px 4px 5px 0;
+    background-color: rgb(30, 148, 208);
+    border: none;
+    border-radius: 15px;
+    color: white;
+    padding: 0;
+    outline: none;
+    font-size: small !important;
+}
+
+.selectBtn span {
+    display: none;
+}
+
+.selectBtn img {
+    vertical-align: middle !important;
+    padding: 2px;
+    height: 20px;
+    width: auto;
+}
+
+.selectBtn:hover {
+    background-color: #177dc0;
+    cursor: pointer !important;
+}
+
+.selectBtn:active:hover {
+    background-color: #07558b;
+    cursor: pointer !important;
+}
+
+.selectBtn:disabled {
+    background-color: #a39da6;
+}
+
+
+.checkBox {
+    margin: -4px 0 0 8px;
+    color: #000000;
+    font-size: small;
+    font-weight: bolder;
+    display: block;
+}
+
+.checkBox input {
+    cursor: pointer;
+}
+
+.buttonsPanel {
+    position: absolute;
+    bottom: 2px;
+    right: 10px;
+}
+
+.applyBtn {
+    float: right;
+    margin: 10px 4px 0 0;
+    background-color: rgb(30, 148, 208);
+    border: none;
+    border-radius: 15px;
+    color: white;
+    padding: 0 8px 2px 3px;
+    outline: none;
+    font-size: small !important;
+}
+
+.applyBtn span {
+    vertical-align: middle !important;
+    display: inline-block;
+    min-width: 38px;
+    max-width: 60px;
+}
+
+.applyBtn img {
+    vertical-align: middle !important;
+    padding-right: 3px;
+    height: 16px;
+    width: auto;
+}
+
+.applyBtn:hover {
+    background-color: #177dc0;
+    cursor: pointer !important;
+}
+
+.applyBtn:active:hover {
+    background-color: #07558b;
+    cursor: pointer !important;
+}
+
+.applyBtn:disabled, .applyBtn:disabled:hover, .applyBtn:disabled:active {
+    background-color: #a39da6;
+    cursor: default !important;
+}
+
+.blurEffect {
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+}
+
+.loader {
+    background: transparent;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader img {
+    height: 150px;
+    width: auto;
+}

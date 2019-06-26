@@ -3,9 +3,9 @@ package org.reactome.web.pwp.client.details.tabs.analysis.providers;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.ProvidesKey;
 import org.reactome.web.analysis.client.AnalysisClient;
 import org.reactome.web.analysis.client.AnalysisHandler;
+import org.reactome.web.analysis.client.filter.ResultFilter;
 import org.reactome.web.analysis.client.model.AnalysisError;
 import org.reactome.web.analysis.client.model.AnalysisResult;
 import org.reactome.web.analysis.client.model.PathwaySummary;
@@ -29,42 +29,42 @@ public class AnalysisAsyncDataProvider extends AsyncDataProvider<PathwaySummary>
     private List<PathwaySummary> firstPage;
     private List<PathwaySummary> currentData;
     private String token;
-    private String resource;
+    private ResultFilter filter;
 
     private PageLoadedHandler pageLoadedHandler;
 
-    public AnalysisAsyncDataProvider(AnalysisResultTable table, SimplePager pager, AnalysisResult analysisResult, String resource) {
-        super(new ProvidesKey<PathwaySummary>() {
-            @Override
-            public Object getKey(PathwaySummary item) {
-                return item == null ? null : item.getDbId();
-            }
-        });
+    public enum SortingType {
+        NAME,
+        TOTAL_ENTITIES,
+        TOTAL_INTERACTORS,
+        TOTAL_REACTIONS,
+        FOUND_ENTITIES,
+        FOUND_INTERACTORS,
+        FOUND_REACTIONS,
+        ENTITIES_RATIO,
+        ENTITIES_PVALUE,
+        ENTITIES_FDR,
+        REACTIONS_RATIO
+    }
+
+    public AnalysisAsyncDataProvider(AnalysisResultTable table, SimplePager pager, AnalysisResult analysisResult, ResultFilter filter) {
+        super(item -> item == null ? null : item.getDbId());
         this.table = table;
         this.pager = pager;
         this.token = analysisResult.getSummary().getToken();
-        this.resource = resource;
+        this.filter = filter;
         this.firstPage = analysisResult.getPathways();
         this.currentData = this.firstPage;
-
         this.addDataDisplay(this.table);
     }
 
-    public void addPageLoadedHanlder(PageLoadedHandler pageLoadedHandler) {
+    public void addPageLoadedHandler(PageLoadedHandler pageLoadedHandler) {
         this.pageLoadedHandler = pageLoadedHandler;
     }
 
     @Override
     protected void onRangeChanged(HasData<PathwaySummary> display) {
-//        ColumnSortList sortList = ((AbstractCellTable<PathwaySummary>) display).getColumnSortList();
-//        String sortOnName = "name";
-//        boolean isAscending = true;
-//        if( (sortList!=null) && (sortList.size()>0) ){
-//            sortOnName = sortList.get(0).getColumn().getDataStoreName();
-//            isAscending = sortList.get(0).isAscending();
-//        }
-
-        final Integer page = this.pager.getPage() + 1;
+        final int page = this.pager.getPage() + 1;
         if (page == 1) {  //TODO: Find a better way for the first result to be shown so we DO NOT kept it longer ;)
             this.currentData = this.firstPage;
             this.table.setRowData(0, this.firstPage);
@@ -72,7 +72,7 @@ public class AnalysisAsyncDataProvider extends AsyncDataProvider<PathwaySummary>
                 pageLoadedHandler.onAnalysisAsyncDataProvider(page);
             }
         } else {
-            AnalysisClient.getResult(token, resource, AnalysisResultTable.PAGE_SIZE, page, new AnalysisHandler.Result() {
+            AnalysisClient.getResult(token, filter, AnalysisResultTable.PAGE_SIZE, page, null, null, new AnalysisHandler.Result() {
                 @Override
                 public void onAnalysisResult(AnalysisResult result, long time) {
                     currentData = result.getPathways();
@@ -96,11 +96,15 @@ public class AnalysisAsyncDataProvider extends AsyncDataProvider<PathwaySummary>
         }
     }
 
+//    public void setAppliedFilter(final Filter filter) {
+//        this.filter = filter;
+//    }
+
     public List<PathwaySummary> getCurrentData() {
-        return currentData != null ? currentData : new LinkedList<PathwaySummary>();
+        return currentData != null ? currentData : new LinkedList<>();
     }
 
     public void findPathwayPage(Long pathway, AnalysisHandler.Page handler) {
-        AnalysisClient.findPathwayPage(pathway, this.token, this.resource, handler);
+        AnalysisClient.findPathwayPage(pathway, this.token, filter, AnalysisResultTable.PAGE_SIZE, null, null, handler);
     }
 }

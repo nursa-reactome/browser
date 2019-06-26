@@ -1,6 +1,7 @@
 package org.reactome.web.pwp.client.manager.state;
 
 import com.google.gwt.http.client.URL;
+import org.reactome.web.analysis.client.filter.ResultFilter;
 import org.reactome.web.pwp.client.common.AnalysisStatus;
 import org.reactome.web.pwp.client.common.PathwayPortalTool;
 import org.reactome.web.pwp.client.common.utils.Console;
@@ -56,7 +57,7 @@ public class State {
         final Map<StateKey, String> parameters = token.getParameters();
         ContentClient.query(toLoad, new ContentClientHandler.ObjectMapLoaded() {
             private String token;
-            private String resource = "TOTAL";
+            private String filter;
 
             @Override
             public void onObjectMapLoaded(Map<String, ? extends DatabaseObject> map) {
@@ -85,8 +86,8 @@ public class State {
                             case ANALYSIS:
                                 token = identifier;
                                 break;
-                            case RESOURCE:
-                                resource = identifier;
+                            case FILTER:
+                                filter = identifier;
                                 break;
                             case FLAG:
                                 flag = identifier;
@@ -103,7 +104,7 @@ public class State {
                         return;
                     }
                 }
-                setAnalysisParameters(token, resource);
+                setAnalysisParameters(token, filter);
                 path = getPrunedPath(); //Very important!
                 doConsistencyCheck(handler);
             }
@@ -223,9 +224,25 @@ public class State {
         return this.analysisStatus;
     }
 
-    void setAnalysisParameters(String analysisToken, String resource) {
+    public void setAnalysisStatus(AnalysisStatus analysisStatus) {
+        this.analysisStatus = analysisStatus;
+    }
+
+    void setAnalysisParameters(String analysisToken, String filter) {
         //IMPORTANT! Do no use setToken! ALWAYS create a new object here
-        this.analysisStatus = new AnalysisStatus(analysisToken, resource);
+        this.analysisStatus = new AnalysisStatus(analysisToken);
+        this.analysisStatus.setFilter(filter);
+    }
+
+    void setAnalysisParameters(String analysisToken, ResultFilter filter) {
+        //IMPORTANT! Do no use setToken! ALWAYS create a new object here
+        this.analysisStatus = new AnalysisStatus(analysisToken);
+        this.analysisStatus.setResultFilter(filter);
+    }
+
+    void resetAnalysisParameters(){
+        //IMPORTANT! Do no use setToken! ALWAYS create a new object here
+        this.analysisStatus = new AnalysisStatus(null);
     }
 
     public String getFlag() {
@@ -311,11 +328,11 @@ public class State {
             token.append(StateKey.ANALYSIS.getDefaultKey());
             token.append("=");
             token.append(URL.encodeQueryString(analysisStatus.getToken()));
-            if (analysisStatus.getResource() != null && !analysisStatus.getResource().equals("TOTAL")) {
+            if (analysisStatus.getFilter() != null) {
                 token.append(Token.DELIMITER);
-                token.append(StateKey.RESOURCE.getDefaultKey());
+                token.append(StateKey.FILTER.getDefaultKey());
                 token.append("=");
-                token.append(analysisStatus.getResource());
+                token.append(analysisStatus.getFilter());
             }
 //            addDelimiter=true;
         }

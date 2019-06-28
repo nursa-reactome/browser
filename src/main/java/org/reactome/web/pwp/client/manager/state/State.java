@@ -208,7 +208,7 @@ public class State {
         return detailsTab;
     }
 
-    void setDetailsTab(DetailsTabType detailsTab) {
+    public void setDetailsTab(DetailsTabType detailsTab) {
         this.detailsTab = detailsTab;
     }
 
@@ -228,7 +228,7 @@ public class State {
         this.analysisStatus = analysisStatus;
     }
 
-    void setAnalysisParameters(String analysisToken, String filter) {
+    public void setAnalysisParameters(String analysisToken, String filter) {
         //IMPORTANT! Do no use setToken! ALWAYS create a new object here
         this.analysisStatus = new AnalysisStatus(analysisToken);
         this.analysisStatus.setFilter(filter);

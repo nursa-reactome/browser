@@ -73,7 +73,7 @@ public class DiagramDisplay extends DockLayoutPanel implements Diagram.Display,
         if (flag == null) {
             this.diagram.resetFlaggedItems();
         } else {
-            this.diagram.flagItems(flag);
+            this.diagram.flagItems(flag, true);
         }
     }
 
